@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://vquixpqa6drg"]
+
+[ext_resource type="Script" uid="uid://c08orf7scmc7b" path="res://scripts/Ore.gd" id="1_neldg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0htci"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_neldg"]
+
+[node name="Ore" type="Area3D"]
+script = ExtResource("1_neldg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_0htci")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_neldg")

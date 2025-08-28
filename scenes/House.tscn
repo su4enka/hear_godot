@@ -1,0 +1,124 @@
+[gd_scene load_steps=17 format=3 uid="uid://buccgk580xshg"]
+
+[ext_resource type="Script" uid="uid://5k4pjkcr7ybf" path="res://scripts/HouseManager.gd" id="1_8twys"]
+[ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="1_bfmfj"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8twys"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_r2usd"]
+sky_material = SubResource("ProceduralSkyMaterial_8twys")
+
+[sub_resource type="Environment" id="Environment_ispqn"]
+background_mode = 2
+sky = SubResource("Sky_r2usd")
+tonemap_mode = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s7x7r"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_bfmfj"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8twys"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_r2usd"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ispqn"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_etd6b"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lr155"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cmj1i"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r2usd"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ispqn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bfmfj"]
+
+[node name="House" type="Node3D"]
+script = ExtResource("1_8twys")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ispqn")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_s7x7r")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_bfmfj")
+
+[node name="HouseMesh" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.978733, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HouseMesh"]
+shape = SubResource("BoxShape3D_8twys")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HouseMesh"]
+mesh = SubResource("BoxMesh_r2usd")
+
+[node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48382, 2.07373)
+script = ExtResource("1_bfmfj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_ispqn")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+visible = false
+mesh = SubResource("CapsuleMesh_etd6b")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.93, 0.75)
+
+[node name="Wife" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52225, -3.74964)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wife"]
+mesh = SubResource("CapsuleMesh_lr155")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wife"]
+shape = SubResource("CapsuleShape3D_cmj1i")
+
+[node name="Bed" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.20199, 0.921735, 0)
+
+[node name="Area3D" type="Area3D" parent="Bed"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bed/Area3D"]
+shape = SubResource("BoxShape3D_r2usd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bed"]
+mesh = SubResource("BoxMesh_ispqn")
+
+[node name="ExitTrigger" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01679, 6.09705)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger"]
+shape = SubResource("BoxShape3D_bfmfj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DayCounter" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="OreCounter" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

@@ -1,0 +1,146 @@
+[gd_scene load_steps=15 format=3 uid="uid://cvb03iv3aaopy"]
+
+[ext_resource type="Script" uid="uid://stxq7e8ugkpv" path="res://scripts/CaveManager.gd" id="1_oq386"]
+[ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="2_2kquo"]
+[ext_resource type="AudioStream" uid="uid://u5nk82pvrtw2" path="res://sfx/creepy-cave-47164.mp3" id="3_xwfm4"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2kquo"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_xwfm4"]
+sky_material = SubResource("ProceduralSkyMaterial_2kquo")
+
+[sub_resource type="Environment" id="Environment_i5j2t"]
+background_mode = 2
+sky = SubResource("Sky_xwfm4")
+tonemap_mode = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xchtq"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_oq386"]
+
+[sub_resource type="Curve3D" id="Curve3D_2kquo"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 4.335, 0, 0, 0, 0, 0, 0, 0, 0, 7.1, 0, 0, 0, 0, 0, 0, 0, 0, 10.12, 0, 0),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="Curve3D" id="Curve3D_xwfm4"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 4.335, 0, 0, 0, 0, 0, 0, 0, 0, 7.1, 0, 0, 0, 0, 0, 0, 0, 0, 10.12, 0, 0),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="Curve3D" id="Curve3D_i5j2t"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 4.335, 0, 0, 0, 0, 0, 0, 0, 0, 7.1, 0, 0, 0, 0, 0, 0, 0, 0, 10.12, 0, 0),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xchtq"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_oq386"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xwfm4"]
+
+[node name="Cave" type="Node3D"]
+script = ExtResource("1_oq386")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_i5j2t")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CaveFloor" type="StaticBody3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CaveFloor"]
+shape = SubResource("BoxShape3D_xchtq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CaveFloor"]
+mesh = SubResource("BoxMesh_oq386")
+
+[node name="PathsContainer" type="Node3D" parent="."]
+
+[node name="Path1" type="Path3D" parent="PathsContainer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.94057)
+curve = SubResource("Curve3D_2kquo")
+
+[node name="Path2" type="Path3D" parent="PathsContainer"]
+curve = SubResource("Curve3D_xwfm4")
+
+[node name="Path3" type="Path3D" parent="PathsContainer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.8041)
+curve = SubResource("Curve3D_i5j2t")
+
+[node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48382, 2.07373)
+script = ExtResource("2_2kquo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_xchtq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+visible = false
+mesh = SubResource("CapsuleMesh_oq386")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.93, 0.75)
+
+[node name="OreContainer" type="Node3D" parent="."]
+
+[node name="CollapseWarning" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_xwfm4")
+
+[node name="ExitTrigger" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.948929, 8.64857)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger"]
+shape = SubResource("BoxShape3D_xwfm4")
+
+[node name="CollapseTimer" type="Timer" parent="."]
+
+[node name="WarningTimer" type="Timer" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DayCounter" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="OreCounter" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DeafnessIndicator" type="ProgressBar" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 27.0
+
+[node name="DeathScreen" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="DeathScreen"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="DeathScreen/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "You Died"

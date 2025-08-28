@@ -1,0 +1,11 @@
+# Godot 4
+.import/
+.godot/
+.cache/
+tmp/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
