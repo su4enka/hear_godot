@@ -5,10 +5,14 @@ extends Node3D
 @export var max_collapse_time := 60.0
 @export var warning_time := 5.0
 
+@export var false_warning_chance := 0.25   # 1 из 4 ложных миганий
+@export var flicker_time := 1.2            # сколько секунд мигает лампа перед обвалом
+@export var flicker_interval := 0.12       # как часто переключаем свет
+@export var dust_time := 1.5               # сколько секунд летят пылинки
+@onready var collapse_warning = $CollapseWarning
 @onready var player = $Player
 @onready var ore_container = $OreContainer
 @onready var paths_container = $PathsContainer
-@onready var collapse_warning = $CollapseWarning
 @onready var deafness_bar = $CanvasLayer/Control/DeafnessIndicator
 @onready var death_screen = $DeathScreen
 @onready var exit_trigger = $ExitTrigger
@@ -72,25 +76,73 @@ func _setup_day():
 	$CanvasLayer/Control/OreCounter.text = "Ore: %d/%d" % [GameManager.ore_collected_today, GameManager.daily_ore_required]
 	
 func _setup_path_collapse(path: Path3D):
-	# Create unique collapse timer for this path
+# Таймер настоящего обвала
 	var collapse_timer = Timer.new()
 	collapse_timer.wait_time = randf_range(min_collapse_time, max_collapse_time)
 	collapse_timer.one_shot = true
 	collapse_timer.timeout.connect(_on_path_collapse.bind(path))
 	add_child(collapse_timer)
 	path_timers[path] = collapse_timer
-	
-	# Create warning timer
+
+	# Таймер предупреждения перед обвалом (свет+пыль+звук)
 	var warning_timer = Timer.new()
 	warning_timer.wait_time = max(0.05, collapse_timer.wait_time - warning_time)
 	warning_timer.one_shot = true
-	warning_timer.timeout.connect(_on_path_warning.bind(path))
+	warning_timer.timeout.connect(func():
+		# визуал+звук
+		_play_warning_fx(path, true)
+		# старый коллбек на звук у тебя тоже был — если нужно оставь:
+		_on_path_warning(path)
+	)
 	add_child(warning_timer)
 	path_warnings[path] = warning_timer
 
+	# Иногда запускаем "ложное" мигание ЗАРАНЕЕ без звука и без обвала
+	if randf() < false_warning_chance:
+		var false_timer := Timer.new()
+		# пусть срабатывает где-то в первой трети времени до настоящего варнинга
+		false_timer.wait_time = warning_timer.wait_time * randf_range(0.2, 0.5)
+		false_timer.one_shot = true
+		false_timer.timeout.connect(func():
+			_play_warning_fx(path, false))  # визуально, но без collapse и без SFX
+		add_child(false_timer)
+		false_timer.start()
+	
 	warning_timer.start()
 	collapse_timer.start()
-	
+
+func _get_path_fx(path: Node3D) -> Dictionary:
+	var light := path.get_node_or_null("WarningLight")
+	var dust := path.get_node_or_null("Dust")
+	return {"light": light, "dust": dust}
+
+func _play_warning_fx(path: Node3D, with_sound: bool):
+	var fx := _get_path_fx(path)
+	var light = fx.light
+	var dust = fx.dust
+
+	# звук с учётом глухоты
+	if with_sound and collapse_warning:
+		collapse_warning.global_position = path.global_position
+		collapse_warning.volume_db = -20.0 + (GameManager.deafness_level * 30.0)
+		collapse_warning.play()
+
+	# пыль
+	if dust and dust is CPUParticles3D:
+		dust.emitting = true
+		await get_tree().create_timer(dust_time).timeout
+		dust.emitting = false
+
+	# мигание лампы
+	if light and light is Light3D:
+		light.visible = true
+		var t := 0.0
+		while t < flicker_time:
+			light.visible = not light.visible
+			await get_tree().create_timer(flicker_interval).timeout
+			t += flicker_interval
+		light.visible = false
+
 func _spawn_ore_nodes(active_paths: Array):
 	# Spawn ore along active paths
 	for path in active_paths:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cvb03iv3aaopy"]
+[gd_scene load_steps=17 format=3 uid="uid://cvb03iv3aaopy"]
 
 [ext_resource type="Script" uid="uid://stxq7e8ugkpv" path="res://scripts/CaveManager.gd" id="1_oq386"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="2_2kquo"]
@@ -44,6 +44,9 @@ point_count = 3
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xchtq"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_oq386"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_i5j2t"]
+size = Vector3(0.2, 0.2, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xwfm4"]
 
@@ -102,6 +105,22 @@ transform = Transform3D(2.415, 0, 0, 0, -1.05563e-07, -2.415, 0, 2.415, -1.05563
 
 [node name="CollapseWarning" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("3_xwfm4")
+
+[node name="WarningLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.44068, 0.714528, 0)
+visible = false
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="Dust" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1674, -0.365767)
+emitting = false
+amount = 4
+mesh = SubResource("BoxMesh_i5j2t")
+emission_shape = 1
+emission_sphere_radius = 0.4
+scale_amount_min = 0.2
 
 [node name="ExitTrigger" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.948929, 8.64857)

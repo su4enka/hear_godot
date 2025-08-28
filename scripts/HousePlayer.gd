@@ -1,7 +1,9 @@
 extends CharacterBody3D
 
 @export var speed := 5.0
-@export var mouse_sensitivity := 0.002
+
+var mouse_sensitivity := 0.002
+const PS_KEY := "player/mouse_sensitivity"
 
 @export var interact_action := "interact"
 @onready var interact_ray := $Camera3D/InteractRay
@@ -11,7 +13,9 @@ var can_move := true
 func _ready():
 	add_to_group("player")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
+	if ProjectSettings.has_setting(PS_KEY):
+		mouse_sensitivity = float(ProjectSettings.get_setting(PS_KEY))
+
 func _input(event):
 	if event is InputEventMouseMotion and can_move:
 		rotate_y(-event.relative.x * mouse_sensitivity)

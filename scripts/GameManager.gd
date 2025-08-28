@@ -14,6 +14,8 @@ var chances_left := 2                 # два «прокола» по норм�
 var deafness_level := 0.0             # 0..1, растёт к 15 дню
 var the_game_ended := false
 
+var opening_needs_confirm := true
+
 signal day_started(day_number:int)
 signal day_ended(day_number:int, ore_collected:int)
 signal game_ended(ending_type:String)         # "good","bad","early","death"
@@ -57,6 +59,9 @@ func add_ore(n:=1):
 	ore_collected_today += n
 	total_ore += n
 	ore_collected.emit(n)
+
+func needs_opening_confirm() -> bool:
+	return current_day == 1 and opening_needs_confirm
 
 func end_day():
 	# Проверяем норму

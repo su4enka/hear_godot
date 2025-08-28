@@ -82,6 +82,9 @@ mesh = SubResource("CapsuleMesh_etd6b")
 [node name="Camera3D" type="Camera3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.93, 0.75)
 
+[node name="InteractRay" type="RayCast3D" parent="Player/Camera3D"]
+transform = Transform3D(2.415, 0, 0, 0, -1.05563e-07, -2.415, 0, 2.415, -1.05563e-07, 0, 0, 0)
+
 [node name="Wife" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52225, -3.74964)
 
@@ -122,16 +125,17 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Fade" type="ColorRect" parent="CanvasLayer"]
+[node name="Fade" type="ColorRect" parent="CanvasLayer/DayIntro"]
 offset_right = 1281.0
 offset_bottom = 722.0
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="CanvasLayer"]
+[node name="Label" type="Label" parent="CanvasLayer/DayIntro"]
 offset_left = 610.0
 offset_top = 345.0
-offset_right = 650.0
+offset_right = 684.0
 offset_bottom = 368.0
+text = "Narrative"
 
 [node name="LeaveDialog" type="ConfirmationDialog" parent="CanvasLayer"]
 title = "Are you goin to risk it?"
@@ -149,8 +153,8 @@ offset_bottom = 40.0
 
 [node name="DayCounter" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 159.0
-offset_right = 199.0
+offset_left = 280.0
+offset_right = 320.0
 offset_bottom = 23.0
 
 [node name="OreCounter" type="Label" parent="CanvasLayer/Control"]
@@ -158,6 +162,13 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="HintLabel" type="Label" parent="CanvasLayer/Control"]
+offset_top = 59.0
+offset_right = 40.0
+offset_bottom = 82.0
+
 [node name="Subtitles" type="Label" parent="CanvasLayer"]
+visible = false
 offset_right = 40.0
 offset_bottom = 23.0
+text = "Subtitles"
