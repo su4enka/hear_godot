@@ -6,6 +6,7 @@ extends CharacterBody3D
 var can_move := true
 
 func _ready():
+	add_to_group("player")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _input(event):

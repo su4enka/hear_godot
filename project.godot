@@ -19,6 +19,15 @@ config/icon="res://icon.svg"
 
 GameManager="*res://scripts/GameManager.gd"
 
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/resizable=false
+window/size/borderless=true
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gamedev_assistant/plugin.cfg")

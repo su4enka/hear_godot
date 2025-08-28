@@ -106,6 +106,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01679, 6.09705)
 shape = SubResource("BoxShape3D_bfmfj")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+physics_interpolation_mode = 2
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -115,7 +116,8 @@ offset_bottom = 40.0
 
 [node name="DayCounter" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_right = 40.0
+offset_left = 159.0
+offset_right = 199.0
 offset_bottom = 23.0
 
 [node name="OreCounter" type="Label" parent="CanvasLayer/Control"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cvb03iv3aaopy"]
+[gd_scene load_steps=16 format=3 uid="uid://cvb03iv3aaopy"]
 
 [ext_resource type="Script" uid="uid://stxq7e8ugkpv" path="res://scripts/CaveManager.gd" id="1_oq386"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="2_2kquo"]
@@ -46,6 +46,8 @@ point_count = 3
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_oq386"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xwfm4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_xwfm4"]
 
 [node name="Cave" type="Node3D"]
 script = ExtResource("1_oq386")
@@ -104,6 +106,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.948929, 8.64857)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger"]
 shape = SubResource("BoxShape3D_xwfm4")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ExitTrigger"]
+mesh = SubResource("BoxMesh_xwfm4")
+
 [node name="CollapseTimer" type="Timer" parent="."]
 
 [node name="WarningTimer" type="Timer" parent="."]
@@ -118,7 +123,8 @@ offset_bottom = 40.0
 
 [node name="DayCounter" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_right = 40.0
+offset_left = 165.0
+offset_right = 205.0
 offset_bottom = 23.0
 
 [node name="OreCounter" type="Label" parent="CanvasLayer/Control"]
@@ -128,7 +134,8 @@ offset_bottom = 23.0
 
 [node name="DeafnessIndicator" type="ProgressBar" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_right = 4.0
+offset_left = 701.0
+offset_right = 705.0
 offset_bottom = 27.0
 
 [node name="DeathScreen" type="CanvasLayer" parent="."]
@@ -141,6 +148,7 @@ offset_bottom = 40.0
 
 [node name="Label" type="Label" parent="DeathScreen/Control"]
 layout_mode = 0
-offset_right = 40.0
+offset_left = 1204.0
+offset_right = 1273.0
 offset_bottom = 23.0
 text = "You Died"
