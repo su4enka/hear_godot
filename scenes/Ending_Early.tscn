@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://d14nnltxxqt41"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 615.0
+offset_top = 342.0
+offset_right = 655.0
+offset_bottom = 365.0
+text = "Ending_Early"

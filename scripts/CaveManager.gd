@@ -24,6 +24,10 @@ func _ready():
 	_setup_day()
 	
 func _setup_day():
+	var db := -18.0 * GameManager.deafness_level
+	var bus := AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_volume_db(bus, db)
+	
 	# Clear previous day
 	for child in ore_container.get_children():
 		child.queue_free()

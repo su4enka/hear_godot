@@ -3,6 +3,9 @@ extends CharacterBody3D
 @export var speed := 5.0
 @export var mouse_sensitivity := 0.002
 
+@export var interact_action := "interact"
+@onready var interact_ray := $Camera3D/InteractRay
+
 var can_move := true
 
 func _ready():
@@ -15,6 +18,15 @@ func _input(event):
 		$Camera3D.rotate_x(-event.relative.y * mouse_sensitivity)
 		$Camera3D.rotation.x = clamp($Camera3D.rotation.x, -PI/2, PI/2)
 		
+	if event.is_action_pressed(interact_action) and can_move:
+		_try_interact()
+
+func _try_interact():
+	if not interact_ray.is_colliding(): return
+	var hit = interact_ray.get_collider()
+	if hit and hit.has_method("try_mine"):
+		hit.try_mine()
+
 func _physics_process(delta):
 	if not can_move:
 		return

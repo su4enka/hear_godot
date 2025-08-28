@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://44ehkqtkd8jv"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 628.0
+offset_top = 338.0
+offset_right = 668.0
+offset_bottom = 361.0
+text = "Ending_Good"

@@ -1,11 +1,17 @@
 extends Area3D
-signal collected(amount)
+@export var hits_min := 2
+@export var hits_max := 3
 @export var ore_amount := 1
+var hits_left := 2
 
 func _ready():
-	body_entered.connect(_on_body_entered)
+	hits_left = randi_range(hits_min, hits_max)
+	# отключаем автосбор при входе:
+	if is_connected("body_entered", Callable(self, "_on_body_entered")):
+		disconnect("body_entered", Callable(self, "_on_body_entered"))
 
-func _on_body_entered(body):
-	if body.is_in_group("player"):
-		collected.emit(ore_amount)
+func try_mine():
+	hits_left -= 1
+	if hits_left <= 0:
+		GameManager.add_ore(ore_amount)
 		queue_free()

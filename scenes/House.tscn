@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://buccgk580xshg"]
+[gd_scene load_steps=18 format=3 uid="uid://buccgk580xshg"]
 
 [ext_resource type="Script" uid="uid://5k4pjkcr7ybf" path="res://scripts/HouseManager.gd" id="1_8twys"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="1_bfmfj"]
@@ -30,6 +30,9 @@ tonemap_mode = 2
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_lr155"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cmj1i"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_8twys"]
+radius = 1.58159
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_r2usd"]
 
@@ -88,6 +91,11 @@ mesh = SubResource("CapsuleMesh_lr155")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Wife"]
 shape = SubResource("CapsuleShape3D_cmj1i")
 
+[node name="Area3D" type="Area3D" parent="Wife"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wife/Area3D"]
+shape = SubResource("SphereShape3D_8twys")
+
 [node name="Bed" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.20199, 0.921735, 0)
 
@@ -108,6 +116,31 @@ shape = SubResource("BoxShape3D_bfmfj")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 physics_interpolation_mode = 2
 
+[node name="DayIntro" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Fade" type="ColorRect" parent="CanvasLayer"]
+offset_right = 1281.0
+offset_bottom = 722.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 610.0
+offset_top = 345.0
+offset_right = 650.0
+offset_bottom = 368.0
+
+[node name="LeaveDialog" type="ConfirmationDialog" parent="CanvasLayer"]
+title = "Are you goin to risk it?"
+initial_position = 1
+size = Vector2i(300, 80)
+ok_button_text = "Stay"
+dialog_close_on_escape = false
+cancel_button_text = "Leave"
+
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
@@ -122,5 +155,9 @@ offset_bottom = 23.0
 
 [node name="OreCounter" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Subtitles" type="Label" parent="CanvasLayer"]
 offset_right = 40.0
 offset_bottom = 23.0
