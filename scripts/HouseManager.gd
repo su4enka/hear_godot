@@ -22,6 +22,10 @@ func _ready():
 	
 	if not wife_area.is_in_group("wife"):
 		wife_area.add_to_group("wife")
+	if not bed_area.is_in_group("bed"):
+		bed_area.add_to_group("bed")
+	if not exit_trigger.is_in_group("exit"):
+		exit_trigger.add_to_group("exit")
 	
 		# Подключаемся к сигналам от автолоада
 	GameManager.day_intro.connect(_on_day_intro)
@@ -29,8 +33,6 @@ func _ready():
 	GameManager.day_ended.connect(_on_day_ended)
 
 	# ТРИГГЕРЫ
-	exit_trigger.body_entered.connect(_on_exit_triggered)
-	bed_area.body_entered.connect(_on_bed_entered)
 	leave_dialog.confirmed.connect(_on_leave_dialog_confirmed)
 	leave_dialog.canceled.connect(_on_leave_dialog_canceled)
 
@@ -171,28 +173,28 @@ func _on_day_intro(text:String):
 	await t4.finished
 	day_intro_label.visible = false
 
-func _on_bed_entered(body):
-	if body == player:
-		GameManager.end_day()
+func request_sleep() -> void:
+	GameManager.end_day()
 
-func _on_exit_triggered(body):
-	if body == player:
-		_cancel_subtitle_task()  # ← гасим корутину и твины
+func request_exit() -> void:
+	_cancel_subtitle_task()
+	
+	if GameManager.current_day == 7 and not GameManager.early_used:
+		leave_dialog.title = "Leave or Stay?"
+		leave_dialog.dialog_text = "You can leave the cave life now. Will you stay home?"
+		leave_dialog.popup_centered()
+		return
 
-		if GameManager.current_day >= 7 and not GameManager.early_used:
-			leave_dialog.title = "Leave or Stay?"
-			leave_dialog.dialog_text = "You can leave the cave life now. Will you stay home?"
-			leave_dialog.popup_centered()
-			return
-		if GameManager.came_from_cave:
-			var lbl := $CanvasLayer/Control/HintLabel if has_node($"CanvasLayer/Control/HintLabel".get_path()) else $CanvasLayer/Subtitles
-			if lbl:
-				lbl.text = "You need to rest"
-				lbl.visible = true
-				await get_tree().create_timer(2.0).timeout
-				lbl.visible = false
-			return
-		get_tree().change_scene_to_packed(preload("res://scenes/Cave.tscn"))
+	if GameManager.came_from_cave:
+		var lbl := hint_label if hint_label else subtitle
+		if lbl:
+			lbl.text = "You need to rest"
+			lbl.visible = true
+			await get_tree().create_timer(2.0).timeout
+			lbl.visible = false
+		return
+
+	get_tree().change_scene_to_packed(preload("res://scenes/Cave.tscn"))
 
 func _exit_tree():
 	_cancel_subtitle_task()

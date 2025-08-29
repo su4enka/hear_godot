@@ -38,6 +38,8 @@ enabled=PackedStringArray("res://addons/gamedev_assistant/plugin.cfg")
 player=""
 ore=""
 wife=""
+bed=""
+exit=""
 
 [input]
 

@@ -5,7 +5,7 @@ extends Node
 @export var ore_required_total := 100
 
 # Нормы по дням (можешь подправить числа)
-var ore_required_by_day := [5,2,2,3,3, 4,4,5,5,6, 6,7,7,8,8]
+var ore_required_by_day := [2,2,2,3,3, 4,4,5,5,6, 6,6,6,6,6]
 
 var current_day := 1
 var total_ore := 0
@@ -168,7 +168,8 @@ func reset_state() -> void:
 	total_ore = 0
 	ore_collected_today = 0
 	chances_left = 2
-
+	
+	early_used = false
 	the_game_ended = false
 	opening_needs_confirm = true
 	came_from_cave = false

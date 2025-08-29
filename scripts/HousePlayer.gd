@@ -33,6 +33,8 @@ func _get_interactable_from_hit(hit: Object) -> Node:
 	while n:
 		if n.has_method("try_mine"): return n      # руда
 		if n.is_in_group("wife") or n.has_method("talk"): return n  # жена/НПС
+		if n.is_in_group("bed"): return n                    # кровать
+		if n.is_in_group("exit"): return n
 		n = n.get_parent()
 	return null
 
@@ -49,6 +51,10 @@ func _update_interact_hint() -> void:
 					text = "Press E to dig"
 				elif target.is_in_group("wife") or target.has_method("talk"):
 					text = "Press E to speak"
+				elif target.is_in_group("bed"):
+					text = "Press E to sleep"
+				elif target.is_in_group("exit"):
+					text = "Press E to leave"
 	interact_hint.text = text
 	interact_hint.visible = text != ""
 
@@ -88,6 +94,20 @@ func _try_interact():
 			if house and house.has_method("request_wife_talk"):
 				house.call("request_wife_talk")
 			return
+
+# выход
+	if target.is_in_group("exit"):
+		var house := get_parent()
+		if house and house.has_method("request_exit"):
+			house.call("request_exit")
+		return
+
+# кровать
+	if target.is_in_group("bed"):
+		var house := get_parent()
+		if house and house.has_method("request_sleep"):
+			house.call("request_sleep")
+		return
 
 		# Руда
 	if target.has_method("try_mine"):

@@ -1,9 +1,10 @@
 extends Node3D
 
 @export var ore_per_node := 1
-@export var min_collapse_time := 10.0
+@export var min_collapse_time := 20.0
 @export var max_collapse_time := 30.0
 @export var warning_time := 5.0
+@export var min_warning_gap := 5.0  # минимум секунд между стартами warning’ов
 
 @export var false_warning_chance := 0.40   # 1 из 4 ложных миганий
 @export var flicker_time := 1.2            # сколько секунд мигает лампа перед обвалом
@@ -21,6 +22,9 @@ extends Node3D
 
 const PATH_PITCH := { "Path1": 1.00, "Path2": 0.92, "Path3": 1.08 } # полутон вниз/вверх
 const DEFAULT_PITCH := 1.0
+
+var _next_warning_allowed_at := 0.0
+var _kill_scheduled := false
 
 var path_timers := {}
 var path_warnings := {}
@@ -88,14 +92,22 @@ func _setup_day():
 ]
 	
 func _setup_path_collapse(path: Path3D):
-	# таймер только для варнинга
 	var warning_timer := Timer.new()
 	warning_timer.one_shot = true
 	warning_timer.wait_time = randf_range(min_collapse_time, max_collapse_time) - warning_time
 	warning_timer.timeout.connect(func():
-		_play_warning_fx(path, true)          # лампа + пыль + звук
+		# --- разруливаем глобальный зазор между предупреждениями ---
+		var now := Time.get_ticks_msec() / 1000.0
+		if now < _next_warning_allowed_at:
+			var wait_more := _next_warning_allowed_at - now
+			await get_tree().create_timer(wait_more).timeout
+		# старт этого предупреждения «занимает окно»
+		_next_warning_allowed_at = (Time.get_ticks_msec() / 1000.0) + min_warning_gap
+
+		# реальный варнинг (с лампой/пылью/звуком)
+		_play_warning_fx(path, true)
 		await get_tree().create_timer(warning_time).timeout
-		_do_path_collapse(path)               # ← падает СВОЯ стена этого пути
+		_do_path_collapse(path)
 	)
 	add_child(warning_timer)
 
@@ -143,24 +155,35 @@ func _get_wall_for_path(path: Node) -> Node3D:
 	# 2) запасной вариант — если стену положишь прямо внутрь Path
 	return path.get_node_or_null("CollapseWall") as Node3D
 
-func _do_path_collapse(path: Path3D):
+func _do_path_collapse(path: Path3D) -> void:
 	if not player_alive:
 		return
-# Если игрок рядом с путём — смерть
+
 	var path3d := path as Path3D
+	var will_kill := false
+
+	# 1) решаем, убивает ли
 	if path3d and path3d.curve:
 		var closest := _closest_distance_to_path(player.global_position, path3d)
 		if closest < 2.0:
-			await get_tree().create_timer(3).timeout
-			_kill_player()
-			return
-	
+			will_kill = true
+
+	# 2) СНАЧАЛА роняем стену – всегда
 	var wall := _get_wall_for_path(path)
 	if wall:
 		var start := wall.global_position
-		var end := start + Vector3(0, -2.5, 0)  # подстрой величину
+		var end := start + Vector3(0, -2.5, 0)
 		var tw := create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 		tw.tween_property(wall, "global_position", end, 0.5)
+
+	# 3) Смерть планируем таймером, не блокируя и без return
+	if will_kill and not _kill_scheduled:
+		_kill_scheduled = true
+		var t := get_tree().create_timer(3.0)  # задержка перед смертью
+		t.timeout.connect(func():
+			_kill_player()
+			_kill_scheduled = false   # на всякий, если вернёшься в пещеру тем же инстансом
+		)
 
 func _get_path_fx_multi(path: Node3D) -> Dictionary:
 	var lights: Array[Light3D] = []
@@ -258,7 +281,7 @@ func _play_warning_fx(path: Node3D, with_sound: bool) -> void:
 		p.bus = "Warning"  # убедись, что бас существует
 
 		# база с учётом глухоты
-		var deaf_db := -20.0 + (GameManager.deafness_level * 30.0)
+		var deaf_db := -40.0 + (GameManager.deafness_level * 30.0)
 
 		# дистанция — чем дальше от входа в путь, тем тише/глуше
 		var dist_to_path := _closest_distance_to_path(player.global_position, path3d)

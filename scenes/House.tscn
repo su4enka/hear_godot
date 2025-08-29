@@ -103,7 +103,7 @@ shape = SubResource("CapsuleShape3D_cmj1i")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Wife/Area3D"]
 shape = SubResource("SphereShape3D_8twys")
 
-[node name="Bed" type="StaticBody3D" parent="."]
+[node name="Bed" type="StaticBody3D" parent="." groups=["bed"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.20199, 0.921735, 0)
 
 [node name="Area3D" type="Area3D" parent="Bed"]
@@ -114,7 +114,7 @@ shape = SubResource("BoxShape3D_r2usd")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bed"]
 mesh = SubResource("BoxMesh_ispqn")
 
-[node name="ExitTrigger" type="Area3D" parent="."]
+[node name="ExitTrigger" type="Area3D" parent="." groups=["exit"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01679, 6.09705)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger"]
