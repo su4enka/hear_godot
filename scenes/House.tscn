@@ -97,7 +97,7 @@ mesh = SubResource("CapsuleMesh_lr155")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Wife"]
 shape = SubResource("CapsuleShape3D_cmj1i")
 
-[node name="Area3D" type="Area3D" parent="Wife"]
+[node name="Area3D" type="Area3D" parent="Wife" groups=["wife"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Wife/Area3D"]
 shape = SubResource("SphereShape3D_8twys")
@@ -166,8 +166,10 @@ offset_bottom = 555.0
 
 [node name="Subtitles" type="Label" parent="CanvasLayer"]
 visible = false
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 619.0
+offset_top = 561.0
+offset_right = 687.0
+offset_bottom = 584.0
 text = "Subtitles"
 
 [node name="OverlayLayer" type="CanvasLayer" parent="."]

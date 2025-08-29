@@ -26,17 +26,103 @@ signal wife_line(text:String)                 # для реплик жены
 signal day_intro(text:String)                 # для «День N» и пролога
 
 var wife_lines := {
-	1: ["We'll manage. I believe in you."],
-	2: ["Be careful today. There's some noise in the cave..."],
-	3: ["I think your hearing has gotten worse?"],
-	5: ["If you hate it, we can leave."],
-	11: ["There's not much left..."]
+	1: [
+		"We'll manage. I believe in you.",
+		"The bed still smells of the city. We'll get used to this place."
+	],
+	2: [
+		"Be careful today. I heard the cave creak last night.",
+		"I'll keep the stove going. Come back warm."
+	],
+	3: [
+		"I think your hearing has gotten worse… Watch the lamps in the cave.",
+		"If you can’t hear, look. Stones speak with dust."
+	],
+	4: [
+		"Don’t chase every vein. One good strike is better than three rushed.",
+	],
+	5: [
+		"If you hate it, we can leave. No shame in choosing life.",
+		"Five days in… Does the ringing ever stop?"
+	],
+	6: [
+		"Remember: when the lights flicker twice, don’t wait to listen.",
+	],
+	7: [
+		"I counted the ore. We're on track — barely.",
+	],
+	8: [
+		"I made soup. It's thin, but hot. Come back for it, alright?",
+	],
+	9: [
+		"You don't answer the kettle anymore. I'll tap three times when I speak.",
+	],
+	10: [
+		"Neighbors asked about you. I told them you're stubborn, not careless.",
+	],
+	11: [
+		"There's not much left... but don't let that cave take your name.",
+	],
+	12: [
+		"If the path coughs dust — just run. Promise me.",
+	],
+	13: [
+		"I packed the bags. Not to run — to be ready when we're done.",
+	],
+	14: [
+		"Tomorrow you'll sleep. Really sleep.",
+	],
+	15: [
+		"Last day. I'll listen for the door."
+	]
 }
 
+var last_wife_line: String = ""
+
 func get_wife_line() -> String:
-	var lines:Array = wife_lines.get(current_day, [])
-	if lines.is_empty(): return "..."
-	return lines[randi() % lines.size()]
+	var day_lines:Array = wife_lines.get(current_day, [])
+	var pool:Array = day_lines.duplicate()
+
+	# Контекст — мало руды сегодня
+	if ore_collected_today < get_required_today() and ore_collected_today > 0:
+		pool.append_array([
+			"That's not enough for today… try another path?",
+			"I can stretch dinner, but not forever."
+		])
+
+	# Контекст — закончились/тают шансы
+	if chances_left <= 0:
+		pool.append("We can’t afford another short day.")
+	elif chances_left == 1:
+		pool.append("Only one chance left before we lose the house.")
+	elif chances_left == 2 and current_day > 1:
+		pool.append("Two chances remain. Use them wisely.")
+
+	# Контекст — глухота растёт
+	if deafness_level > 0.6:
+		pool.append("You don’t hear me anymore. So look at me: come back safe.")
+	elif deafness_level > 0.3:
+		pool.append("If you miss the sound, watch the lamps and dust.")
+
+	# Контекст — после 5 дня подсказываем про «уехать»
+	if current_day >= early_exit_day:
+		pool.append("We can still leave. The door isn't locked.")
+
+	if pool.is_empty():
+		return "..."
+
+	if last_wife_line != "" and pool.size() > 1:
+		var tries := 6
+		var pick = pool[randi() % pool.size()]
+		while pick == last_wife_line and tries > 0:
+			pick = pool[randi() % pool.size()]
+			tries -= 1
+		last_wife_line = pick
+		return pick
+	else:
+		var pick2 = pool[randi() % pool.size()]
+		last_wife_line = pick2
+		return pick2
 
 func _ready():
 	_emit_day_intro()

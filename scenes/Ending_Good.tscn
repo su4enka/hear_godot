@@ -1,6 +1,10 @@
-[gd_scene format=3 uid="uid://44ehkqtkd8jv"]
+[gd_scene load_steps=2 format=3 uid="uid://44ehkqtkd8jv"]
+
+[ext_resource type="Script" uid="uid://cct0qgoiavl22" path="res://scripts/Ending.gd" id="1_dyt7n"]
 
 [node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_dyt7n")
+kind = "good"
 
 [node name="Label" type="Label" parent="."]
 offset_left = 628.0

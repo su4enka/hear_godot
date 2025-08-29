@@ -12,7 +12,14 @@ extends Node3D
 @onready var fade_rect: ColorRect = $OverlayLayer/DayIntro/Fade
 @onready var day_intro_label: Label = $OverlayLayer/DayIntro/Label
 
+var _subtitle_tween: Tween
+var _subtitle_task_running := false
+var _subtitle_skip_armed := false
+
 func _ready():
+	if not wife_area.is_in_group("wife"):
+		wife_area.add_to_group("wife")
+	
 		# Подключаемся к сигналам от автолоада
 	GameManager.day_intro.connect(_on_day_intro)
 	GameManager.day_started.connect(_on_day_started)
@@ -36,12 +43,84 @@ func _ready():
 	if not GameManager.came_from_cave:
 		_on_day_intro("Day %d" % GameManager.current_day)
 
+func _skip_actions_down() -> bool:
+	return Input.is_action_pressed("ui_accept") \
+		or Input.is_action_pressed("interact") \
+		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+
+func _arm_subtitle_skip() -> void:
+	# ждём, пока кнопки будут отпущены — чтобы стартовый E не сработал как "скип"
+	while _skip_actions_down():
+		await get_tree().process_frame
+	_subtitle_skip_armed = true
+
 func _action_is_pressed() -> bool:
 	return Input.is_action_just_pressed("interact") \
 		or Input.is_action_just_pressed("ui_accept") \
 		or Input.is_action_just_pressed("ui_select") \
 		or Input.is_action_just_pressed("ui_cancel") \
 		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+
+func _subtitle_time_for(text: String) -> float:
+	# базово 2.5с + по 0.04с за символ, но не меньше 2.5 и не больше 6.5
+	var t := 2.5 + text.length() * 0.04
+	return clamp(t, 2.5, 6.5)
+
+func _subtitle_wait_for_skip_or_timeout(timeout: float) -> void:
+	var t := 0.0
+	while t < timeout:
+		await get_tree().process_frame
+		t += get_process_delta_time()
+		if Input.is_action_just_pressed("ui_accept") \
+		or Input.is_action_just_pressed("interact") \
+		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			break
+
+func talk_to_wife() -> void:
+# мягко прервать предыдущую
+	if _subtitle_task_running:
+		if _subtitle_tween and _subtitle_tween.is_running():
+			_subtitle_tween.kill()
+		_subtitle_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
+		_subtitle_tween.tween_property(subtitle, "modulate:a", 0.0, 0.12)
+		await _subtitle_tween.finished
+		subtitle.visible = false
+
+	_subtitle_task_running = true
+	_subtitle_skip_armed = false
+
+	var line := GameManager.get_wife_line()
+	subtitle.text = line
+	subtitle.modulate.a = 0.0
+	subtitle.visible = true
+
+	# фейд-ин
+	_subtitle_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
+	_subtitle_tween.tween_property(subtitle, "modulate:a", 1.0, 0.12)
+	await _subtitle_tween.finished
+
+	# ВАЖНО: сперва "разоружаем" стартовое нажатие, потом разрешаем скип
+	await _arm_subtitle_skip()
+
+	# ждём авто-таймаут или скип (теперь скип сработает только после _arm_subtitle_skip)
+	var dur := _subtitle_time_for(line)
+	var t := 0.0
+	while t < dur:
+		await get_tree().process_frame
+		t += get_process_delta_time()
+		if _subtitle_skip_armed and (
+			Input.is_action_just_pressed("ui_accept")
+			or Input.is_action_just_pressed("interact")
+			or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		):
+			break
+
+	# фейд-аут
+	_subtitle_tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE)
+	_subtitle_tween.tween_property(subtitle, "modulate:a", 0.0, 0.15)
+	await _subtitle_tween.finished
+	subtitle.visible = false
+	_subtitle_task_running = false
 
 func _wait_for_skip() -> void:
 	while true:
@@ -121,9 +200,11 @@ func _on_day_ended(_d, _ore):
 func _update_ui():
 	var need_today := GameManager.get_required_today()
 	day_label.text = "Day: %d/%d" % [GameManager.current_day, GameManager.total_days]
-	ore_label.text = "Ore: %d/%d" % [GameManager.total_ore, GameManager.ore_required_total]
+	ore_label.text = "Ore: %d/%d" % [GameManager.ore_collected_today, need_today]
 
-	if hint_label:
-		hint_label.text = "We need %d ore today. There are %d chances left before poverty." % [
+	if GameManager.came_from_cave:
+		hint_label.text = "You need to rest. Come back tomorrow."
+	else:
+		hint_label.text = "We need %d ore today. Chances before poverty: %d." % [
 			need_today, GameManager.chances_left
 		]
