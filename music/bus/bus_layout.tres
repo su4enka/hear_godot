@@ -1,4 +1,7 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://rrinmgl26k1l"]
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://rrinmgl26k1l"]
+
+[sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_7gdlc"]
+resource_name = "SpectrumAnalyzer"
 
 [sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_7gdlc"]
 resource_name = "Compressor"
@@ -7,6 +10,8 @@ release_ms = 150.0
 sidechain = &"Warning"
 
 [resource]
+bus/0/effect/0/effect = SubResource("AudioEffectSpectrumAnalyzer_7gdlc")
+bus/0/effect/0/enabled = true
 bus/1/name = &"Warning"
 bus/1/solo = false
 bus/1/mute = false

@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://cvb03iv3aaopy"]
+[gd_scene load_steps=21 format=3 uid="uid://cvb03iv3aaopy"]
 
 [ext_resource type="Script" uid="uid://stxq7e8ugkpv" path="res://scripts/CaveManager.gd" id="1_oq386"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="2_2kquo"]
 [ext_resource type="AudioStream" uid="uid://u5nk82pvrtw2" path="res://sfx/creepy-cave-47164.mp3" id="3_xwfm4"]
 [ext_resource type="PackedScene" uid="uid://ftmqis04ebj2" path="res://scenes/Collapse_Wall.tscn" id="4_i5j2t"]
 [ext_resource type="PackedScene" uid="uid://c270qrnb6y04w" path="res://scenes/Cave_Wall.tscn" id="4_sj338"]
+[ext_resource type="Script" uid="uid://dneddrmr4yuup" path="res://scripts/AudioViz.gd" id="4_twyj6"]
 [ext_resource type="PackedScene" uid="uid://d0ei16srs4mwd" path="res://scenes/PauseMenu.tscn" id="6_e5lse"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2kquo"]
@@ -258,6 +259,13 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="DeafnessLabel" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 689.0
+offset_right = 761.0
+offset_bottom = 23.0
+text = "Deafness"
+
 [node name="DeafnessIndicator" type="ProgressBar" parent="CanvasLayer/Control"]
 layout_mode = 0
 offset_left = 772.0
@@ -271,6 +279,14 @@ offset_left = 594.0
 offset_top = 532.0
 offset_right = 697.0
 offset_bottom = 555.0
+
+[node name="AudioViz" type="Control" parent="CanvasLayer/Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1162.0
+offset_right = 1202.0
+offset_bottom = 40.0
+script = ExtResource("4_twyj6")
 
 [node name="DeathScreen" type="CanvasLayer" parent="."]
 

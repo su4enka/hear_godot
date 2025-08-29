@@ -37,7 +37,7 @@ func _ready():
 
 	# Подсказка: играйте со звуком!
 	lbl.text = "Mouse Sensitivity  |  Make the sounds louder 🎧"
-
+	
 	# Подтягиваем сохранённую сенсу
 	if not ProjectSettings.has_setting(PS_KEY):
 		ProjectSettings.set_setting(PS_KEY, DEFAULT_SENS)
@@ -61,6 +61,59 @@ func _ready():
 	if GameManager.current_day - 1 >= 0 and GameManager.current_day - 1 < GameManager.ore_required_by_day.size():
 		spin_req.value = GameManager.ore_required_by_day[GameManager.current_day - 1]
 	chk_skip.button_pressed = not GameManager.opening_needs_confirm
+
+	btn_play.focus_mode = Control.FOCUS_ALL
+	btn_settings.focus_mode = Control.FOCUS_ALL
+	btn_quit.focus_mode = Control.FOCUS_ALL
+	btn_back.focus_mode = Control.FOCUS_ALL
+	btn_play.grab_focus()
+
+func _unhandled_input(ev: InputEvent) -> void:
+	if not visible:
+		return
+
+	# Settings открыт: Enter = Back
+	if settings.visible:
+		btn_back.grab_focus()
+		if ev.is_action_pressed("ui_accept"):
+			var vp := get_viewport()
+			if vp != null:
+				vp.set_input_as_handled()
+			btn_back.emit_signal("pressed")
+			btn_play.grab_focus()
+		return
+
+	# Навигация
+	if ev.is_action_pressed("ui_down"):
+		_cycle_focus(+1)
+		var vp := get_viewport()
+		if vp != null:
+			vp.set_input_as_handled()
+	elif ev.is_action_pressed("ui_up"):
+		_cycle_focus(-1)
+		var vp := get_viewport()
+		if vp != null:
+			vp.set_input_as_handled()
+	elif ev.is_action_pressed("ui_accept"):
+		# 1) пометить событие ДО действия
+		var vp := get_viewport()
+		if vp != null:
+			vp.set_input_as_handled()
+
+		# 2) нажать фокусную кнопку
+		var owner: Control = null
+		if vp != null:
+			owner = vp.gui_get_focus_owner()
+		if owner is BaseButton:
+			(owner as BaseButton).emit_signal("pressed")
+
+
+func _cycle_focus(dir: int) -> void:
+	var order: Array[BaseButton] = [btn_play, btn_settings, btn_quit]
+	var f := get_viewport().gui_get_focus_owner()
+	var i = max(order.find(f), 0)
+	var n = (i + dir + order.size()) % order.size()
+	order[n].grab_focus()
 
 func _on_sens_changed(v):
 	ProjectSettings.set_setting(PS_KEY, v)

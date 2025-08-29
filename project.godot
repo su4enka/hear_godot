@@ -24,12 +24,12 @@ buses/default_bus_layout="uid://rrinmgl26k1l"
 GameManager="*res://scripts/GameManager.gd"
 SceneFlow="*res://scripts/SceneFlow.gd"
 Rumble="*res://scripts/Rumble.gd"
+Settings="*res://scripts/Settings.gd"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/size/resizable=false
 window/size/borderless=true
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
@@ -81,4 +81,4 @@ interact={
 
 [player]
 
-mouse_sensitivity=0.002
+mouse_sensitivity=0.001

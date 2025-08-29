@@ -45,8 +45,8 @@ var player_alive := true
 var _warning_light_by_path: Dictionary = {}   # path -> Light3D
 
 func _ready():
-	if Engine.has_singleton("Rumble"):
-		Rumble.enter_context("cave")
+	Rumble.enter_context("cave")
+	
 	randomize()
 	GameManager.day_started.connect(_on_day_started)
 	exit_trigger.body_entered.connect(_on_exit_triggered)
@@ -137,7 +137,16 @@ func _setup_path_collapse(path: Path3D):
 			await get_tree().create_timer(wait_more).timeout
 		# старт этого предупреждения «занимает окно»
 		_next_warning_allowed_at = (Time.get_ticks_msec() / 1000.0) + min_warning_gap
+		
+		var path3d := path as Path3D
+		var will_kill := false
 
+		# внутри паса что рушится - трясем камеру
+		if path3d and path3d.curve:
+			var closest := _closest_distance_to_path(player.global_position, path3d)
+			if closest < 2.0:
+				_shake_world_small()
+		
 		# реальный варнинг (с лампой/пылью/звуком)
 		_play_warning_fx(path, true)
 		await get_tree().create_timer(warning_time).timeout
@@ -218,6 +227,24 @@ func _do_path_collapse(path: Path3D) -> void:
 			_kill_player()
 			_kill_scheduled = false   # на всякий, если вернёшься в пещеру тем же инстансом
 		)
+
+func _shake_world_small():
+	var node := $"Level Assets" as Node3D
+	if node == null: return
+	var orig := node.transform
+	var steps := 4
+	for i in range(steps):
+		var off := Vector3(randf_range(-0.06,0.06), randf_range(-0.04,0.04), randf_range(-0.06,0.06))
+		var rot := Vector3(randf_range(-0.03,0.03), randf_range(-0.03,0.03), 0.0)
+		var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
+		t.tween_property(node, "transform",
+			Transform3D(Basis().rotated(Vector3(1,0,0), rot.x)
+						.rotated(Vector3(0,1,0), rot.y),
+						orig.origin + off), 0.06)
+		await t.finished
+	var back := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
+	back.tween_property(node, "transform", orig, 0.09)
+	await back.finished
 
 func _get_path_fx_multi(path: Node3D) -> Dictionary:
 	var lights: Array[Light3D] = []

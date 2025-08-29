@@ -18,6 +18,54 @@ func _ready():
 	quit_btn.pressed.connect(_on_quit)
 	sens_slider.value = ProjectSettings.get_setting("player/mouse_sensitivity", 0.0025)
 	sens_slider.value_changed.connect(_on_sens_changed)
+	
+	resume_btn.focus_mode = Control.FOCUS_ALL
+	settings_btn.focus_mode = Control.FOCUS_ALL
+	quit_btn.focus_mode = Control.FOCUS_ALL
+	back_to_menu_btn.focus_mode = Control.FOCUS_ALL
+	resume_btn.grab_focus()
+	
+func _unhandled_input(ev: InputEvent) -> void:
+	if not visible:
+		return
+
+	if settings_menu.visible:
+		back_to_menu_btn.grab_focus()
+		if ev.is_action_pressed("ui_accept"):
+			var vp := get_viewport()
+			if vp != null:
+				vp.set_input_as_handled()
+			_on_back_to_menu()
+			resume_btn.grab_focus()
+		return
+
+	if ev.is_action_pressed("ui_down"):
+		_cycle_focus(+1)
+		var vp := get_viewport()
+		if vp != null:
+			vp.set_input_as_handled()
+	elif ev.is_action_pressed("ui_up"):
+		_cycle_focus(-1)
+		var vp := get_viewport()
+		if vp != null:
+			vp.set_input_as_handled()
+	elif ev.is_action_pressed("ui_accept"):
+		var vp := get_viewport()
+		if vp != null:
+			vp.set_input_as_handled()
+
+		var owner: Control = null
+		if vp != null:
+			owner = vp.gui_get_focus_owner()
+		if owner is BaseButton:
+			(owner as BaseButton).emit_signal("pressed")
+
+func _cycle_focus(dir: int) -> void:
+	var order: Array[BaseButton] = [resume_btn, settings_btn, quit_btn]
+	var f := get_viewport().gui_get_focus_owner()
+	var i = max(order.find(f), 0)
+	var n = (i + dir + order.size()) % order.size()
+	order[n].grab_focus()
 
 func toggle():
 	if visible:
@@ -56,3 +104,8 @@ func _on_quit():
 func _on_sens_changed(value: float):
 	ProjectSettings.set_setting("player/mouse_sensitivity", value)
 	ProjectSettings.save()
+	# применить «на лету»
+	var player := get_tree().current_scene.get_node_or_null("Player")
+	if player != null:
+		# в твоём игроке это публичное поле HousePlayer.mouse_sensitivity
+		player.mouse_sensitivity = float(value)

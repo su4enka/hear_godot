@@ -19,9 +19,11 @@ var _subtitle_task_running := false
 var _advance_requested := false
 var _skip_armed := false
 
+var _suppress_cancel_leave2 := false
+var _suppress_cancel_leave1 := false
+
 func _ready():
-	if Engine.has_singleton("Rumble"):
-		Rumble.enter_context("house")
+	Rumble.enter_context("house")
 	
 	if not wife_area.is_in_group("wife"):
 		wife_area.add_to_group("wife")
@@ -40,7 +42,8 @@ func _ready():
 	leave_dialog.canceled.connect(_on_leave_dialog_canceled)
 	leave_dialog2.confirmed.connect(_on_leave_dialog2_confirmed)
 	leave_dialog2.canceled.connect(_on_leave_dialog2_canceled)
-
+	leave_dialog2.close_requested.connect(_on_leave_dialog2_close)
+	
 	# Безопасная инициализация интро-оверлея — на случай если сигнал пролетел до подключения
 	if day_intro_label:
 		day_intro_label.visible = false
@@ -192,6 +195,7 @@ func request_exit() -> void:
 		leave_dialog.title = "Leave or Stay?"
 		leave_dialog.dialog_text = "You can leave the cave life now. Will you stay home?"
 		leave_dialog.popup_centered()
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		return
 
 	# Если уже вернулся из пещеры — только подсказка "нужно отдохнуть"
@@ -218,22 +222,32 @@ func _on_leave_dialog_canceled():
 
 func _on_leave_dialog_confirmed():
 	# It's not worth it = early ending
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	GameManager.early_used = true
 	GameManager.end_game("early")
 
 func _on_leave_dialog2_confirmed():
 	# Leave = early ending
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	GameManager.early_used = true
 	GameManager.end_game("early")
 
 func _on_leave_dialog2_canceled():
 	# Continue = идти в пещеру
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	get_tree().change_scene_to_file("res://scenes/Cave.tscn")
+
+func _on_leave_dialog2_close():
+	_suppress_cancel_leave2 = true
+	leave_dialog2.hide()
+	await get_tree().process_frame # дождаться, чтобы canceled пришёл после
+	_suppress_cancel_leave2 = false
 
 func _on_leave_confirmed():
 	GameManager.end_game("early")
 
 func _on_day_started(_d):
+	
 	player.global_position = Vector3(0, 1, 0)
 	player.can_move = true
 	_update_ui()

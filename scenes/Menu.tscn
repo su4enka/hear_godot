@@ -69,6 +69,7 @@ offset_right = 229.0
 offset_bottom = 281.0
 
 [node name="Grid" type="GridContainer" parent="DevPanel"]
+layout_mode = 0
 offset_top = 35.0
 offset_right = 209.0
 offset_bottom = 171.0

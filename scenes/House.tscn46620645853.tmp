@@ -177,8 +177,7 @@ offset_bottom = 555.0
 [node name="AudioViz" type="Control" parent="CanvasLayer/Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 1162.0
-offset_right = 1202.0
+offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Subtitles" type="Label" parent="CanvasLayer"]
