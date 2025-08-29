@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://cvb03iv3aaopy"]
+[gd_scene load_steps=20 format=3 uid="uid://cvb03iv3aaopy"]
 
 [ext_resource type="Script" uid="uid://stxq7e8ugkpv" path="res://scripts/CaveManager.gd" id="1_oq386"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="2_2kquo"]
 [ext_resource type="AudioStream" uid="uid://u5nk82pvrtw2" path="res://sfx/creepy-cave-47164.mp3" id="3_xwfm4"]
 [ext_resource type="PackedScene" uid="uid://ftmqis04ebj2" path="res://scenes/Collapse_Wall.tscn" id="4_i5j2t"]
 [ext_resource type="PackedScene" uid="uid://c270qrnb6y04w" path="res://scenes/Cave_Wall.tscn" id="4_sj338"]
+[ext_resource type="PackedScene" uid="uid://d0ei16srs4mwd" path="res://scenes/PauseMenu.tscn" id="6_e5lse"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2kquo"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -24,21 +25,24 @@ tonemap_mode = 2
 
 [sub_resource type="Curve3D" id="Curve3D_2kquo"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 4.335, 0, 0, 0, 0, 0, 0, 0, 0, 7.1, 0, 0, 0, 0, 0, 0, 0, 0, 10.12, 0, 0),
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 7.18, 0.465, 4.165, 0, 0, 0, 0, 0, 0, 13.17, 2.14, 20.245, 0, 0, 0, 0, 0, 0, 14.41, 0.305, 24.39),
 "tilts": PackedFloat32Array(0, 0, 0)
 }
 point_count = 3
 
+[sub_resource type="BoxMesh" id="BoxMesh_i5j2t"]
+size = Vector3(0.2, 0.2, 0.2)
+
 [sub_resource type="Curve3D" id="Curve3D_xwfm4"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 4.335, 0, 0, 0, 0, 0, 0, 0, 0, 7.1, 0, 0, 0, 0, 0, 0, 0, 0, 10.12, 0, 0),
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 5.86, 0, -0.64, 0, 0, 0, 0, 0, 0, 13.21, 0.615, 1.085, 0, 0, 0, 0, 0, 0, 23.25, 2.21, 0.245),
 "tilts": PackedFloat32Array(0, 0, 0)
 }
 point_count = 3
 
 [sub_resource type="Curve3D" id="Curve3D_i5j2t"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 4.335, 0, 0, 0, 0, 0, 0, 0, 0, 7.1, 0, 0, 0, 0, 0, 0, 0, 0, 10.12, 0, 0),
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 6.2, 1.14, 1.19, 0, 0, 0, 0, 0, 0, 13.31, 1.085, -7.76, 0, 0, 0, 0, 0, 0, 19.135, 2.96, -9.28),
 "tilts": PackedFloat32Array(0, 0, 0)
 }
 point_count = 3
@@ -46,9 +50,6 @@ point_count = 3
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xchtq"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_oq386"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_i5j2t"]
-size = Vector3(0.2, 0.2, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xwfm4"]
 
@@ -65,7 +66,7 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="CaveFloor" type="StaticBody3D" parent="."]
-transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
+transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 80, 14.6861, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CaveFloor"]
 shape = SubResource("BoxShape3D_xchtq")
@@ -79,13 +80,127 @@ mesh = SubResource("BoxMesh_oq386")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.86382)
 curve = SubResource("Curve3D_2kquo")
 
+[node name="WarningLight" type="OmniLight3D" parent="PathsContainer/Path1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.79763, 0.747836, 2.60553)
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="WarningLight2" type="OmniLight3D" parent="PathsContainer/Path1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.26683, 0.714528, 9.33674)
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="WarningLight3" type="OmniLight3D" parent="PathsContainer/Path1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.9649, 0.714528, 17.5226)
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="Dust" type="CPUParticles3D" parent="PathsContainer/Path1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5415, 2.83356, 6.87068)
+emitting = false
+amount = 4
+mesh = SubResource("BoxMesh_i5j2t")
+emission_shape = 1
+emission_sphere_radius = 0.4
+scale_amount_min = 0.2
+
+[node name="Dust2" type="CPUParticles3D" parent="PathsContainer/Path1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.71398, 2.83356, 15.482)
+emitting = false
+amount = 4
+mesh = SubResource("BoxMesh_i5j2t")
+emission_shape = 1
+emission_sphere_radius = 0.4
+scale_amount_min = 0.2
+
 [node name="Path2" type="Path3D" parent="PathsContainer"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.431836)
 curve = SubResource("Curve3D_xwfm4")
 
+[node name="WarningLight" type="OmniLight3D" parent="PathsContainer/Path2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.10139, 0.714528, 0.119403)
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="WarningLight2" type="OmniLight3D" parent="PathsContainer/Path2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.3202, 0.714528, 0.160334)
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="WarningLight3" type="OmniLight3D" parent="PathsContainer/Path2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.8325, 0.714528, 0.995645)
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="Dust" type="CPUParticles3D" parent="PathsContainer/Path2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.44196, 2.83356, 0.616455)
+emitting = false
+amount = 4
+mesh = SubResource("BoxMesh_i5j2t")
+emission_shape = 1
+emission_sphere_radius = 0.4
+scale_amount_min = 0.2
+
+[node name="Dust2" type="CPUParticles3D" parent="PathsContainer/Path2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2834, 2.83356, -0.205913)
+emitting = false
+amount = 4
+mesh = SubResource("BoxMesh_i5j2t")
+emission_shape = 1
+emission_sphere_radius = 0.4
+scale_amount_min = 0.2
+
 [node name="Path3" type="Path3D" parent="PathsContainer"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.54783)
 curve = SubResource("Curve3D_i5j2t")
+
+[node name="WarningLight" type="OmniLight3D" parent="PathsContainer/Path3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.39641, 0.714528, 1.01626)
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="WarningLight2" type="OmniLight3D" parent="PathsContainer/Path3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5871, 0.714528, -4.12788)
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="WarningLight3" type="OmniLight3D" parent="PathsContainer/Path3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.7002, 0.714528, -10.762)
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="WarningLight4" type="OmniLight3D" parent="PathsContainer/Path3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.7012, 0.714528, -10.762)
+light_color = Color(1, 0.0588235, 0, 1)
+light_energy = 5.0
+omni_range = 0.637792
+
+[node name="Dust" type="CPUParticles3D" parent="PathsContainer/Path3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.77773, 2.83356, -0.49721)
+emitting = false
+amount = 4
+mesh = SubResource("BoxMesh_i5j2t")
+emission_shape = 1
+emission_sphere_radius = 0.4
+scale_amount_min = 0.2
+
+[node name="Dust2" type="CPUParticles3D" parent="PathsContainer/Path3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.9527, 2.83356, -7.51143)
+emitting = false
+amount = 4
+mesh = SubResource("BoxMesh_i5j2t")
+emission_shape = 1
+emission_sphere_radius = 0.4
+scale_amount_min = 0.2
 
 [node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48382, 2.07373)
@@ -110,24 +225,8 @@ collide_with_areas = true
 [node name="CollapseWarning" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("3_xwfm4")
 
-[node name="WarningLight" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.44068, 0.714528, 0)
-visible = false
-light_color = Color(1, 0.0588235, 0, 1)
-light_energy = 5.0
-omni_range = 0.637792
-
-[node name="Dust" type="CPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.186353, 2.83356, -0.365767)
-emitting = false
-amount = 4
-mesh = SubResource("BoxMesh_i5j2t")
-emission_shape = 1
-emission_sphere_radius = 0.4
-scale_amount_min = 0.2
-
 [node name="ExitTrigger" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.948929, 8.64857)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.19966, 0.948929, 1.34303)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger"]
 shape = SubResource("BoxShape3D_xwfm4")
@@ -160,8 +259,8 @@ offset_bottom = 23.0
 
 [node name="DeafnessIndicator" type="ProgressBar" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 701.0
-offset_right = 705.0
+offset_left = 772.0
+offset_right = 1006.0
 offset_bottom = 27.0
 
 [node name="InteractHint" type="Label" parent="CanvasLayer/Control"]
@@ -193,31 +292,105 @@ text = "You Died"
 
 [node name="Cave Walls" type="Node3D" parent="Level Assets/Cave"]
 
-[node name="Cave Wall" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
-transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, 5.60735)
-
 [node name="Cave Wall5" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
-transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, 1.31214)
+transform = Transform3D(-0.0953071, 0, 0.995448, 0, 1, 0, -0.995448, 0, -0.0953071, 4.34389, 1.06999, 2.2055)
+
+[node name="Cave Wall16" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.106733, 0, 0.994288, 0, 1, 0, -0.994288, 0, 0.106733, 12.3439, 1.06999, 2.05148)
+
+[node name="Cave Wall17" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.125991, 0, 0.992031, 0, 1, 0, -0.992031, 0, -0.125991, 20.0855, 1.06999, 2.38985)
+
+[node name="Cave Wall18" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.0873819, 0, 0.996175, 0, 1, 0, -0.996175, 0, 0.0873819, 12.3439, 1.06999, -0.338516)
+
+[node name="Cave Wall19" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.0861993, 0, 0.996278, 0, 1, 0, -0.996278, 0, -0.0861993, 20.0855, 1.06999, 0.172477)
+
+[node name="Cave Wall20" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.260387, 0, 0.965504, 0, 1, 0, -0.965504, 0, 0.260387, 28.0855, 1.06999, 0.0555353)
+
+[node name="Cave Wall21" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.017906, 0, 0.99984, 0, 1, 0, -0.99984, 0, -0.017906, 28.0855, 1.06999, 1.57383)
 
 [node name="Cave Wall3" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
 transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, -0.647562)
 
 [node name="Cave Wall6" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
-transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, -7.56452)
+transform = Transform3D(-0.33221, 0, 0.943205, 0, 1, 0, -0.943205, 0, -0.33221, 4.65745, 1.06999, -6.73441)
 
 [node name="Cave Wall4" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
-transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, -9.45223)
+transform = Transform3D(-0.33221, 0, 0.943205, 0, 1, 0, -0.943205, 0, -0.33221, 4.03034, 1.06999, -9.39863)
+
+[node name="Cave Wall22" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.52749, 0, 0.849561, 0, 1, 0, -0.849561, 0, -0.52749, 11.8041, 1.06999, -9.62857)
+
+[node name="Cave Wall23" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.992622, 0, 0.121246, 0, 1, 0, -0.121246, 0, -0.992622, 10.0678, 1.06999, -13.2635)
+
+[node name="Cave Wall27" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.971689, 0, -0.236262, 0, 1, 0, 0.236262, 0, -0.971689, 10.3325, 1.06999, -21.0288)
+
+[node name="Cave Wall26" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.932343, 0, -0.361576, 0, 1, 0, 0.361576, 0, -0.932343, 14.5884, 1.06999, -16.5966)
+
+[node name="Cave Wall28" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.752622, 0, -0.658453, 0, 1, 0, 0.658453, 0, -0.752622, 11.8053, 1.06999, -22.8002)
+
+[node name="Cave Wall24" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.902645, 0, 0.430385, 0, 1, 0, -0.430385, 0, -0.902645, 18.1028, 1.06999, -14.7315)
+
+[node name="Cave Wall25" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.902645, 0, 0.430385, 0, 1, 0, -0.430385, 0, -0.902645, 16.2167, 1.06999, -16.6472)
+
+[node name="Cave Wall29" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.724978, 0, 0.688772, 0, 1, 0, -0.688772, 0, -0.724978, 21.7045, 1.06999, -21.1913)
+
+[node name="Cave Wall31" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.215639, 0, 0.976473, 0, 1, 0, -0.976473, 0, 0.215639, 24.3604, 1.06999, -26.1393)
+
+[node name="Cave Wall30" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(-0.724978, 0, 0.688772, 0, 1, 0, -0.688772, 0, -0.724978, 20.1428, 1.06999, -23.597)
 
 [node name="Cave Wall2" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
-transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, 7.39001)
+transform = Transform3D(0.729793, 0, 0.683669, 0, 1, 0, -0.683669, 0, 0.729793, 3.2544, 1.06999, 9.72683)
+
+[node name="Cave Wall7" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.991712, 0, -0.128484, 0, 1, 0, 0.128484, 0, 0.991712, 7.20922, 1.06999, 15.7781)
+
+[node name="Cave Wall9" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.999692, 0, 0.0247985, 0, 1, 0, -0.0247985, 0, 0.999692, 11.8263, 1.06999, 28.2104)
+
+[node name="Cave Wall10" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.383586, 0, 0.923505, 0, 1, 0, -0.923505, 0, 0.383586, 13.5571, 1.06999, 34.8629)
+
+[node name="Cave Wall8" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.662829, 0, 0.748771, 0, 1, 0, -0.748771, 0, 0.662829, 7.56107, 1.04125, 22.7586)
+
+[node name="Cave Wall11" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.729793, 0, 0.683669, 0, 1, 0, -0.683669, 0, 0.729793, 6.74696, 1.06999, 8.40225)
+
+[node name="Cave Wall12" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.98107, 0, -0.193652, 0, 1, 0, 0.193652, 0, 0.98107, 10.3095, 1.06999, 14.4847)
+
+[node name="Cave Wall13" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.995731, 0, -0.0923012, 0, 1, 0, 0.0923012, 0, 0.995731, 14.8981, 1.06999, 26.3332)
+
+[node name="Cave Wall14" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.718891, 0, 0.695123, 0, 1, 0, -0.695123, 0, 0.718891, 15.707, 1.06999, 33.5376)
+
+[node name="Cave Wall15" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(0.587771, 0, 0.809027, 0, 1, 0, -0.809027, 0, 0.587771, 10.5448, 1.04125, 21.3736)
 
 [node name="Collapse Walls" type="Node3D" parent="Level Assets/Cave"]
 
 [node name="Path1 Collapse Wall" parent="Level Assets/Cave/Collapse Walls" instance=ExtResource("4_i5j2t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0052, 4.00588, 6.39917)
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 4.1406, 4.79512, 8.20589)
 
 [node name="Path2 Collapse Wall" parent="Level Assets/Cave/Collapse Walls" instance=ExtResource("4_i5j2t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0052, 4.00588, 0.510245)
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 3.0052, 4.79512, 0.510245)
 
 [node name="Path3 Collapse Wall" parent="Level Assets/Cave/Collapse Walls" instance=ExtResource("4_i5j2t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0052, 4.00588, -8.21131)
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 3.005, 4.795, -8.211)
+
+[node name="PauseMenu" parent="." instance=ExtResource("6_e5lse")]

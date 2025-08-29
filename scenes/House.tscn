@@ -1,7 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://buccgk580xshg"]
+[gd_scene load_steps=20 format=3 uid="uid://buccgk580xshg"]
 
 [ext_resource type="Script" uid="uid://5k4pjkcr7ybf" path="res://scripts/HouseManager.gd" id="1_8twys"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="1_bfmfj"]
+[ext_resource type="PackedScene" uid="uid://d0ei16srs4mwd" path="res://scenes/PauseMenu.tscn" id="3_r2usd"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8twys"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -129,9 +130,9 @@ physics_interpolation_mode = 2
 title = "Are you goin to risk it?"
 initial_position = 1
 size = Vector2i(300, 80)
-ok_button_text = "Stay"
+ok_button_text = "Leave"
 dialog_close_on_escape = false
-cancel_button_text = "Leave"
+cancel_button_text = "It's not worth it"
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -200,3 +201,5 @@ offset_top = 345.0
 offset_right = 684.0
 offset_bottom = 368.0
 text = "Narrative"
+
+[node name="PauseMenu" parent="." instance=ExtResource("3_r2usd")]

@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0ei16srs4mwd"]
+
+[ext_resource type="Script" uid="uid://dq1fev27e2x42" path="res://scripts/PauseMenu.gd" id="1_jvnd5"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+script = ExtResource("1_jvnd5")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+offset_left = 549.0
+offset_top = 351.0
+offset_right = 788.0
+offset_bottom = 452.0
+
+[node name="ButtonResume" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+text = "Resume"
+
+[node name="ButtonSettings" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="ButtonQuit" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+text = "Quit to Menu"
+
+[node name="SettingsMenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HSliderSensitivity" type="HSlider" parent="SettingsMenu"]
+layout_mode = 0
+offset_left = 772.0
+offset_top = 363.0
+offset_right = 965.0
+offset_bottom = 379.0
+min_value = 0.001
+max_value = 0.01
+step = 0.001
+value = 0.002
+
+[node name="LabelSensitivity" type="Label" parent="SettingsMenu"]
+layout_mode = 0
+offset_left = 348.0
+offset_top = 357.0
+offset_right = 483.0
+offset_bottom = 380.0
+text = "Mouse Sensitivity"
+
+[node name="ButtonBackToMenu" type="Button" parent="SettingsMenu"]
+layout_mode = 0
+offset_left = 647.0
+offset_top = 431.0
+offset_right = 692.0
+offset_bottom = 462.0
+text = "Back"

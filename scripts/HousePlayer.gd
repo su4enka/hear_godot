@@ -8,6 +8,8 @@ const TALK_COOLDOWN := 0.2
 var mouse_sensitivity := 0.002
 const PS_KEY := "player/mouse_sensitivity"
 
+var paused = false
+
 @export var interact_action := "interact"
 @onready var interact_ray := $Camera3D/InteractRay
 @onready var interact_hint: Label = $"../CanvasLayer/Control/InteractHint"
@@ -52,13 +54,20 @@ func _update_interact_hint() -> void:
 
 
 func _input(event):
-	if event is InputEventMouseMotion and can_move:
+	
+	
+	if event is InputEventMouseMotion and can_move and Engine.time_scale != 0:
 		rotate_y(-event.relative.x * mouse_sensitivity)
 		$Camera3D.rotate_x(-event.relative.y * mouse_sensitivity)
 		$Camera3D.rotation.x = clamp($Camera3D.rotation.x, -PI/2, PI/2)
 		
-	if event.is_action_pressed("interact") and can_move:
+	if event.is_action_pressed("interact") and can_move and Engine.time_scale != 0:
 		_try_interact()
+	
+	if event.is_action_pressed("ui_cancel"): # по умолчанию Esc
+		var pause_menu = get_tree().current_scene.get_node_or_null("PauseMenu")
+		if pause_menu:
+			pause_menu.toggle()
 
 func _try_interact():
 	if not interact_ray: return

@@ -18,6 +18,8 @@ var _advance_requested := false
 var _skip_armed := false
 
 func _ready():
+	
+	
 	if not wife_area.is_in_group("wife"):
 		wife_area.add_to_group("wife")
 	
@@ -29,6 +31,8 @@ func _ready():
 	# ТРИГГЕРЫ
 	exit_trigger.body_entered.connect(_on_exit_triggered)
 	bed_area.body_entered.connect(_on_bed_entered)
+	leave_dialog.confirmed.connect(_on_leave_dialog_confirmed)
+	leave_dialog.canceled.connect(_on_leave_dialog_canceled)
 
 	# Безопасная инициализация интро-оверлея — на случай если сигнал пролетел до подключения
 	if day_intro_label:
@@ -59,8 +63,10 @@ func _skip_down() -> bool:
 		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
 func _arm_skip() -> void:
+	var tree := get_tree()
 	while _skip_down():
-		await get_tree().process_frame
+		await tree.process_frame
+		if not is_inside_tree(): return
 	_skip_armed = true
 
 func _subtitle_time_for(text: String) -> float:
@@ -77,9 +83,11 @@ func _action_is_pressed() -> bool:
 
 
 func _subtitle_wait_for_skip_or_timeout(timeout: float) -> void:
+	var tree := get_tree()
 	var t := 0.0
 	while t < timeout:
-		await get_tree().process_frame
+		await tree.process_frame
+		if not is_inside_tree(): return
 		t += get_process_delta_time()
 		if Input.is_action_just_pressed("ui_accept") \
 		or Input.is_action_just_pressed("interact") \
@@ -91,7 +99,6 @@ func _show_wife_line() -> void:
 	_advance_requested = false
 	_skip_armed = false
 
-	# на всякий пожарный
 	if _subtitle_tween and _subtitle_tween.is_running():
 		_subtitle_tween.kill()
 
@@ -100,39 +107,34 @@ func _show_wife_line() -> void:
 	subtitle.modulate.a = 0.0
 	subtitle.visible = true
 
-	# fade in
 	_subtitle_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
 	_subtitle_tween.tween_property(subtitle, "modulate:a", 1.0, 0.12)
 	await _subtitle_tween.finished
+	if not is_inside_tree(): return
 
-	# разоружаем стартовое нажатие, затем разрешаем скип/next
 	await _arm_skip()
+	if not is_inside_tree(): return
 
-	# ждём: таймер ИЛИ явный скип ИЛИ запрос next
 	var dur := _subtitle_time_for(line)
+	var tree := get_tree()
 	var t := 0.0
 	while t < dur and not _advance_requested:
-		await get_tree().process_frame
+		await tree.process_frame
+		if not is_inside_tree(): return
 		t += get_process_delta_time()
-		# только just_pressed, удержание не считается
-		if _skip_armed and (
-			Input.is_action_just_pressed("ui_accept")
-			or Input.is_action_just_pressed("interact")
-		):
+		if _skip_armed and (Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("interact")):
 			break
 
-	# fade out
 	if _subtitle_tween and _subtitle_tween.is_running():
 		_subtitle_tween.kill()
 	_subtitle_tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE)
 	_subtitle_tween.tween_property(subtitle, "modulate:a", 0.0, 0.15)
 	await _subtitle_tween.finished
-	subtitle.visible = false
+	if is_instance_valid(subtitle):
+		subtitle.visible = false
 
 	_subtitle_task_running = false
-
-	# Если просили следующий — запускаем новую строку тут же
-	if _advance_requested:
+	if _advance_requested and is_inside_tree():
 		_show_wife_line()
 
 func _wait_for_skip() -> void:
@@ -140,6 +142,15 @@ func _wait_for_skip() -> void:
 		await get_tree().process_frame
 		if _action_is_pressed():
 			return
+
+func _cancel_subtitle_task():
+	_advance_requested = false
+	_subtitle_task_running = false
+	if _subtitle_tween and _subtitle_tween.is_running():
+		_subtitle_tween.kill()
+	if is_instance_valid(subtitle):
+		subtitle.visible = false
+		subtitle.modulate.a = 0.0
 
 func _set_fade_alpha(a: float) -> void:
 	var c = fade_rect.color
@@ -166,8 +177,14 @@ func _on_bed_entered(body):
 
 func _on_exit_triggered(body):
 	if body == player:
+		_cancel_subtitle_task()  # ← гасим корутину и твины
+
+		if GameManager.current_day >= 7 and not GameManager.early_used:
+			leave_dialog.title = "Leave or Stay?"
+			leave_dialog.dialog_text = "You can leave the cave life now. Will you stay home?"
+			leave_dialog.popup_centered()
+			return
 		if GameManager.came_from_cave:
-			# показать короткую подсказку и не пускать
 			var lbl := $CanvasLayer/Control/HintLabel if has_node($"CanvasLayer/Control/HintLabel".get_path()) else $CanvasLayer/Subtitles
 			if lbl:
 				lbl.text = "You need to rest"
@@ -176,6 +193,18 @@ func _on_exit_triggered(body):
 				lbl.visible = false
 			return
 		get_tree().change_scene_to_packed(preload("res://scenes/Cave.tscn"))
+
+func _exit_tree():
+	_cancel_subtitle_task()
+
+func _on_leave_dialog_canceled():
+	# It's not worth it = early ending
+	GameManager.early_used = true
+	GameManager.end_game("early")
+
+func _on_leave_dialog_confirmed():
+	# Leave = идти в пещеру
+	get_tree().change_scene_to_file("res://scenes/Cave.tscn")
 
 func _on_leave_confirmed():
 	GameManager.end_game("early")

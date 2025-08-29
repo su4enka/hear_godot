@@ -18,6 +18,8 @@ var opening_needs_confirm := true
 
 var came_from_cave := false
 
+var early_used := false
+
 signal day_started(day_number:int)
 signal day_ended(day_number:int, ore_collected:int)
 signal game_ended(ending_type:String)         # "good","bad","early","death"
@@ -39,17 +41,23 @@ var wife_lines := {
 		"If you can’t hear, look. Stones speak with dust."
 	],
 	4: [
-		"Don’t chase every vein. One good strike is better than three rushed.",
+		"Don't rush every rock, listen first.",
+		"The cave feels heavier each morning.",
+		"Even the lamp flickers differently today."
 	],
 	5: [
 		"If you hate it, we can leave. No shame in choosing life.",
 		"Five days in… Does the ringing ever stop?"
 	],
 	6: [
-		"Remember: when the lights flicker twice, don’t wait to listen.",
+		"The dust last night made me cough. Be careful.",
+		"If you can't hear, then look — the cave shows signs.",
+		"I dreamt of falling stones. Don't make it real."
 	],
 	7: [
-		"I counted the ore. We're on track — barely.",
+		"The dust last night made me cough. Be careful.",
+		"If you can't hear, then look — the cave shows signs.",
+		"I dreamt of falling stones. Don't make it real."
 	],
 	8: [
 		"I made soup. It's thin, but hot. Come back for it, alright?",
@@ -58,19 +66,29 @@ var wife_lines := {
 		"You don't answer the kettle anymore. I'll tap three times when I speak.",
 	],
 	10: [
-		"Neighbors asked about you. I told them you're stubborn, not careless.",
+		"Ten days… you barely answer anymore.",
+		"I keep talking even if you can't hear me.",
+		"The neighbors say the cave eats voices."
 	],
 	11: [
-		"There's not much left... but don't let that cave take your name.",
+		"I counted again. We're close — but at what cost?",
+		"Don't let the cave steal your name.",
+		"Even whispers echo louder than you do now."
 	],
 	12: [
-		"If the path coughs dust — just run. Promise me.",
+		"If dust falls, promise me you’ll run.",
+		"Each path looks like the last. Don't get lost.",
+		"Sometimes the cave warns, sometimes it lies."
 	],
 	13: [
-		"I packed the bags. Not to run — to be ready when we're done.",
+		"Our bags are packed — for leaving or for ending.",
+		"One more day, I tell myself.",
+		"Even the walls in this house creak like the cave."
 	],
 	14: [
-		"Tomorrow you'll sleep. Really sleep.",
+		"Tomorrow you will finally rest.",
+		"I'll wait at the door, as always.",
+		"The night feels like the cave is already here."
 	],
 	15: [
 		"Last day. I'll listen for the door."

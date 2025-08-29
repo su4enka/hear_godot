@@ -5,7 +5,7 @@ extends Node3D
 @export var max_collapse_time := 30.0
 @export var warning_time := 5.0
 
-@export var false_warning_chance := 0.25   # 1 из 4 ложных миганий
+@export var false_warning_chance := 0.40   # 1 из 4 ложных миганий
 @export var flicker_time := 1.2            # сколько секунд мигает лампа перед обвалом
 @export var flicker_interval := 0.12       # как часто переключаем свет
 @export var dust_time := 1.5               # сколько секунд летят пылинки
@@ -19,9 +19,13 @@ extends Node3D
 @onready var ore_label: Label = $CanvasLayer/Control/OreCounter
 @onready var walls_container: Node3D = $"Level Assets/Cave/Collapse Walls"
 
+const PATH_PITCH := { "Path1": 1.00, "Path2": 0.92, "Path3": 1.08 } # полутон вниз/вверх
+const DEFAULT_PITCH := 1.0
+
 var path_timers := {}
 var path_warnings := {}
 var player_alive := true
+var _warning_light_by_path: Dictionary = {}   # path -> Light3D
 
 func _ready():
 	randomize()
@@ -98,15 +102,36 @@ func _setup_path_collapse(path: Path3D):
 	# Ложное мигание без звука и обвала (иногда)
 	if randf() < false_warning_chance:
 		var false_timer := Timer.new()
-		false_timer.wait_time = warning_timer.wait_time * randf_range(0.2, 0.5)
 		false_timer.one_shot = true
+		false_timer.wait_time = max(0.8, warning_timer.wait_time * randf_range(0.35, 0.8))
 		false_timer.timeout.connect(func():
-			_play_warning_fx(path, false))  # только визуал
+			var old := flicker_time
+			flicker_time = max(0.4, old * 0.7)
+			_play_warning_fx(path, false)  # без звука
+			flicker_time = old
+		)
 		add_child(false_timer)
 		false_timer.start()
 
 
 	warning_timer.start()
+	
+	var fx := _get_path_fx_multi(path)
+	for l in fx.lights:
+		# запустить в фоне; если хочешь, можешь не ждать
+		_start_idle_flicker(l)
+
+func _pitch_for_path(path: Node) -> float:
+	return PATH_PITCH.get(path.name, DEFAULT_PITCH)
+
+func _cutoff_by_distance(dist: float) -> float:
+	# ближний — ясный (6кГц), дальний — глуше (1.2–2.5 кГц)
+	if dist < 6.0:
+		return 6000.0
+	elif dist < 12.0:
+		return 2500.0
+	else:
+		return 1200.0
 
 func _get_wall_for_path(path: Node) -> Node3D:
 	# 1) если есть отдельный контейнер стен (твоя текущая схема)
@@ -137,43 +162,172 @@ func _do_path_collapse(path: Path3D):
 		var tw := create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 		tw.tween_property(wall, "global_position", end, 0.5)
 
-func _get_path_fx(path: Node3D) -> Dictionary:
-	var light := path.get_node_or_null("WarningLight")
-	var dust := path.get_node_or_null("Dust")
-	return {"light": light, "dust": dust}
+func _get_path_fx_multi(path: Node3D) -> Dictionary:
+	var lights: Array[Light3D] = []
+	var dusts: Array[CPUParticles3D] = []
 
-func _play_warning_fx(path: Node3D, with_sound: bool):
-	var fx := _get_path_fx(path)
-	var light = fx.light
-	var dust = fx.dust
+	for child in path.get_children():
+		if child is Light3D and String(child.name).begins_with("WarningLight"):
+			lights.append(child)
+		elif child is CPUParticles3D and String(child.name).begins_with("Dust"):
+			dusts.append(child)
 
-	# звук с учётом глухоты
+	# бэкап на случай единичных имён без чисел
+	var one_light := path.get_node_or_null("WarningLight")
+	if one_light and one_light is Light3D and not lights.has(one_light):
+		lights.append(one_light)
+
+	var one_dust := path.get_node_or_null("Dust")
+	if one_dust and one_dust is CPUParticles3D and not dusts.has(one_dust):
+		dusts.append(one_dust)
+
+	return {"lights": lights, "dusts": dusts}
+
+func _choose_warning_light_for_path(path: Node3D, lights: Array[Light3D]) -> Light3D:
+	# 1) Явно помеченная лампа
+	for l in lights:
+		if String(l.name).to_lower().contains("entrance"):
+			return l
+	# 2) Ближайшая к началу кривой/path origin
+	var best = null
+	var best_d := INF
+	for l in lights:
+		var d := l.global_position.distance_to(path.global_position)
+		if d < best_d:
+			best_d = d
+			best = l
+	return best
+
+func _get_warning_light(path: Node3D, lights: Array[Light3D]) -> Light3D:
+	if _warning_light_by_path.has(path):
+		var cached = _warning_light_by_path[path]
+		if is_instance_valid(cached):
+			return cached
+	var picked := _choose_warning_light_for_path(path, lights)
+	_warning_light_by_path[path] = picked
+	return picked
+
+func _pick_fake_light(path: Node3D, lights: Array[Light3D], real: Light3D) -> Light3D:
+	var pool: Array[Light3D] = []
+	for l in lights:
+		if l != real:
+			pool.append(l)
+	if pool.is_empty():
+		return real
+	return pool[randi() % pool.size()]
+
+func _ensure_base_energy(l: Light3D):
+	if not l.has_meta("base_energy"):
+		l.set_meta("base_energy", l.light_energy)
+
+func _start_idle_flicker(l: Light3D) -> void:
+	_ensure_base_energy(l)
+	l.set_meta("idle_on", true)
+	await _idle_flicker_loop(l)
+
+func _idle_flicker_loop(l: Light3D) -> void:
+	while is_instance_valid(l) and l.get_meta("idle_on", false):
+		# если варнинговый фликер активен – подождать
+		if l.get_meta("warning_running", false):
+			await get_tree().create_timer(0.05).timeout
+			continue
+
+		var base := float(l.get_meta("base_energy"))
+		var delta := randf_range(0.08, 0.28)    # сила шумка
+		var up_dur := randf_range(0.12, 0.35)
+		var down_dur := randf_range(0.12, 0.35)
+		var wait_dur := randf_range(0.4, 1.6)
+
+		var tw := create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+		tw.tween_property(l, "light_energy", base + delta, up_dur)
+		tw.tween_property(l, "light_energy", base, down_dur)
+		await tw.finished
+
+		await get_tree().create_timer(wait_dur).timeout
+
+func _play_warning_fx(path: Node3D, with_sound: bool) -> void:
+	var fx := _get_path_fx_multi(path)
+	var lights: Array = fx.lights
+	var dusts: Array = fx.dusts
+	
 	if with_sound and collapse_warning and collapse_warning.stream:
 		var p := AudioStreamPlayer3D.new()
 		p.stream = collapse_warning.stream
-		p.global_position = path.global_position
-		p.volume_db = -20.0 + (GameManager.deafness_level * 30.0)
-		p.attenuation_filter_cutoff_hz = collapse_warning.attenuation_filter_cutoff_hz
+		var path3d := path as Path3D
+		p.global_position = _sound_position_for_path(path3d)
+		p.bus = "Warning"  # убедись, что бас существует
+
+		# база с учётом глухоты
+		var deaf_db := -20.0 + (GameManager.deafness_level * 30.0)
+
+		# дистанция — чем дальше от входа в путь, тем тише/глуше
+		var dist_to_path := _closest_distance_to_path(player.global_position, path3d)
+		var dist_db := 0.0
+		if dist_to_path > 6.0:
+			dist_db = -6.0
+			p.attenuation_filter_cutoff_hz = 1200.0
+		elif dist_to_path > 3.0:
+			dist_db = -3.0
+			p.attenuation_filter_cutoff_hz = 2500.0
+		else:
+			p.attenuation_filter_cutoff_hz = 5000.0
+
+		p.volume_db = deaf_db + dist_db
+		p.pitch_scale = _pitch_for_path(path) * randf_range(0.98, 1.02)
+
+		# (опц.) немного правдоподобнее падение громкости с расстоянием
+		# p.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_SQUARE
+		# p.max_distance = 30.0
+
 		p.unit_size = collapse_warning.unit_size
 		add_child(p)
 		p.finished.connect(p.queue_free)
 		p.play()
 
-	# пыль
-	if dust and dust is CPUParticles3D:
-		dust.emitting = true
-		await get_tree().create_timer(dust_time).timeout
-		dust.emitting = false
+	# пыль – всем Dust* под путём
+	for d in dusts:
+		d.emitting = true
+	await get_tree().create_timer(dust_time).timeout
+	for d in dusts:
+		d.emitting = false
 
-	# мигание лампы
-	if light and light is Light3D:
-		light.visible = true
-		var t := 0.0
-		while t < flicker_time:
-			light.visible = not light.visible
-			await get_tree().create_timer(flicker_interval).timeout
-			t += flicker_interval
-		light.visible = false
+	# лампы
+	if lights.size() == 0:
+		return
+
+	# реальный варнинг → мигает одна «входная»
+	if with_sound:
+		var real_light: Light3D = _get_warning_light(path, lights)
+		if real_light:
+			_ensure_base_energy(real_light)
+			real_light.set_meta("warning_running", true)  # пауза idle
+			var t := 0.0
+			# начинаем с включения
+			real_light.visible = true
+			while t < flicker_time:
+				real_light.visible = not real_light.visible
+				await get_tree().create_timer(flicker_interval).timeout
+				t += flicker_interval
+			# по окончании — оставить выключенной
+			real_light.visible = false
+			real_light.set_meta("warning_running", false)
+	else:
+		# ложный варнинг → мигает ДРУГАЯ лампа, и возвращаем исходное состояние
+		var real_light := _get_warning_light(path, lights)
+		var fake_light := _pick_fake_light(path, lights, real_light)
+		if fake_light:
+			_ensure_base_energy(fake_light)
+			var was_vis := fake_light.visible
+			fake_light.set_meta("warning_running", true)
+			var t := 0.0
+			# начинаем с текущего состояния
+			while t < max(0.3, flicker_time):  # длительность может отличаться
+				fake_light.visible = not fake_light.visible
+				await get_tree().create_timer(flicker_interval).timeout
+				t += flicker_interval
+			# ВАЖНО: вернуть как было (не оставлять тухлой)
+			fake_light.visible = was_vis
+			fake_light.set_meta("warning_running", false)
 
 func _spawn_ore_nodes(active_paths: Array):
 	# Spawn ore along active paths
@@ -241,6 +395,13 @@ func _closest_distance_to_path(point: Vector3, path: Path3D) -> float:
 func _on_ore_added(_amount:int) -> void:
 	_refresh_ore_ui()
 
+func _sound_position_for_path(path: Path3D) -> Vector3:
+	if path.curve and path.curve.get_baked_length() > 0:
+		var dist = min(3.0, path.curve.get_baked_length() * 0.15) # 3м или 15% пути
+		var pos_local := path.curve.sample_baked(dist)
+		return path.to_global(pos_local)
+	return path.global_position
+
 func _refresh_ore_ui() -> void:
 	if not ore_label:
 		return
@@ -250,6 +411,7 @@ func _refresh_ore_ui() -> void:
 	]
 
 func _kill_player():
+	print("died")
 	player_alive = false
 	death_screen.visible = true
 	
