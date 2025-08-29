@@ -80,10 +80,11 @@ visible = false
 mesh = SubResource("CapsuleMesh_etd6b")
 
 [node name="Camera3D" type="Camera3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.93, 0.75)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24958, 0.0727303)
 
 [node name="InteractRay" type="RayCast3D" parent="Player/Camera3D"]
-transform = Transform3D(2.415, 0, 0, 0, -1.05563e-07, -2.415, 0, 2.415, -1.05563e-07, 0, 0, 0)
+transform = Transform3D(3.16, 0, 0, 0, -1.38128e-07, -3.16, 0, 3.16, -1.38128e-07, 0, 0, 0)
+collide_with_areas = true
 
 [node name="Wife" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52225, -3.74964)
@@ -145,9 +146,18 @@ offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="HintLabel" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
 offset_top = 59.0
 offset_right = 40.0
 offset_bottom = 82.0
+
+[node name="InteractHint" type="Label" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 0
+offset_left = 594.0
+offset_top = 532.0
+offset_right = 697.0
+offset_bottom = 555.0
 
 [node name="Subtitles" type="Label" parent="CanvasLayer"]
 visible = false
@@ -169,12 +179,15 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 1246.0
+offset_bottom = 684.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
 [node name="Label" type="Label" parent="OverlayLayer/DayIntro"]
+layout_mode = 0
 offset_left = 610.0
 offset_top = 345.0
 offset_right = 684.0

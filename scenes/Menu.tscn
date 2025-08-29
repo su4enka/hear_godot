@@ -30,6 +30,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="HSliderSensitivity" type="HSlider" parent="SettingsMenu"]
+layout_mode = 0
 offset_left = 772.0
 offset_top = 363.0
 offset_right = 965.0
@@ -40,6 +41,7 @@ step = 0.001
 value = 0.002
 
 [node name="LabelSensitivity" type="Label" parent="SettingsMenu"]
+layout_mode = 0
 offset_left = 348.0
 offset_top = 357.0
 offset_right = 483.0
@@ -47,6 +49,7 @@ offset_bottom = 380.0
 text = "Mouse Sensitivity"
 
 [node name="ButtonBackToMenu" type="Button" parent="SettingsMenu"]
+layout_mode = 0
 offset_left = 647.0
 offset_top = 431.0
 offset_right = 692.0

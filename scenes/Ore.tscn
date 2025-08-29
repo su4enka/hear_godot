@@ -1,16 +1,34 @@
-[gd_scene load_steps=4 format=3 uid="uid://vquixpqa6drg"]
+[gd_scene load_steps=5 format=3 uid="uid://vquixpqa6drg"]
 
 [ext_resource type="Script" uid="uid://c08orf7scmc7b" path="res://scripts/Ore.gd" id="1_neldg"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_0htci"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_neldg"]
+radius = 1.30752
 
 [sub_resource type="BoxMesh" id="BoxMesh_neldg"]
 
-[node name="Ore" type="Area3D"]
+[sub_resource type="BoxMesh" id="BoxMesh_0jgvj"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[node name="Ore" type="Area3D" groups=["ore"]]
 script = ExtResource("1_neldg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_0htci")
+shape = SubResource("SphereShape3D_neldg")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Visual" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_neldg")
+
+[node name="HitSfx" type="AudioStreamPlayer3D" parent="."]
+
+[node name="HitDust" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.281767, -0.0182143)
+emitting = false
+lifetime = 0.32
+mesh = SubResource("BoxMesh_0jgvj")
+emission_shape = 1
+emission_sphere_radius = 0.4
+spread = 180.0
+initial_velocity_min = 4.4
+initial_velocity_max = 6.5
+scale_amount_min = 0.2

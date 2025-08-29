@@ -73,7 +73,10 @@ func _setup_day():
 	# Update UI
 	deafness_bar.value = GameManager.deafness_level * 100.0
 	$CanvasLayer/Control/DayCounter.text = "Day: %d" % GameManager.current_day
-	$CanvasLayer/Control/OreCounter.text = "Ore: %d/%d" % [GameManager.ore_collected_today, GameManager.daily_ore_required]
+	$CanvasLayer/Control/OreCounter.text = "Ore: %d/%d" % [
+	GameManager.ore_collected_today,
+	GameManager.get_required_today()
+]
 	
 func _setup_path_collapse(path: Path3D):
 # Таймер настоящего обвала
@@ -172,7 +175,10 @@ func _on_day_started(day):
 func _on_ore_collected(amount):
 	GameManager.ore_collected_today += amount
 	GameManager.total_ore += amount
-	$CanvasLayer/Control/OreCounter.text = "Ore: %d/%d" % [GameManager.ore_collected_today, GameManager.daily_ore_required]
+	$CanvasLayer/Control/OreCounter.text = "Ore: %d/%d" % [
+	GameManager.ore_collected_today,
+	GameManager.get_required_today()
+]
 	
 func _on_path_warning(path: Path3D):
 	# Play warning sound for this specific path
@@ -223,6 +229,6 @@ func _kill_player():
 	GameManager.end_game("bad")
 
 func _on_exit_triggered(body):
-	if body == player:
-		var house_scene = preload("res://scenes/House.tscn")
-		get_tree().change_scene_to_packed(house_scene)
+	if body.is_in_group("player"):
+		GameManager.came_from_cave = true
+		get_tree().change_scene_to_file("res://scenes/House.tscn")

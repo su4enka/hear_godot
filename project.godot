@@ -36,6 +36,7 @@ enabled=PackedStringArray("res://addons/gamedev_assistant/plugin.cfg")
 [global_group]
 
 player=""
+ore=""
 
 [input]
 

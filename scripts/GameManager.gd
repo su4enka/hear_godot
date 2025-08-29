@@ -5,7 +5,7 @@ extends Node
 @export var ore_required_total := 100
 
 # Нормы по дням (можешь подправить числа)
-var ore_required_by_day := [1,2,2,3,3, 4,4,5,5,6, 6,7,7,8,8]
+var ore_required_by_day := [5,2,2,3,3, 4,4,5,5,6, 6,7,7,8,8]
 
 var current_day := 1
 var total_ore := 0
@@ -15,6 +15,8 @@ var deafness_level := 0.0             # 0..1, растёт к 15 дню
 var the_game_ended := false
 
 var opening_needs_confirm := true
+
+var came_from_cave := false
 
 signal day_started(day_number:int)
 signal day_ended(day_number:int, ore_collected:int)
@@ -50,6 +52,7 @@ func get_required_today() -> int:
 func start_new_day():
 	if the_game_ended:
 		return
+	came_from_cave = false 
 	ore_collected_today = 0
 	deafness_level = float(current_day - 1) / float(total_days - 1)
 	_emit_day_intro()

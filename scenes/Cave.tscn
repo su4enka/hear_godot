@@ -96,10 +96,11 @@ visible = false
 mesh = SubResource("CapsuleMesh_oq386")
 
 [node name="Camera3D" type="Camera3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.93, 0.75)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24958, 0.0727303)
 
-[node name="RayCast3D" type="RayCast3D" parent="Player/Camera3D"]
-transform = Transform3D(2.415, 0, 0, 0, -1.05563e-07, -2.415, 0, 2.415, -1.05563e-07, 0, 0, 0)
+[node name="InteractRay" type="RayCast3D" parent="Player/Camera3D"]
+transform = Transform3D(3.16, 0, 0, 0, -1.38128e-07, -3.16, 0, 3.16, -1.38128e-07, 0, 0, 0)
+collide_with_areas = true
 
 [node name="OreContainer" type="Node3D" parent="."]
 
@@ -159,6 +160,14 @@ layout_mode = 0
 offset_left = 701.0
 offset_right = 705.0
 offset_bottom = 27.0
+
+[node name="InteractHint" type="Label" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 0
+offset_left = 594.0
+offset_top = 532.0
+offset_right = 697.0
+offset_bottom = 555.0
 
 [node name="DeathScreen" type="CanvasLayer" parent="."]
 
