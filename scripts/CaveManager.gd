@@ -1,8 +1,8 @@
 extends Node3D
 
 @export var ore_per_node := 1
-@export var min_collapse_time := 30.0
-@export var max_collapse_time := 60.0
+@export var min_collapse_time := 10.0
+@export var max_collapse_time := 30.0
 @export var warning_time := 5.0
 
 @export var false_warning_chance := 0.25   # 1 из 4 ложных миганий
@@ -126,15 +126,15 @@ func _do_path_collapse(path: Path3D):
 	if path3d and path3d.curve:
 		var closest := _closest_distance_to_path(player.global_position, path3d)
 		if closest < 2.0:
-			await get_tree().create_timer(2).timeout
+			await get_tree().create_timer(3).timeout
 			_kill_player()
 			return
 	
-	var wall = _get_wall_for_path(path)
+	var wall := _get_wall_for_path(path)
 	if wall:
-		var start = wall.global_position
-		var end = start + Vector3(0, -2.5, 0)  # насколько опустить — под себя
-		var tw = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+		var start := wall.global_position
+		var end := start + Vector3(0, -2.5, 0)  # подстрой величину
+		var tw := create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 		tw.tween_property(wall, "global_position", end, 0.5)
 
 func _get_path_fx(path: Node3D) -> Dictionary:
@@ -148,10 +148,16 @@ func _play_warning_fx(path: Node3D, with_sound: bool):
 	var dust = fx.dust
 
 	# звук с учётом глухоты
-	if with_sound and collapse_warning:
-		collapse_warning.global_position = path.global_position
-		collapse_warning.volume_db = -20.0 + (GameManager.deafness_level * 30.0)
-		collapse_warning.play()
+	if with_sound and collapse_warning and collapse_warning.stream:
+		var p := AudioStreamPlayer3D.new()
+		p.stream = collapse_warning.stream
+		p.global_position = path.global_position
+		p.volume_db = -20.0 + (GameManager.deafness_level * 30.0)
+		p.attenuation_filter_cutoff_hz = collapse_warning.attenuation_filter_cutoff_hz
+		p.unit_size = collapse_warning.unit_size
+		add_child(p)
+		p.finished.connect(p.queue_free)
+		p.play()
 
 	# пыль
 	if dust and dust is CPUParticles3D:
