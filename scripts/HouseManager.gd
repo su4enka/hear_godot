@@ -6,6 +6,8 @@ extends Node3D
 @onready var day_label = $CanvasLayer/Control/DayCounter
 @onready var ore_label = $CanvasLayer/Control/OreCounter
 @onready var leave_dialog: ConfirmationDialog = $CanvasLayer/LeaveDialog
+@onready var leave_dialog2: ConfirmationDialog = $CanvasLayer/LeaveDialog2
+
 @onready var wife_area: Area3D = $Wife/Area3D
 @onready var subtitle: Label = $CanvasLayer/Subtitles
 @onready var hint_label: Label = $CanvasLayer/Control/HintLabel
@@ -35,6 +37,8 @@ func _ready():
 	# ТРИГГЕРЫ
 	leave_dialog.confirmed.connect(_on_leave_dialog_confirmed)
 	leave_dialog.canceled.connect(_on_leave_dialog_canceled)
+	leave_dialog2.confirmed.connect(_on_leave_dialog2_confirmed)
+	leave_dialog2.canceled.connect(_on_leave_dialog2_canceled)
 
 	# Безопасная инициализация интро-оверлея — на случай если сигнал пролетел до подключения
 	if day_intro_label:
@@ -200,12 +204,24 @@ func _exit_tree():
 	_cancel_subtitle_task()
 
 func _on_leave_dialog_canceled():
+	# Continue = идти в пещеру
+	leave_dialog2.title = "Are you sure"
+	leave_dialog2.dialog_text = "Will you continue taking the risk in the cave?"
+	leave_dialog2.popup_centered()
+	return
+
+func _on_leave_dialog_confirmed():
 	# It's not worth it = early ending
 	GameManager.early_used = true
 	GameManager.end_game("early")
 
-func _on_leave_dialog_confirmed():
-	# Leave = идти в пещеру
+func _on_leave_dialog2_confirmed():
+	# Leave = early ending
+	GameManager.early_used = true
+	GameManager.end_game("early")
+
+func _on_leave_dialog2_canceled():
+	# Continue = идти в пещеру
 	get_tree().change_scene_to_file("res://scenes/Cave.tscn")
 
 func _on_leave_confirmed():
