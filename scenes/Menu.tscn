@@ -55,3 +55,75 @@ offset_top = 431.0
 offset_right = 692.0
 offset_bottom = 462.0
 text = "Back"
+
+[node name="DevToggle" type="CheckButton" parent="."]
+offset_left = 243.0
+offset_top = 9.0
+offset_right = 408.0
+offset_bottom = 40.0
+text = "Dev/Test mode"
+
+[node name="DevPanel" type="Panel" parent="."]
+visible = false
+offset_right = 229.0
+offset_bottom = 281.0
+
+[node name="Grid" type="GridContainer" parent="DevPanel"]
+offset_top = 35.0
+offset_right = 209.0
+offset_bottom = 171.0
+columns = 2
+
+[node name="LblDay" type="Label" parent="DevPanel/Grid"]
+layout_mode = 2
+text = "Day (1..15)"
+
+[node name="SpinDay" type="SpinBox" parent="DevPanel/Grid"]
+layout_mode = 2
+min_value = 1.0
+max_value = 15.0
+value = 1.0
+
+[node name="LblOre" type="Label" parent="DevPanel/Grid"]
+layout_mode = 2
+text = "Total ore"
+
+[node name="SpinOre" type="SpinBox" parent="DevPanel/Grid"]
+layout_mode = 2
+max_value = 999.0
+
+[node name="LblChances" type="Label" parent="DevPanel/Grid"]
+layout_mode = 2
+text = "Chances left"
+
+[node name="SpinChances" type="SpinBox" parent="DevPanel/Grid"]
+layout_mode = 2
+max_value = 5.0
+
+[node name="LblReq" type="Label" parent="DevPanel/Grid"]
+layout_mode = 2
+text = "Required today"
+
+[node name="SpinReq" type="SpinBox" parent="DevPanel/Grid"]
+layout_mode = 2
+max_value = 50.0
+
+[node name="BtnApplyStart" type="Button" parent="DevPanel"]
+layout_mode = 0
+offset_top = 218.0
+offset_right = 173.0
+offset_bottom = 249.0
+text = "Apply & Start (House)"
+
+[node name="BtnOnlyApply" type="Button" parent="DevPanel"]
+layout_mode = 0
+offset_top = 179.0
+offset_right = 89.0
+offset_bottom = 210.0
+text = "Apply only"
+
+[node name="ChkSkipPrologue" type="CheckButton" parent="DevPanel"]
+layout_mode = 0
+offset_right = 44.0
+offset_bottom = 24.0
+text = "Skip prologue"
