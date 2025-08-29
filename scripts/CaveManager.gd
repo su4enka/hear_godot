@@ -16,6 +16,8 @@ extends Node3D
 @onready var deafness_bar = $CanvasLayer/Control/DeafnessIndicator
 @onready var death_screen = $DeathScreen
 @onready var exit_trigger = $ExitTrigger
+@onready var ore_label: Label = $CanvasLayer/Control/OreCounter
+@onready var walls_container: Node3D = $"Level Assets/Cave/Collapse Walls"
 
 var path_timers := {}
 var path_warnings := {}
@@ -26,6 +28,9 @@ func _ready():
 	GameManager.day_started.connect(_on_day_started)
 	exit_trigger.body_entered.connect(_on_exit_triggered)
 	_setup_day()
+	if not GameManager.ore_collected.is_connected(_on_ore_added):
+		GameManager.ore_collected.connect(_on_ore_added)
+	_refresh_ore_ui()  # показать стартовые значения при входе в пещеру
 	
 func _setup_day():
 	var db := -18.0 * GameManager.deafness_level
@@ -79,40 +84,58 @@ func _setup_day():
 ]
 	
 func _setup_path_collapse(path: Path3D):
-# Таймер настоящего обвала
-	var collapse_timer = Timer.new()
-	collapse_timer.wait_time = randf_range(min_collapse_time, max_collapse_time)
-	collapse_timer.one_shot = true
-	collapse_timer.timeout.connect(_on_path_collapse.bind(path))
-	add_child(collapse_timer)
-	path_timers[path] = collapse_timer
-
-	# Таймер предупреждения перед обвалом (свет+пыль+звук)
-	var warning_timer = Timer.new()
-	warning_timer.wait_time = max(0.05, collapse_timer.wait_time - warning_time)
+	# таймер только для варнинга
+	var warning_timer := Timer.new()
 	warning_timer.one_shot = true
+	warning_timer.wait_time = randf_range(min_collapse_time, max_collapse_time) - warning_time
 	warning_timer.timeout.connect(func():
-		# визуал+звук
-		_play_warning_fx(path, true)
-		# старый коллбек на звук у тебя тоже был — если нужно оставь:
-		_on_path_warning(path)
+		_play_warning_fx(path, true)          # лампа + пыль + звук
+		await get_tree().create_timer(warning_time).timeout
+		_do_path_collapse(path)               # ← падает СВОЯ стена этого пути
 	)
 	add_child(warning_timer)
-	path_warnings[path] = warning_timer
 
-	# Иногда запускаем "ложное" мигание ЗАРАНЕЕ без звука и без обвала
+	# Ложное мигание без звука и обвала (иногда)
 	if randf() < false_warning_chance:
 		var false_timer := Timer.new()
-		# пусть срабатывает где-то в первой трети времени до настоящего варнинга
 		false_timer.wait_time = warning_timer.wait_time * randf_range(0.2, 0.5)
 		false_timer.one_shot = true
 		false_timer.timeout.connect(func():
-			_play_warning_fx(path, false))  # визуально, но без collapse и без SFX
+			_play_warning_fx(path, false))  # только визуал
 		add_child(false_timer)
 		false_timer.start()
-	
+
+
 	warning_timer.start()
-	collapse_timer.start()
+
+func _get_wall_for_path(path: Node) -> Node3D:
+	# 1) если есть отдельный контейнер стен (твоя текущая схема)
+	if walls_container:
+		var name := "%s Collapse Wall" % path.name
+		var wall = walls_container.get_node_or_null(name)
+		if wall:
+			return wall as Node3D
+	# 2) запасной вариант — если стену положишь прямо внутрь Path
+	return path.get_node_or_null("CollapseWall") as Node3D
+
+func _do_path_collapse(path: Path3D):
+	if not player_alive:
+		return
+# Если игрок рядом с путём — смерть
+	var path3d := path as Path3D
+	if path3d and path3d.curve:
+		var closest := _closest_distance_to_path(player.global_position, path3d)
+		if closest < 2.0:
+			await get_tree().create_timer(2).timeout
+			_kill_player()
+			return
+	
+	var wall = _get_wall_for_path(path)
+	if wall:
+		var start = wall.global_position
+		var end = start + Vector3(0, -2.5, 0)  # насколько опустить — под себя
+		var tw = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+		tw.tween_property(wall, "global_position", end, 0.5)
 
 func _get_path_fx(path: Node3D) -> Dictionary:
 	var light := path.get_node_or_null("WarningLight")
@@ -176,9 +199,9 @@ func _on_ore_collected(amount):
 	GameManager.ore_collected_today += amount
 	GameManager.total_ore += amount
 	$CanvasLayer/Control/OreCounter.text = "Ore: %d/%d" % [
-	GameManager.ore_collected_today,
-	GameManager.get_required_today()
-]
+		GameManager.ore_collected_today,
+		GameManager.get_required_today()
+	]
 	
 func _on_path_warning(path: Path3D):
 	# Play warning sound for this specific path
@@ -188,18 +211,7 @@ func _on_path_warning(path: Path3D):
 	
 	
 func _on_path_collapse(path: Path3D):
-	if not player_alive:
-		return
-	var path3d := path as Path3D
-	if path3d == null or path3d.curve == null:
-		return
-
-	var closest_dist := _closest_distance_to_path(player.global_position, path3d)
-	if closest_dist < 2.0:
-		_kill_player()
-	else:
-		if "modulate" in path:
-			path.modulate = Color.DARK_GRAY
+	_do_path_collapse(path)
 
 func _closest_distance_to_path(point: Vector3, path: Path3D) -> float:
 	var curve: Curve3D = path.curve
@@ -219,6 +231,17 @@ func _closest_distance_to_path(point: Vector3, path: Path3D) -> float:
 		if d < best:
 			best = d
 	return best
+
+func _on_ore_added(_amount:int) -> void:
+	_refresh_ore_ui()
+
+func _refresh_ore_ui() -> void:
+	if not ore_label:
+		return
+	ore_label.text = "Ore: %d/%d" % [
+		GameManager.ore_collected_today,
+		GameManager.get_required_today()
+	]
 
 func _kill_player():
 	player_alive = false

@@ -1,8 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://cvb03iv3aaopy"]
+[gd_scene load_steps=19 format=3 uid="uid://cvb03iv3aaopy"]
 
 [ext_resource type="Script" uid="uid://stxq7e8ugkpv" path="res://scripts/CaveManager.gd" id="1_oq386"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="2_2kquo"]
 [ext_resource type="AudioStream" uid="uid://u5nk82pvrtw2" path="res://sfx/creepy-cave-47164.mp3" id="3_xwfm4"]
+[ext_resource type="PackedScene" uid="uid://ftmqis04ebj2" path="res://scenes/Collapse_Wall.tscn" id="4_i5j2t"]
+[ext_resource type="PackedScene" uid="uid://c270qrnb6y04w" path="res://scenes/Cave_Wall.tscn" id="4_sj338"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2kquo"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -74,14 +76,15 @@ mesh = SubResource("BoxMesh_oq386")
 [node name="PathsContainer" type="Node3D" parent="."]
 
 [node name="Path1" type="Path3D" parent="PathsContainer"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.94057)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.86382)
 curve = SubResource("Curve3D_2kquo")
 
 [node name="Path2" type="Path3D" parent="PathsContainer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.431836)
 curve = SubResource("Curve3D_xwfm4")
 
 [node name="Path3" type="Path3D" parent="PathsContainer"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.8041)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.54783)
 curve = SubResource("Curve3D_i5j2t")
 
 [node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
@@ -183,3 +186,38 @@ offset_left = 1204.0
 offset_right = 1273.0
 offset_bottom = 23.0
 text = "You Died"
+
+[node name="Level Assets" type="Node3D" parent="."]
+
+[node name="Cave" type="Node3D" parent="Level Assets"]
+
+[node name="Cave Walls" type="Node3D" parent="Level Assets/Cave"]
+
+[node name="Cave Wall" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, 5.60735)
+
+[node name="Cave Wall5" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, 1.31214)
+
+[node name="Cave Wall3" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, -0.647562)
+
+[node name="Cave Wall6" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, -7.56452)
+
+[node name="Cave Wall4" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, -9.45223)
+
+[node name="Cave Wall2" parent="Level Assets/Cave/Cave Walls" instance=ExtResource("4_sj338")]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4.34389, 1.06999, 7.39001)
+
+[node name="Collapse Walls" type="Node3D" parent="Level Assets/Cave"]
+
+[node name="Path1 Collapse Wall" parent="Level Assets/Cave/Collapse Walls" instance=ExtResource("4_i5j2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0052, 4.00588, 6.39917)
+
+[node name="Path2 Collapse Wall2" parent="Level Assets/Cave/Collapse Walls" instance=ExtResource("4_i5j2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0052, 4.00588, 0.510245)
+
+[node name="Path3 Collapse Wall3" parent="Level Assets/Cave/Collapse Walls" instance=ExtResource("4_i5j2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0052, 4.00588, -8.21131)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://buccgk580xshg"]
+[gd_scene load_steps=19 format=3 uid="uid://buccgk580xshg"]
 
 [ext_resource type="Script" uid="uid://5k4pjkcr7ybf" path="res://scripts/HouseManager.gd" id="1_8twys"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="1_bfmfj"]
@@ -39,6 +39,8 @@ radius = 1.58159
 [sub_resource type="BoxMesh" id="BoxMesh_ispqn"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bfmfj"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_8twys"]
 
 [node name="House" type="Node3D"]
 script = ExtResource("1_8twys")
@@ -116,6 +118,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01679, 6.09705)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger"]
 shape = SubResource("BoxShape3D_bfmfj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ExitTrigger"]
+mesh = SubResource("BoxMesh_8twys")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 physics_interpolation_mode = 2

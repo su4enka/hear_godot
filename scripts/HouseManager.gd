@@ -95,12 +95,16 @@ func _on_bed_entered(body):
 
 func _on_exit_triggered(body):
 	if body == player:
-		if GameManager.current_day >= GameManager.early_exit_day:
-			leave_dialog.title = "Leave the town?"
-			leave_dialog.dialog_text = "You can leave now. Do you want to leave?"
-			leave_dialog.popup_centered()
-		else:
-			get_tree().change_scene_to_packed(preload("res://scenes/Cave.tscn"))
+		if GameManager.came_from_cave:
+			# показать короткую подсказку и не пускать
+			var lbl := $CanvasLayer/Control/HintLabel if has_node($"CanvasLayer/Control/HintLabel".get_path()) else $CanvasLayer/Subtitles
+			if lbl:
+				lbl.text = "You need to rest"
+				lbl.visible = true
+				await get_tree().create_timer(2.0).timeout
+				lbl.visible = false
+			return
+		get_tree().change_scene_to_packed(preload("res://scenes/Cave.tscn"))
 
 func _on_leave_confirmed():
 	GameManager.end_game("early")
