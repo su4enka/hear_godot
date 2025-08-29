@@ -62,10 +62,27 @@ func _show():
 
 func _input(ev):
 	if ended: return
-	if ev.is_action_pressed("ui_accept") or ev.is_action_pressed("ui_select") or ev.is_action_pressed("interact") or (ev is InputEventKey and (ev.keycode == KEY_SPACE or ev.keycode == KEY_ENTER)):
+	if _is_skip(ev):
 		_next()
-	elif ev is InputEventKey and ev.pressed and ev.keycode == KEY_ESCAPE:
+	elif ev is InputEventKey and ev.pressed and not ev.echo and ev.keycode == KEY_ESCAPE:
 		_finish_and_start()
+
+func _is_skip(ev: InputEvent) -> bool:
+	# Actions (ui_accept / ui_select / interact)
+	if (ev.is_action_pressed("ui_accept")
+		or ev.is_action_pressed("ui_select")
+		or ev.is_action_pressed("interact")):
+		# не реагируем на автоповтор клавиши
+		if ev is InputEventKey and ev.echo:
+			return false
+		return true
+
+	# Прямые клавиши (если они не входят в эти действия)
+	if ev is InputEventKey and ev.pressed and not ev.echo:
+		if ev.keycode == KEY_SPACE or ev.keycode == KEY_ENTER:
+			return true
+
+	return false
 
 func _next():
 	idx += 1

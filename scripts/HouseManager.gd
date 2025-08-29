@@ -20,7 +20,8 @@ var _advance_requested := false
 var _skip_armed := false
 
 func _ready():
-	
+	if Engine.has_singleton("Rumble"):
+		Rumble.enter_context("house")
 	
 	if not wife_area.is_in_group("wife"):
 		wife_area.add_to_group("wife")
@@ -183,12 +184,17 @@ func request_sleep() -> void:
 func request_exit() -> void:
 	_cancel_subtitle_task()
 	
-	if GameManager.current_day == 7 and not GameManager.early_used:
+	# Показывать диалог только РОВНО в день 7, только если не использован,
+	# и только если игрок ещё НЕ выходил в пещеру в этот день.
+	if GameManager.current_day == 7 \
+		and not GameManager.early_used \
+		and not GameManager.came_from_cave:
 		leave_dialog.title = "Leave or Stay?"
 		leave_dialog.dialog_text = "You can leave the cave life now. Will you stay home?"
 		leave_dialog.popup_centered()
 		return
 
+	# Если уже вернулся из пещеры — только подсказка "нужно отдохнуть"
 	if GameManager.came_from_cave:
 		var lbl := hint_label if hint_label else subtitle
 		if lbl:

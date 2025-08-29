@@ -15,10 +15,15 @@ run/main_scene="uid://dshupw7pj77l8"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="uid://rrinmgl26k1l"
+
 [autoload]
 
 GameManager="*res://scripts/GameManager.gd"
 SceneFlow="*res://scripts/SceneFlow.gd"
+Rumble="*res://scripts/Rumble.gd"
 
 [display]
 

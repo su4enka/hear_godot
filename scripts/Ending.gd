@@ -44,7 +44,7 @@ func _ready():
 
 	var hint := Label.new()
 	hint.name = "Hint"
-	hint.text = "Press [Enter]/[Space] to continue • [R] restart • [Esc] menu"
+	hint.text = "Press [Enter]/[Space]/[E] to continue • [R] restart • [Esc] menu"
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hint.anchor_left = 0.1; hint.anchor_right = 0.9
 	hint.anchor_top = 0.85; hint.anchor_bottom = 0.92
@@ -82,13 +82,30 @@ func _show_current():
 
 func _input(ev):
 	if ended: return
-	if ev.is_action_pressed("ui_accept") or ev.is_action_pressed("ui_select") or ev.is_action_pressed("interact") or (ev is InputEventKey and (ev.keycode == KEY_SPACE or ev.keycode == KEY_ENTER)):
+	if _is_skip(ev):
 		_next()
 	elif ev is InputEventKey and ev.pressed:
 		if ev.keycode == KEY_R:
 			_restart()
 		elif ev.keycode == KEY_ESCAPE:
 			_to_menu()
+
+func _is_skip(ev: InputEvent) -> bool:
+	# Actions (ui_accept / ui_select / interact)
+	if (ev.is_action_pressed("ui_accept")
+		or ev.is_action_pressed("ui_select")
+		or ev.is_action_pressed("interact")):
+		# не реагируем на автоповтор клавиши
+		if ev is InputEventKey and ev.echo:
+			return false
+		return true
+
+	# Прямые клавиши (если они не входят в эти действия)
+	if ev is InputEventKey and ev.pressed and not ev.echo:
+		if ev.keycode == KEY_SPACE or ev.keycode == KEY_ENTER:
+			return true
+
+	return false
 
 func _next():
 	idx += 1

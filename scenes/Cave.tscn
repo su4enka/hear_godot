@@ -224,6 +224,7 @@ collide_with_areas = true
 
 [node name="CollapseWarning" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("3_xwfm4")
+bus = &"Warning"
 
 [node name="ExitTrigger" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.19966, 0.948929, 1.34303)

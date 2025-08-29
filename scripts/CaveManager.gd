@@ -1,5 +1,18 @@
 extends Node3D
 
+# === Loudness Tuning ===
+@export var master_drop_db := -18.0     # сколько dB теряем на Master при полной глухоте (день 15)
+@export var warn_base_db := -10.0       # базовая громкость warning (день 1), ДО дистанции
+@export var warn_drop_db := -14.0       # сколько dB теряет warning к дню 15 (добавляется к base)
+@export var warn_min_db := -48.0        # ограничение снизу на warning (чтоб не падал в -∞)
+
+# (опц.) дистанция: сколько дБ терять, если игрок далеко от входа пути
+@export var dist_near := 3.0            # до 3м – «рядом»
+@export var dist_far := 6.0             # дальше 6м – «далеко»
+@export var dist_near_db := 0.0         # добавка к dB, если рядом
+@export var dist_mid_db := -3.0         # средняя дистанция
+@export var dist_far_db := -6.0         # далеко
+
 @export var ore_per_node := 1
 @export var min_collapse_time := 20.0
 @export var max_collapse_time := 30.0
@@ -32,6 +45,8 @@ var player_alive := true
 var _warning_light_by_path: Dictionary = {}   # path -> Light3D
 
 func _ready():
+	if Engine.has_singleton("Rumble"):
+		Rumble.enter_context("cave")
 	randomize()
 	GameManager.day_started.connect(_on_day_started)
 	exit_trigger.body_entered.connect(_on_exit_triggered)
@@ -39,11 +54,30 @@ func _ready():
 	if not GameManager.ore_collected.is_connected(_on_ore_added):
 		GameManager.ore_collected.connect(_on_ore_added)
 	_refresh_ore_ui()  # показать стартовые значения при входе в пещеру
-	
+
+func _compute_master_db() -> float:
+	# deafness_level 0..1 (пересчитывается в GameManager по дню)
+	# 0 → 0 dB, 1 → master_drop_db (например -18 dB)
+	return lerp(0.0, master_drop_db, GameManager.deafness_level)
+
+func _compute_warning_db(path: Path3D) -> float:
+	# День → громкость warning: на 1-м дне warn_base_db, на 15-м warn_base_db + warn_drop_db
+	var warn_day_db = warn_base_db + lerp(0.0, warn_drop_db, GameManager.deafness_level)
+
+	# Дистанция до входа пути → доп. поправка
+	var d := _closest_distance_to_path(player.global_position, path)
+	var dist_db := dist_near_db
+	if d > dist_far:
+		dist_db = dist_far_db
+	elif d > dist_near:
+		dist_db = dist_mid_db
+
+	var total = warn_day_db + dist_db
+	return max(total, warn_min_db)  # не тише, чем warn_min_db
+
 func _setup_day():
-	var db := -18.0 * GameManager.deafness_level
 	var bus := AudioServer.get_bus_index("Master")
-	AudioServer.set_bus_volume_db(bus, db)
+	AudioServer.set_bus_volume_db(bus, _compute_master_db())
 	
 	# Clear previous day
 	for child in ore_container.get_children():
@@ -273,36 +307,29 @@ func _play_warning_fx(path: Node3D, with_sound: bool) -> void:
 	var lights: Array = fx.lights
 	var dusts: Array = fx.dusts
 	
+# --- ЗВУК ---
 	if with_sound and collapse_warning and collapse_warning.stream:
 		var p := AudioStreamPlayer3D.new()
 		p.stream = collapse_warning.stream
 		var path3d := path as Path3D
 		p.global_position = _sound_position_for_path(path3d)
-		p.bus = "Warning"  # убедись, что бас существует
+		p.bus = "Warning"
 
-		# база с учётом глухоты
-		var deaf_db := -40.0 + (GameManager.deafness_level * 30.0)
+		# новая единая формула
+		p.volume_db = _compute_warning_db(path3d)
 
-		# дистанция — чем дальше от входа в путь, тем тише/глуше
-		var dist_to_path := _closest_distance_to_path(player.global_position, path3d)
-		var dist_db := 0.0
-		if dist_to_path > 6.0:
-			dist_db = -6.0
+		# остальное как у тебя (pitch, cutoff, unit_size и т.п.)
+		p.pitch_scale = _pitch_for_path(path) * randf_range(0.98, 1.02)
+
+		# по желанию можешь оставить/подкрутить фильтр по дистанции
+		var d := _closest_distance_to_path(player.global_position, path3d)
+		if d > dist_far:
 			p.attenuation_filter_cutoff_hz = 1200.0
-		elif dist_to_path > 3.0:
-			dist_db = -3.0
+		elif d > dist_near:
 			p.attenuation_filter_cutoff_hz = 2500.0
 		else:
 			p.attenuation_filter_cutoff_hz = 5000.0
 
-		p.volume_db = deaf_db + dist_db
-		p.pitch_scale = _pitch_for_path(path) * randf_range(0.98, 1.02)
-
-		# (опц.) немного правдоподобнее падение громкости с расстоянием
-		# p.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_SQUARE
-		# p.max_distance = 30.0
-
-		p.unit_size = collapse_warning.unit_size
 		add_child(p)
 		p.finished.connect(p.queue_free)
 		p.play()
@@ -434,7 +461,6 @@ func _refresh_ore_ui() -> void:
 	]
 
 func _kill_player():
-	print("died")
 	player_alive = false
 	death_screen.visible = true
 	
