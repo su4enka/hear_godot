@@ -79,6 +79,10 @@ var wife_lines := {
 
 var last_wife_line: String = ""
 
+
+func _ready():
+	_emit_day_intro()
+
 func get_wife_line() -> String:
 	var day_lines:Array = wife_lines.get(current_day, [])
 	var pool:Array = day_lines.duplicate()
@@ -124,9 +128,6 @@ func get_wife_line() -> String:
 		last_wife_line = pick2
 		return pick2
 
-func _ready():
-	_emit_day_intro()
-
 func _emit_day_intro():
 	var intro := "Day %d" % current_day
 	day_intro.emit(intro)
@@ -144,13 +145,26 @@ func start_new_day():
 	_emit_day_intro()
 	day_started.emit(current_day)
 
+func reset_state() -> void:
+	current_day = 1
+	total_ore = 0
+	ore_collected_today = 0
+	chances_left = 2
+
+	the_game_ended = false
+	opening_needs_confirm = true
+	came_from_cave = false
+	deafness_level = 0.0
+	last_wife_line = ""
+
+	## если есть ещё временные таймеры/словарики
+	#path_timers.clear()
+	#path_warnings.clear()
+
 func add_ore(n:=1):
 	ore_collected_today += n
 	total_ore += n
 	ore_collected.emit(n)
-
-func needs_opening_confirm() -> bool:
-	return current_day == 1 and opening_needs_confirm
 
 func end_day():
 	# Проверяем норму

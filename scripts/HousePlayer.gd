@@ -26,17 +26,27 @@ func _ready():
 func _process(_delta: float) -> void:
 	_update_interact_hint()
 
+func _get_interactable_from_hit(hit: Object) -> Node:
+	var n := hit as Node
+	while n:
+		if n.has_method("try_mine"): return n      # руда
+		if n.is_in_group("wife") or n.has_method("talk"): return n  # жена/НПС
+		n = n.get_parent()
+	return null
+
 func _update_interact_hint() -> void:
-	if not interact_hint or not interact_ray:
-		return
+	if not interact_hint or not interact_ray: return
+	interact_ray.force_raycast_update()
 	var text := ""
 	if interact_ray.is_colliding():
 		var hit = interact_ray.get_collider()
 		if hit:
-			if hit.is_in_group("ore") or hit.has_method("try_mine"):
-				text = "Press E to dig"
-			elif hit.is_in_group("wife") or hit.has_method("talk"):
-				text = "Press E to speak"
+			var target := _get_interactable_from_hit(hit)
+			if target:
+				if target.has_method("try_mine"):
+					text = "Press E to dig"
+				elif target.is_in_group("wife") or target.has_method("talk"):
+					text = "Press E to speak"
 	interact_hint.text = text
 	interact_hint.visible = text != ""
 
@@ -51,22 +61,30 @@ func _input(event):
 		_try_interact()
 
 func _try_interact():
+	if not interact_ray: return
+	interact_ray.force_raycast_update()
+	if not interact_ray.is_colliding(): return
+	var hit = interact_ray.get_collider()
+	if hit == null: return
+	var target := _get_interactable_from_hit(hit)
+	if target == null: return
+	
 	if interact_ray and interact_ray.is_colliding():
-		var hit = interact_ray.get_collider()
 		if hit and (hit.is_in_group("wife") or hit.has_method("talk")):
 			var now := Time.get_ticks_msec() / 1000.0
 			if now - _last_talk_time < TALK_COOLDOWN:
 				return
 			_last_talk_time = now
 			var house := get_parent()
-			if house and house.has_method("talk_to_wife"):
-				house.call("talk_to_wife")
+			if house and house.has_method("request_wife_talk"):
+				house.call("request_wife_talk")
 			return
 
 		# Руда
-		if hit.has_method("try_mine"):
-			hit.try_mine()
-			return
+	if target.has_method("try_mine"):
+		# безопасный вызов (если руда удалится внутри try_mine)
+		target.call_deferred("try_mine")
+		return
 
 func _physics_process(delta):
 	if not can_move:

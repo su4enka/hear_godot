@@ -14,7 +14,8 @@ extends Node3D
 
 var _subtitle_tween: Tween
 var _subtitle_task_running := false
-var _subtitle_skip_armed := false
+var _advance_requested := false
+var _skip_armed := false
 
 func _ready():
 	if not wife_area.is_in_group("wife"):
@@ -28,8 +29,6 @@ func _ready():
 	# ТРИГГЕРЫ
 	exit_trigger.body_entered.connect(_on_exit_triggered)
 	bed_area.body_entered.connect(_on_bed_entered)
-	# <-- переносим из _on_day_intro, чтобы не плодить подключения
-	wife_area.body_entered.connect(_on_wife_entered)
 
 	# Безопасная инициализация интро-оверлея — на случай если сигнал пролетел до подключения
 	if day_intro_label:
@@ -43,16 +42,31 @@ func _ready():
 	if not GameManager.came_from_cave:
 		_on_day_intro("Day %d" % GameManager.current_day)
 
+func request_wife_talk() -> void:
+	if _subtitle_task_running:
+		_advance_requested = true
+		return
+	_show_wife_line()
+
 func _skip_actions_down() -> bool:
 	return Input.is_action_pressed("ui_accept") \
 		or Input.is_action_pressed("interact") \
 		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
-func _arm_subtitle_skip() -> void:
-	# ждём, пока кнопки будут отпущены — чтобы стартовый E не сработал как "скип"
-	while _skip_actions_down():
+func _skip_down() -> bool:
+	return Input.is_action_pressed("ui_accept") \
+		or Input.is_action_pressed("interact") \
+		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+
+func _arm_skip() -> void:
+	while _skip_down():
 		await get_tree().process_frame
-	_subtitle_skip_armed = true
+	_skip_armed = true
+
+func _subtitle_time_for(text: String) -> float:
+	var t := 2.5 + text.length() * 0.04
+	return clamp(t, 2.5, 6.5)
+
 
 func _action_is_pressed() -> bool:
 	return Input.is_action_just_pressed("interact") \
@@ -61,10 +75,6 @@ func _action_is_pressed() -> bool:
 		or Input.is_action_just_pressed("ui_cancel") \
 		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
-func _subtitle_time_for(text: String) -> float:
-	# базово 2.5с + по 0.04с за символ, но не меньше 2.5 и не больше 6.5
-	var t := 2.5 + text.length() * 0.04
-	return clamp(t, 2.5, 6.5)
 
 func _subtitle_wait_for_skip_or_timeout(timeout: float) -> void:
 	var t := 0.0
@@ -76,51 +86,54 @@ func _subtitle_wait_for_skip_or_timeout(timeout: float) -> void:
 		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			break
 
-func talk_to_wife() -> void:
-# мягко прервать предыдущую
-	if _subtitle_task_running:
-		if _subtitle_tween and _subtitle_tween.is_running():
-			_subtitle_tween.kill()
-		_subtitle_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
-		_subtitle_tween.tween_property(subtitle, "modulate:a", 0.0, 0.12)
-		await _subtitle_tween.finished
-		subtitle.visible = false
-
+func _show_wife_line() -> void:
 	_subtitle_task_running = true
-	_subtitle_skip_armed = false
+	_advance_requested = false
+	_skip_armed = false
+
+	# на всякий пожарный
+	if _subtitle_tween and _subtitle_tween.is_running():
+		_subtitle_tween.kill()
 
 	var line := GameManager.get_wife_line()
 	subtitle.text = line
 	subtitle.modulate.a = 0.0
 	subtitle.visible = true
 
-	# фейд-ин
+	# fade in
 	_subtitle_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
 	_subtitle_tween.tween_property(subtitle, "modulate:a", 1.0, 0.12)
 	await _subtitle_tween.finished
 
-	# ВАЖНО: сперва "разоружаем" стартовое нажатие, потом разрешаем скип
-	await _arm_subtitle_skip()
+	# разоружаем стартовое нажатие, затем разрешаем скип/next
+	await _arm_skip()
 
-	# ждём авто-таймаут или скип (теперь скип сработает только после _arm_subtitle_skip)
+	# ждём: таймер ИЛИ явный скип ИЛИ запрос next
 	var dur := _subtitle_time_for(line)
 	var t := 0.0
-	while t < dur:
+	while t < dur and not _advance_requested:
 		await get_tree().process_frame
 		t += get_process_delta_time()
-		if _subtitle_skip_armed and (
+		# только just_pressed, удержание не считается
+		if _skip_armed and (
 			Input.is_action_just_pressed("ui_accept")
 			or Input.is_action_just_pressed("interact")
-			or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 		):
 			break
 
-	# фейд-аут
+	# fade out
+	if _subtitle_tween and _subtitle_tween.is_running():
+		_subtitle_tween.kill()
 	_subtitle_tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE)
 	_subtitle_tween.tween_property(subtitle, "modulate:a", 0.0, 0.15)
 	await _subtitle_tween.finished
 	subtitle.visible = false
+
 	_subtitle_task_running = false
+
+	# Если просили следующий — запускаем новую строку тут же
+	if _advance_requested:
+		_show_wife_line()
 
 func _wait_for_skip() -> void:
 	while true:
@@ -138,20 +151,6 @@ func _on_day_intro(text:String):
 	day_intro_label.visible = true
 	_set_fade_alpha(0.0)
 
-	if GameManager.needs_opening_confirm():
-		if player: player.can_move = false
-		var t := create_tween()
-		t.tween_method(_set_fade_alpha, 0.0, 0.85, 0.30)
-		await t.finished
-		await _wait_for_skip()
-		GameManager.opening_needs_confirm = false
-		var t2 := create_tween()
-		t2.tween_method(_set_fade_alpha, 0.85, 0.0, 0.30)
-		await t2.finished
-		day_intro_label.visible = false
-		if player: player.can_move = true
-		return
-
 	var t3 := create_tween()
 	t3.tween_method(_set_fade_alpha, 0.0, 0.85, 0.18)
 	await t3.finished
@@ -160,13 +159,6 @@ func _on_day_intro(text:String):
 	t4.tween_method(_set_fade_alpha, 0.85, 0.0, 0.28)
 	await t4.finished
 	day_intro_label.visible = false
-
-func _on_wife_entered(body):
-	if body == player:
-		subtitle.text = GameManager.get_wife_line()
-		subtitle.visible = true
-		await get_tree().create_timer(2.5).timeout
-		subtitle.visible = false
 
 func _on_bed_entered(body):
 	if body == player:

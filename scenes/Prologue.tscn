@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://l8uyt7hlsdn2"]
+
+[ext_resource type="Script" uid="uid://catiwtcjpfu60" path="res://scripts/Prologue.gd" id="1_pr83g"]
+
+[node name="Prologue" type="CanvasLayer"]
+script = ExtResource("1_pr83g")

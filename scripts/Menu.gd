@@ -13,6 +13,7 @@ const PS_KEY := "player/mouse_sensitivity"
 const DEFAULT_SENS := 0.002
 
 func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	settings.visible = false
 	btn_play.pressed.connect(_on_play)
 	btn_settings.pressed.connect(_on_open_settings)
@@ -49,5 +50,4 @@ func _on_quit():
 
 func _on_play():
 	# Старт нового дня и показ интро будет отработан в House через GameManager
-	GameManager.start_new_day()
-	get_tree().change_scene_to_packed(preload("res://scenes/House.tscn"))
+	get_tree().change_scene_to_file("res://scenes/Prologue.tscn")
