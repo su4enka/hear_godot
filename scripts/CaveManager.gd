@@ -1,20 +1,20 @@
 extends Node3D
 
 # === Loudness Tuning ===
-@export var master_drop_db := -18.0     # сколько dB теряем на Master при полной глухоте (день 15)
-@export var warn_base_db := -10.0       # базовая громкость warning (день 1), ДО дистанции
-@export var warn_drop_db := -14.0       # сколько dB теряет warning к дню 15 (добавляется к base)
-@export var warn_min_db := -48.0        # ограничение снизу на warning (чтоб не падал в -∞)
+@export var master_drop_db := -14.0     # сколько dB теряем на Master при полной глухоте (день 15)
+@export var warn_base_db := -26.0       # базовая громкость warning (день 1), ДО дистанции
+@export var warn_drop_db := -64.0       # сколько dB теряет warning к дню 15 (добавляется к base)
+@export var warn_min_db := -80.0        # ограничение снизу на warning (чтоб не падал в -∞)
 
 # (опц.) дистанция: сколько дБ терять, если игрок далеко от входа пути
 @export var dist_near := 3.0            # до 3м – «рядом»
-@export var dist_far := 6.0             # дальше 6м – «далеко»
-@export var dist_near_db := 0.0         # добавка к dB, если рядом
-@export var dist_mid_db := -3.0         # средняя дистанция
-@export var dist_far_db := -6.0         # далеко
+@export var dist_far := 10.0             # дальше 6м – «далеко»
+@export var dist_near_db := 3.0         # добавка к dB, если рядом
+@export var dist_mid_db := -2.0         # средняя дистанция
+@export var dist_far_db := -5.0         # далеко
 
 @export var ore_per_node := 1
-@export var min_collapse_time := 20.0
+@export var min_collapse_time := 5.0
 @export var max_collapse_time := 30.0
 @export var warning_time := 5.0
 @export var min_warning_gap := 5.0  # минимум секунд между стартами warning’ов
