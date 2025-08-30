@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=4 uid="uid://dc0p5a1x7wys8"]
+
+[ext_resource type="Texture2D" uid="uid://cp35wkcf8lvdj" path="res://assets/Cave/Minas/Textures/Rocks_01.png" id="1_fiekf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r1de1"]
+resource_name = "Rocks_01"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_fiekf")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_rwbty"]
+_surfaces = [{
+"aabb": AABB(-0.00668752, -0.0119747, -0.0025043, 0.0145591, 0.0241494, 0.00578263),
+"format": 34359742465,
+"index_count": 72,
+"index_data": PackedByteArray("AAABAAIAAgADAAAAAAADAAgACAADAAIACAAJAAAAAQAAAAkACQAIAAoACgAIAAIACgALAAkAAQAJAAsABQAKAAIABAALAAoACgAFAAQAAQALAAQADAACAAEABgAFAAIABgACAAwABAAFAAYAAQANAAwABgAMAA0AAQAEAAcABgAHAAQAAQAHAA0ADQAHAAYA"),
+"lods": [0.00509919, PackedByteArray("AAABAAIAAgADAAAAAQAAAAQAAwAEAAAABQADAAIABAADAAUABgAFAAIABAAFAAYABgACAAEAAQAEAAcABgAHAAQAAQAHAAYA")],
+"name": "Rocks_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 14,
+"vertex_data": PackedByteArray("Wh8VOyRmJjxJ2VY7d2U9u7ZCEzxJ2VY7ffqEu5dUNDwzHyS75q5hOwV4RzwzHyS77PD7OtYfI7xJ2VY7AYhKO7QxRLwzHyS79yLbu/tqB7wzHyS7Ntu0uziyzLtJ2VY74/cAPOjt8zszHyS7AKjbOyjKsTtJ2VY7urbYOxPUCbwzHyS7826yO2iE0btJ2VY79yLbu8LFCDwzHyS7Ntu0u8RnzztJ2VY7")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_13cu4"]
+resource_name = "Rock_03"
+_surfaces = [{
+"aabb": AABB(-0.00668752, -0.0119747, -0.0025043, 0.0145591, 0.0241494, 0.00578263),
+"attribute_data": PackedByteArray("YnZfP3wkeT5idl8/2ImnPmSDdz+OQbE+ZIN3PxC1ZT5gVl4/aj9VP2Jjdj9FG1o/YWN2P34OeT9fVl4/Wep9P3qStD6yJyI/dniEPmozfj92eIQ+msIZP3qStD5QznU/+YbNPrzB7j6HOfc+EIzgPjEBAz8vnEM/5zDFPkqLNz+1T64+TmXYPhaFFj9OZdg+L+oeP0pLqD6ChZ0+SkuoPjQFRD6dJH4/oBoqPpnmGT9/6Dw9KzYhP0vT5zy8+nE/dniEPpiTKD96krQ+sPgwP3qStD6UIWI/dniEPq2Gaj/6ARA/f+MBP/oBED94UzM/eR66PvOHAz8TbcQ+TmXYPuGisz5KS6g+cs7jO2YZLT9vw3k+0TZuP2/DeT6uDiw/"),
+"format": 34359742487,
+"index_count": 72,
+"index_data": PackedByteArray("AAABAAIAAgADAAAABAAFAAYABgAHAAQAGAAZABoACAAZABgAGAAKAAgAGgAbABgAGwAaAAsACwAJABsADAAcAB0ADAANABwADAAdAA4ADAAOAA8ADAAPAB4AHwARABIAEgAgAB8AEAAfACAAIAATABAAFwAWACEAFwAUABYAFAAiABYAIgAjABYAIwAVABYA"),
+"lods": [0.00509919, PackedByteArray("AAABAAIAAgADAAAABAAFAAYABgAHAAQACAAJAAoACQAIAAsADAANAA4ADAAOAA8AEAARABIAEgATABAAFAAVABYAFwAUABYA")],
+"material": SubResource("StandardMaterial3D_r1de1"),
+"name": "Rocks_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("Wh8VOyRmJjxJ2VY7d2U9u7ZCEzxJ2VY7ffqEu5dUNDwzHyS75q5hOwV4RzwzHyS79yLbu/tqB7wzHyS7Ntu0uziyzLtJ2VY77PD7OtYfI7xJ2VY7AYhKO7QxRLwzHyS77PD7OtYfI7xJ2VY75q5hOwV4RzwzHyS7AYhKO7QxRLwzHyS7Wh8VOyRmJjxJ2VY7d2U9u7ZCEzxJ2VY7Wh8VOyRmJjxJ2VY77PD7OtYfI7xJ2VY7Ntu0uziyzLtJ2VY7d2U9u7ZCEzxJ2VY7Ntu0uziyzLtJ2VY79yLbu/tqB7wzHyS7ffqEu5dUNDwzHyS7AYhKO7QxRLwzHyS75q5hOwV4RzwzHyS7ffqEu5dUNDwzHyS79yLbu/tqB7wzHyS7urbYOxPUCbwzHyS7826yO2iE0btJ2VY7AKjbOyjKsTtJ2VY74/cAPOjt8zszHyS7AKjbOyjKsTtJ2VY7826yO2iE0btJ2VY7Ntu0u8RnzztJ2VY7Ntu0u8RnzztJ2VY79yLbu8LFCDwzHyS79yLbu8LFCDwzHyS7urbYOxPUCbwzHyS74/cAPOjt8zszHyS7Zo9ls8HApwQLacCrAj9HB4464+Bj5ohu97xU6PsfNHQEJ780wEsCwk9Rk2WQm/vZIohpRyZ7VuDRtmMRmY80riKIaUepTcnS97xU6OdjC9XRtmMR515WrWaPZbP0SkGvC2nAq0DbfsRmj2WzPe3usSKIaUeR/07HT1GTZTC9xbELacCrxj+fWU9Rk2Wcq/l1BCe/NNCiomKOOuPgUy1bXNG2YxFb4pg397xU6DDbNU2OOuPgHOU+JwQnvzSE1UVl5uFFOsGYAK0qsTFsukLfxdy1S45EQq27K+YfwZCdbM/ctUuO5+lBnSqxMWzN+TPepUxzkePCLsKlTHORY16Mb2scqMP1Vj5raxyoww3ksxfm4UU6CLG8MSvmH8EcrGlT")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_rwbty")
+
+[node name="Rock_03" type="StaticBody3D"]
+transform = Transform3D(34.1741, 0, 0, 0, -4.07387e-06, 34.1741, 0, -34.1741, -4.07387e-06, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_13cu4")
+skeleton = NodePath("")

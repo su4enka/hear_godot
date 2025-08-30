@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=4 uid="uid://cn1rgl44xtkym"]
+
+[ext_resource type="Texture2D" uid="uid://dhvac5s118vdr" path="res://assets/Cave/Minas/Textures/Rocks_W.jpg" id="1_xwdey"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lc8g0"]
+resource_name = "Rocks_W"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_xwdey")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_iqo12"]
+_surfaces = [{
+"aabb": AABB(-0.00645124, -0.00593967, -0.00315544, 0.0134596, 0.0124794, 0.00872377),
+"format": 34359742465,
+"index_count": 99,
+"index_data": PackedByteArray("AAAMAAIAAgAEAAAADQAMAAAAAgAMAAEAAQADAAIABgADAAEADgABAAwADAANAA4AAQAPAAYADwABAA4ABgAPAAgACAAJAAYABwAJAAgADQAQAA4AAAAQAA0ADgARAA8ADgAQABEACwAIAA8ADwARAAsACAASAAcAEgAIAAsABQAHABIACwARAAoACwAKABIAEwAKABEAEgAKABMAEQAQABMAEgAUAAUAEwAUABIAFAATABAAEAAAABQABAAFABQAFAAAAAQA"),
+"lods": [0.00271251, PackedByteArray("AAABAAIAAQADAAIAAgAEAAAABAAFAAAABgADAAEABwAAAAUAAQAIAAYACAAJAAYABwAJAAgAAQAAAAoABwAKAAAAAQAKAAgACwAKAAcACAAKAAsABwAIAAsA")],
+"name": "Rocks_W",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 21,
+"vertex_data": PackedByteArray("TeqFO7hZgjtSGJ83Sx6Pu0isiTtSGJ83/Q4jutxK1jt4y067rDa7uzOzrjt4y067rg6qO65BpTt4y067iKblOz1SpLp4y0675GTTu7imwLp4y067O/BaO4+hwrt4y067TOdZu67hkrtSGJ83vSaPuy5FwLt4y067CtfHNnHRJruJdrY738vgurgac7upWrU6SBPcuaRfqDtSGJ83FB76Oa5kZDt2qzM7UTUbu+zf4jqpWrU6SN6hu66NjLpSGJ836eg/O1KG0DqpWrU6iEHaunv8orp9A187VN4tO1K2lLtSGJ83OM95OwBswLqpWrU67h+0OwAsbbpSGJ83")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_dqdhi"]
+resource_name = "Rock_09"
+_surfaces = [{
+"aabb": AABB(-0.00645124, -0.00593967, -0.00315544, 0.0134596, 0.0124794, 0.00872377),
+"attribute_data": PackedByteArray("zk3NPuz+bD+rmRU+7P5sPzyehD6Bv4I/mhzYPYG/gj9eVN4+gb+CP4cw3z+Bv4I/t+PGP4G/gj8nFNs/7P5sP1bOtD+Bv4I/jefBP0wqQj+6ycE+gb+CP7uRFT6Bv4I/U8o1Puz+bD/FfWc+lnZiP8ZPjj5MKkI/7m26P+z+bD+EFbU/gb+CPzAOxj+Bv4I/6/DbP+z+bD89TeA/gb+CP1PKNT7A49u+xk+OPjjK+b7FfWc+WNLnvquZFT7Y9zC/zk3NPlQ+L79+vYc+7P5sP288yD/s/mw/vTa6P+z+bD/rD8Y/lnZiP5VpvT+WdmI/x+3GP8rgUj8aLLc+7P5sP9uWxz/s/mw/9Gu7PuLRHL9yEuM+3o4JvywPyT7WNQW/cJWVPkhwK79+vYc+BjM4vykIaT6Q8Qa/F1NTPnzmHb9d7wM+uEMIvw=="),
+"format": 34359742487,
+"index_count": 99,
+"index_data": PackedByteArray("AAAZAAIAAgAEAAAAAgAZAAEAAQADAAIAGgAHAAUABQAGABoAGwAaAAYABgAIABsAHAAaABsAGwAJABwAHQAeAAkADAAfAAoACgALAAwAHwAMAA0ADQAOAB8AEQAgAA8ADwAQABEAEgAgABEAEQATABIAIQAYACIAIgAjACEAGAAhACQAJAAlABgAJgAhACMAIwAVACYAJAAhACcAJQAkACcAJwAhACYAJwAXACUAKAAXACcAJwAmACgAKAAmABYAFgAUACgA"),
+"lods": [0.00271251, PackedByteArray("AAABAAIAAQADAAIAAgAEAAAABQAGAAcACAAHAAYACAAJAAcACgALAAwACgAMAA0ADQAOAAoADwAQABEAEgAPABEAEQATABIAFAAVABYAFwAVABQAFwAYABUA")],
+"material": SubResource("StandardMaterial3D_lc8g0"),
+"name": "Rocks_W",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 41,
+"vertex_data": PackedByteArray("TeqFO7hZgjtSGJ83Sx6Pu0isiTtSGJ83/Q4jutxK1jt4y067rDa7uzOzrjt4y067rg6qO65BpTt4y067rg6qO65BpTt4y067iKblOz1SpLp4y067TeqFO7hZgjtSGJ83O/BaO4+hwrt4y067CtfHNnHRJruJdrY7O/BaO4+hwrt4y067vSaPuy5FwLt4y067TOdZu67hkrtSGJ8338vgurgac7upWrU6CtfHNnHRJruJdrY7TOdZu67hkrtSGJ83vSaPuy5FwLt4y0675GTTu7imwLp4y067Sx6Pu0isiTtSGJ83rDa7uzOzrjt4y067TOdZu67hkrtSGJ83CtfHNnHRJruJdrY738vgurgac7upWrU6Sx6Pu0isiTtSGJ83TeqFO7hZgjtSGJ83SBPcuaRfqDtSGJ837h+0OwAsbbpSGJ83VN4tO1K2lLtSGJ83OM95OwBswLqpWrU638vgurgac7upWrU6iEHaunv8orp9A187VN4tO1K2lLtSGJ83SN6hu66NjLpSGJ836eg/O1KG0DqpWrU67h+0OwAsbbpSGJ83OM95OwBswLqpWrU6FB76Oa5kZDt2qzM7SBPcuaRfqDtSGJ83iEHaunv8orp9A187UTUbu+zf4jqpWrU6SN6hu66NjLpSGJ830ap7q5/U91/OUy6ml71TKxGAwNjr/xFA/k7uqhq6Nigvrzqwbc8YYS+vOrClPPzme8sRcTaVa/XRqnurPz+a6XCe5EDTxSnVrIa+Za1g+xpwnuRACOJn17Jbd0jjyCKvCl1vS6jJdbACYBJKiM3wsKyGvmWO+Fy3Cl1vS+VIyiWyW3dIJ0a2Jn4zm3LdbIoJzlMupuW6+BD+Tu6q7749FApdb0txxZ+9rIa+ZY/1k7UCYBJK3sPdwc5TLqZ+vzLJ0ap7qxr3qp+0fs3ILf28P0LETXVDm7T1055OQ5nDDtZnuHJ6y7dQ7wJgEkphS7YmdVnfizdReQvTnk5D/eIX2MQ8AnY/bnwIRaABnEj//tRCxE11ZvzT5We4cnrH/sfdA4YYlfj75Lq0fs3I5vLMvXVZ34uR07fBVGC5mKnYFsDEPAJ2O7bGvg==")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_iqo12")
+
+[node name="Rock_09" type="StaticBody3D"]
+transform = Transform3D(80.8423, 0, 0, 0, -9.63716e-06, 80.8423, 0, -80.8423, -9.63716e-06, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_dqdhi")
+skeleton = NodePath("")

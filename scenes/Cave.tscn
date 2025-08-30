@@ -1,11 +1,14 @@
-[gd_scene load_steps=21 format=3 uid="uid://cvb03iv3aaopy"]
+[gd_scene load_steps=24 format=3 uid="uid://cvb03iv3aaopy"]
 
 [ext_resource type="Script" uid="uid://stxq7e8ugkpv" path="res://scripts/CaveManager.gd" id="1_oq386"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="2_2kquo"]
+[ext_resource type="PackedScene" uid="uid://bkneoemfoxp5f" path="res://scenes/Environments/Cave_Env.tscn" id="2_3f5ji"]
+[ext_resource type="PackedScene" uid="uid://du8cp7tgtl2ah" path="res://assets/USED ASSETS/Cave/farol.tscn" id="3_qxwsd"]
 [ext_resource type="AudioStream" uid="uid://u5nk82pvrtw2" path="res://sfx/creepy-cave-47164.mp3" id="3_xwfm4"]
 [ext_resource type="PackedScene" uid="uid://ftmqis04ebj2" path="res://scenes/Collapse_Wall.tscn" id="4_i5j2t"]
 [ext_resource type="PackedScene" uid="uid://c270qrnb6y04w" path="res://scenes/Cave_Wall.tscn" id="4_sj338"]
 [ext_resource type="Script" uid="uid://dneddrmr4yuup" path="res://scripts/AudioViz.gd" id="4_twyj6"]
+[ext_resource type="Material" uid="uid://dblifkbdlbjfw" path="res://shaders/psx_shader.tres" id="5_xxa1h"]
 [ext_resource type="PackedScene" uid="uid://d0ei16srs4mwd" path="res://scenes/PauseMenu.tscn" id="6_e5lse"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2kquo"]
@@ -59,6 +62,9 @@ point_count = 3
 [node name="Cave" type="Node3D"]
 script = ExtResource("1_oq386")
 
+[node name="CaveEnv" parent="." instance=ExtResource("2_3f5ji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.1417, 2.09281, 0)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_i5j2t")
 
@@ -67,7 +73,7 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="CaveFloor" type="StaticBody3D" parent="."]
-transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 80, 14.6861, 0, 0)
+transform = Transform3D(120, 0, 0, 0, 1, 0, 0, 0, 80, -8.35835, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CaveFloor"]
 shape = SubResource("BoxShape3D_xchtq")
@@ -221,6 +227,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24958, 0.0727303)
 transform = Transform3D(3.16, 0, 0, 0, -1.38128e-07, -3.16, 0, 3.16, -1.38128e-07, 0, 0, 0)
 collide_with_areas = true
 
+[node name="Farol" parent="Player/Camera3D" instance=ExtResource("3_qxwsd")]
+transform = Transform3D(100, 0, 0, 0, -4.37114e-06, 100, 0, -100, -4.37114e-06, -0.345, -0.35, -0.375)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Player/Camera3D/Farol"]
+light_color = Color(1, 1, 0.658824, 1)
+omni_range = 4.285
+
 [node name="OreContainer" type="Node3D" parent="."]
 
 [node name="CollapseWarning" type="AudioStreamPlayer3D" parent="."]
@@ -228,7 +241,7 @@ stream = ExtResource("3_xwfm4")
 bus = &"Warning"
 
 [node name="ExitTrigger" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.19966, 0.948929, 1.34303)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.1997, 0.948929, 27.9318)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger"]
 shape = SubResource("BoxShape3D_xwfm4")
@@ -241,6 +254,11 @@ mesh = SubResource("BoxMesh_xwfm4")
 [node name="WarningTimer" type="Timer" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PSX shader" type="ColorRect" parent="CanvasLayer"]
+material = ExtResource("5_xxa1h")
+offset_right = 1283.0
+offset_bottom = 723.0
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3

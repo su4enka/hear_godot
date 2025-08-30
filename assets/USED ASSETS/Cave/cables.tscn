@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=4 uid="uid://dlc87flgaca5g"]
+
+[ext_resource type="Texture2D" uid="uid://cp3ehwnsxb46h" path="res://assets/Cave/Minas/Textures/Plastic.png" id="1_uh1ir"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6lcqd"]
+resource_name = "Plastic"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_uh1ir")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_kfdfi"]
+_surfaces = [{
+"aabb": AABB(-0.000191468, -0.00127554, -0.0116695, 0.000382936, 0.00348195, 0.0233389),
+"format": 34359742465,
+"index_count": 78,
+"index_data": PackedByteArray("BgAKAAsACwAEAAYABQAEAAsABAAFAAwADAAFAAsADAAGAAQACwAKAAwABgAMAAMAAwAMAAoACgAGAAAAAwAAAAYACgANAAMAAAANAAoAAwANAAcABwANAAAAAAADAAgABwAIAAMAAAAJAAcACAAJAAAADgAHAAkACAAHAA4ACQABAA4AAQAJAAgADgACAAgACAACAAEADgABAAIA"),
+"lods": [0.000935026, PackedByteArray("BAAGAAUABQAGAAQAAwAFAAYABgAFAAMABgAAAAMAAwAAAAYAAwAAAAcAAAADAAgABwAIAAMAAAAJAAcACAAJAAAAAgAHAAkACAAHAAIACQABAAIACAACAAEAAQAJAAgA"), 0.00096914, PackedByteArray("AAABAAIAAgABAAAAAAADAAIAAwAAAAIABAAAAAMAAwAAAAQABAAFAAMAAwAFAAQA")],
+"name": "Plastic",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 15,
+"vertex_data": PackedByteArray("u8RIOVd5d7p0p+mwvMRIOXaZEDtGMT+8vcRIuXaZEDtGMT+8vMRIuVd5d7oFz2mtvMRIOXyZEDtEMT88vcRIuXyZEDtEMT88vMRIOXjQy7il+dY7TGTrrIxC47mEA9e7vcRIuc/Qy7is+da7vMRIOZrRy7is+da7TGTrrHZC47l/A9c7TGTrrD+79TpEMT88vcRIuUPRy7ip+dY7TGTrrPIvp7p0p+mwTGTrrDS79TpGMT+8")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_j5pvc"]
+resource_name = "Cables"
+_surfaces = [{
+"aabb": AABB(-0.000191468, -0.00127554, -0.0116695, 0.000382936, 0.00348195, 0.0233389),
+"attribute_data": PackedByteArray("zGuwPgIAAD/MJTE/17bkP8wlMT/XtuQ/zGuwPvr//z7PJTE/rm1Jv88lMT+ubUm/t2cFPwIAAD+SMPU++v//PpIw9T7XtuQ/t2cFP9e25D+3ZwU/rm1Jv5Iw9T6ubUm/+zvgPijQZL6BP80+RJ6cP/g74D4Gmpw/8DvgPgaanD+3ZwU/KNBkvpIw9T4Gmpw/t2cFPwaanD+DP80+GPJkvibJJz+ubUm/8zvgPkDQZL5itJ0+AgAAPyPJJz/XtuQ/AAAAP7ptsD63ZwU/aLSdPpIw9T5otJ0+kjD1PmK0nT63ZwU/YrSdPgAAAD+0bbA+kjD1PkDQZL4="),
+"format": 34359742487,
+"index_count": 78,
+"index_data": PackedByteArray("DAATABQAFAAEAAwAEwAMAAAAFAATABUAFQAFABQAAwAVABMAAAAWABMAEwAWAAMADQAWAAAAAwAWAA0AAAAPAA0ADQAOAAMAFwANAA8ADgANABcADwABABcAFwACAA4AGAAZABoAGwAcAB0AHgAQAAoACgALAB4AEAAeAAcABwAGABAABgAHABEAEQASAAYACQASABEAEQAIAAkA"),
+"lods": [0.000935026, PackedByteArray("BAAMAAUAAwAFAAwADAAAAAMAAwAAAA0ADQAOAAMAAAAPAA0ADgANAAIAAgANAA8ADwABAAIACwAQAAoAEAALAAcABwAGABAABgAHABEAEQASAAYACQASABEAEQAIAAkA"), 0.00096914, PackedByteArray("AAABAAIAAwAAAAIABAAAAAMAAwAFAAQABgAHAAgACAAJAAYABwAGAAoACgALAAcA")],
+"material": SubResource("StandardMaterial3D_6lcqd"),
+"name": "Plastic",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 31,
+"vertex_data": PackedByteArray("u8RIOVd5d7p0p+mwvMRIOXaZEDtGMT+8vcRIuXaZEDtGMT+8vMRIuVd5d7oFz2mtvMRIOXyZEDtEMT88vcRIuXyZEDtEMT88u8RIOVd5d7p0p+mwvMRIuVd5d7oFz2mtvcRIuXaZEDtGMT+8vMRIOXaZEDtGMT+8vMRIOXyZEDtEMT88vcRIuXyZEDtEMT88vMRIOXjQy7il+dY7TGTrrIxC47mEA9e7vcRIuc/Qy7is+da7vMRIOZrRy7is+da7vMRIOXjQy7il+dY7vcRIuc/Qy7is+da7vMRIOZrRy7is+da7TGTrrHZC47l/A9c7TGTrrD+79TpEMT88vcRIuUPRy7ip+dY7TGTrrPIvp7p0p+mwTGTrrDS79TpGMT+8TGTrrDS79TpGMT+8vMRIOXaZEDtGMT+8vcRIuXaZEDtGMT+8vcRIuXyZEDtEMT88vMRIOXyZEDtEMT88TGTrrD+79TpEMT88vcRIuUPRy7ip+dY7htV3qodVwuo71WPMUHSL3cMqY8yui3MieCp3qneqPBWbs8KqGDsn+mNMwqrmxNcFhtV3qneqw2p4Kneqd6o8FcMqY8wR13EbO9VjzOG2dlSbs8KqEdeOZGNMwqrhtogrwtqArrlcJOhuZQAAo/aJ1oEuPKW1r6IRfdE8pUlQXO7C2oCu0KPnZIEuPKXQoxcbfdE8pS+2Fm7/f5EaEy1SO/9/SkBKUZUrPCWArkWj2hf/fwAAAAD/P7U/AAAq16TotT8AAP7//z871WPM4bZ2VMMqY8wR13EbY0zCquG2dtSbs8KqEddwm/9/SkD+//+/PCWAri+26BE=")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_kfdfi")
+
+[node name="Cables" type="StaticBody3D"]
+transform = Transform3D(100, 0, 0, 0, 100, -4.37114e-06, 0, 4.37114e-06, 100, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, -4.37114e-08, 0, 4.37114e-08, 1, 0, 0, 0)
+mesh = SubResource("ArrayMesh_j5pvc")
+skeleton = NodePath("")

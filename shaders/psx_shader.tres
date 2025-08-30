@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dblifkbdlbjfw"]
+
+[ext_resource type="Shader" uid="uid://dx6j2vpnfwdmr" path="res://shaders/psx_shader.gdshader" id="1_h5mde"]
+
+[resource]
+shader = ExtResource("1_h5mde")
+shader_parameter/pixel_resolution = 240.0
+shader_parameter/color_steps = 16
+shader_parameter/noise_strength = 0.1
+shader_parameter/enable_dither = true
+shader_parameter/dither_strength = 0.3
+shader_parameter/enable_glow = true
+shader_parameter/glow_strength = 0.4
+shader_parameter/glow_spread = 0.005
+shader_parameter/enable_vintage = true
+shader_parameter/vintage_strength = 0.8
+shader_parameter/respect_alpha_everywhere = true
+shader_parameter/preserve_final_alpha = true

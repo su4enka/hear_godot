@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://c2sabghymoyxk"]
+
+[ext_resource type="PackedScene" uid="uid://cgjiuykvkvyon" path="res://assets/USED ASSETS/Home/home.tscn" id="1_63w2v"]
+[ext_resource type="PackedScene" uid="uid://wrvf8yi5d5lm" path="res://assets/USED ASSETS/Home/toilet_003.tscn" id="2_iteym"]
+[ext_resource type="PackedScene" uid="uid://jwipbo2e6qy3" path="res://assets/USED ASSETS/Home/terrain.tscn" id="3_x6f05"]
+
+[node name="HouseEnv" type="Node3D"]
+
+[node name="Home" parent="." instance=ExtResource("1_63w2v")]
+transform = Transform3D(150, 0, 0, 0, -6.55671e-06, 150, 0, -150, -6.55671e-06, 0, 0.618389, 0)
+
+[node name="Toilet_003" parent="." instance=ExtResource("2_iteym")]
+transform = Transform3D(-6.55671e-06, 150, 6.55671e-06, 0, -6.55671e-06, 150, 150, 6.55671e-06, 2.86603e-13, 4.07123, 0.610612, -8.68231)
+
+[node name="Terrain" parent="." instance=ExtResource("3_x6f05")]

@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bacddsrtb7ohl"]
+
+[ext_resource type="Shader" uid="uid://bk11acimq0uvb" path="res://shaders/outline.gdshader" id="1_a2dft"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_a2dft")
+shader_parameter/outline_enabled = false
+shader_parameter/outline_color = Color(1, 0.85098, 0.2, 1)
+shader_parameter/use_screen_thickness = true
+shader_parameter/outline_px = 2.0
+shader_parameter/outline_width = 0.001
+shader_parameter/silhouette_threshold = 0.4
+shader_parameter/silhouette_falloff = 0.67
+shader_parameter/pulse_amp = 0.2
+shader_parameter/pulse_speed = 2.0
+shader_parameter/dist_fade_start = 12.0
+shader_parameter/dist_fade_end = 20.0
+shader_parameter/camera_world_pos = Vector3(0, 0, 0)

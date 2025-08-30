@@ -248,7 +248,7 @@ func _on_leave_confirmed():
 
 func _on_day_started(_d):
 	
-	player.global_position = Vector3(0, 1, 0)
+	player.global_position = Vector3(0, 2.146, 2.074)
 	player.can_move = true
 	_update_ui()
 
