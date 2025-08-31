@@ -7,19 +7,8 @@
 render_priority = 0
 shader = ExtResource("1_t6xad")
 shader_parameter/outline_enabled = false
-shader_parameter/outline_color = Color(1, 0.85, 0.2, 0.85)
-shader_parameter/width_base = 0.012
-shader_parameter/width_rim_gain = 0.0
-shader_parameter/width_rim_power = 1.0
-shader_parameter/rim_thresh_inflate = 0.72
-shader_parameter/rim_soft_inflate = 0.1
-shader_parameter/rim_thresh_visible = 0.72
-shader_parameter/rim_soft_visible = 0.1
-shader_parameter/world_up = Vector3(0, 1, 0)
-shader_parameter/horiz_from = 0.55
-shader_parameter/horiz_to = 0.9
-shader_parameter/horiz_strength = 1.0
-shader_parameter/view_push = 0.002
+shader_parameter/color = Color(1, 0, 0, 1)
+shader_parameter/size = 1.05
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k7pmy"]
 resource_name = "Bed_01"

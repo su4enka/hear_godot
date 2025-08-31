@@ -81,6 +81,7 @@ func _get_interactable_from_hit(hit: Object) -> Node:
 		if n.is_in_group("wife") or n.has_method("talk"): return n  # жена/НПС
 		if n.is_in_group("bed"): return n                    # кровать
 		if n.is_in_group("exit"): return n
+		if n.is_in_group("toilet"): return n
 		n = n.get_parent()
 	return null
 
@@ -106,6 +107,8 @@ func _update_interact_hint() -> void:
 					text = "Press E to sleep"
 				elif target.is_in_group("exit"):
 					text = "Press E to leave"
+				elif target.is_in_group("toilet"):
+					text = "Press E to pee"
 
 			# стало: меш ищем около самого target (это фильтрует дом и всё лишнее)
 			if target:
@@ -307,6 +310,13 @@ func _try_interact():
 			if house and house.has_method("request_wife_talk"):
 				house.call("request_wife_talk")
 			return
+
+# туалет
+	if target.is_in_group("toilet"):
+		var house := get_parent()
+		if house and house.has_method("request_pee"):
+			house.call("request_pee")
+		return
 
 # выход
 	if target.is_in_group("exit"):

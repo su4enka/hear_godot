@@ -11,6 +11,8 @@ extends Node3D
 @export var night_sun_energy := 0.08
 
 @onready var player = $Player
+@onready var camera_3d: Camera3D = $Player/Camera3D
+
 @onready var spawn_bed: Node3D  = $Spawns/SpawnBed
 @onready var spawn_door: Node3D = $Spawns/SpawnDoor
 var _spawn_done := false
@@ -36,6 +38,10 @@ var _skip_armed := false
 var _suppress_cancel_leave2 := false
 var _suppress_cancel_leave1 := false
 
+var _pee_busy := false
+
+
+
 func _ready():
 	
 	
@@ -46,7 +52,6 @@ func _ready():
 		_place_player(spawn_bed)
 
 	# чтобы следующий заход в дом считался «обычным»
-	GameManager.came_from_cave = false
 	_spawn_done = true
 	GameManager.day_started.connect(_on_day_started)
 	
@@ -79,9 +84,6 @@ func _ready():
 
 	_update_ui()
 	
-	if not GameManager.came_from_cave:
-		_on_day_intro("Day %d" % GameManager.current_day)
-	_refresh_exit_lock()   # <-- добавь
 	
 	# ГАРАНТИЯ ПОКАЗА интро в House:
 	# если Menu уже вызвало GameManager.start_new_day() ДО смены сцены,
@@ -268,6 +270,8 @@ func request_exit() -> void:
 	GameManager.came_from_cave = true
 	get_tree().change_scene_to_packed(preload("res://scenes/Cave.tscn"))
 
+
+
 func _exit_tree():
 	_cancel_subtitle_task()
 
@@ -317,24 +321,11 @@ func _on_day_started(_d):
 	
 	player.can_move = true
 	_update_ui()
-	_refresh_exit_lock()
 	_apply_outdoor(true)
 
 func _on_day_ended(_d, _ore):
 	player.can_move = false
 	_update_ui()
-
-
-func _refresh_exit_lock() -> void:
-	if not is_instance_valid(exit_trigger):
-		return
-	var should_lock := GameManager.came_from_cave
-	if should_lock:
-		if exit_trigger.is_in_group("exit"):
-			exit_trigger.remove_from_group("exit")
-	else:
-		if not exit_trigger.is_in_group("exit"):
-			exit_trigger.add_to_group("exit")
 
 func _update_ui():
 	var need_today := GameManager.get_required_today()
@@ -347,3 +338,17 @@ func _update_ui():
 		hint_label.text = "We need %d ore today. Chances before poverty: %d." % [
 			need_today, GameManager.chances_left
 		]
+
+func request_pee() -> void:
+	if _pee_busy:
+		return
+	_pee_busy = true
+
+	var p: GPUParticles3D = camera_3d.get_node_or_null("PeeParticles")
+	if p:
+		p.emitting = true
+	await get_tree().create_timer(3.0).timeout
+	if p:
+		p.emitting = false
+
+	_pee_busy = false
