@@ -1,6 +1,20 @@
 extends Node3D
 
+@onready var world_env: WorldEnvironment = $WorldEnvironment
+@onready var sun: DirectionalLight3D = $DirectionalLight3D
+
+@export var day_sky_horizon  := Color(0.66, 0.67, 0.69)
+@export var day_ground_horizon := Color(0.66, 0.67, 0.69)
+@export var night_sky_horizon := Color(0.03, 0.05, 0.10)
+@export var night_ground_horizon := Color(0.02, 0.03, 0.05)
+@export var day_sun_energy := 1.0
+@export var night_sun_energy := 0.08
+
 @onready var player = $Player
+@onready var spawn_bed: Node3D  = $Spawns/SpawnBed
+@onready var spawn_door: Node3D = $Spawns/SpawnDoor
+var _spawn_done := false
+
 @onready var bed_area = $Bed/Area3D
 @onready var exit_trigger = $ExitTrigger
 @onready var day_label = $CanvasLayer/Control/DayCounter
@@ -23,6 +37,22 @@ var _suppress_cancel_leave2 := false
 var _suppress_cancel_leave1 := false
 
 func _ready():
+	
+	
+	# СПАВН: если пришли из пещеры — у двери, иначе — у кровати
+	if GameManager.came_from_cave:
+		_place_player(spawn_door)
+	else:
+		_place_player(spawn_bed)
+
+	# чтобы следующий заход в дом считался «обычным»
+	GameManager.came_from_cave = false
+	_spawn_done = true
+	GameManager.day_started.connect(_on_day_started)
+	
+	# День при чистом старте, ночь — если вернулись из пещеры
+	_apply_outdoor(not GameManager.came_from_cave)
+	
 	Rumble.enter_context("house")
 	
 	if not wife_area.is_in_group("wife"):
@@ -34,7 +64,6 @@ func _ready():
 	
 		# Подключаемся к сигналам от автолоада
 	GameManager.day_intro.connect(_on_day_intro)
-	GameManager.day_started.connect(_on_day_started)
 	GameManager.day_ended.connect(_on_day_ended)
 
 	# ТРИГГЕРЫ
@@ -49,12 +78,39 @@ func _ready():
 		day_intro_label.visible = false
 
 	_update_ui()
-
+	
+	if not GameManager.came_from_cave:
+		_on_day_intro("Day %d" % GameManager.current_day)
+	_refresh_exit_lock()   # <-- добавь
+	
 	# ГАРАНТИЯ ПОКАЗА интро в House:
 	# если Menu уже вызвало GameManager.start_new_day() ДО смены сцены,
 	# сигнал мог уйти раньше — покажем вручную текущий день.
-	if not GameManager.came_from_cave:
+	if GameManager.just_returned_home:
+		GameManager.just_returned_home = false  # «съели» маркер
+	else:
 		_on_day_intro("Day %d" % GameManager.current_day)
+
+func _apply_outdoor(is_day: bool) -> void:
+	if world_env and world_env.environment and world_env.environment.sky:
+		var mat := world_env.environment.sky.sky_material
+		if mat is ProceduralSkyMaterial:
+			var psm := mat as ProceduralSkyMaterial
+			if is_day:
+				psm.sky_horizon_color    = day_sky_horizon
+				psm.ground_horizon_color = day_ground_horizon
+			else:
+				psm.sky_horizon_color    = night_sky_horizon
+				psm.ground_horizon_color = night_ground_horizon
+	if sun:
+		sun.light_energy = day_sun_energy if is_day else night_sun_energy
+
+func _place_player(marker: Node3D) -> void:
+	if not marker or not player: return
+	# переносим позицию и ориентацию игрока 1-в-1 как у маркера
+	player.global_transform = marker.global_transform
+	player.velocity = Vector3.ZERO
+	player.call_deferred("reset_physics_interpolation") # опционально, если дёргается кадр
 
 func request_wife_talk() -> void:
 	if _subtitle_task_running:
@@ -198,7 +254,7 @@ func request_exit() -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		return
 
-	# Если уже вернулся из пещеры — только подсказка "нужно отдохнуть"
+	# Уже были в пещере сегодня — не выпускаем
 	if GameManager.came_from_cave:
 		var lbl := hint_label if hint_label else subtitle
 		if lbl:
@@ -208,6 +264,8 @@ func request_exit() -> void:
 			lbl.visible = false
 		return
 
+	# ← вот это добавили
+	GameManager.came_from_cave = true
 	get_tree().change_scene_to_packed(preload("res://scenes/Cave.tscn"))
 
 func _exit_tree():
@@ -232,9 +290,11 @@ func _on_leave_dialog2_confirmed():
 	GameManager.early_used = true
 	GameManager.end_game("early")
 
+
 func _on_leave_dialog2_canceled():
-	# Continue = идти в пещеру
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	if GameManager.came_from_cave:
+		return  # уже были в пещере сегодня — никуда не идём
 	get_tree().change_scene_to_file("res://scenes/Cave.tscn")
 
 func _on_leave_dialog2_close():
@@ -248,13 +308,33 @@ func _on_leave_confirmed():
 
 func _on_day_started(_d):
 	
-	player.global_position = Vector3(0, 2.146, 2.074)
+	
+	
+		# новый день после сна/кнопки Play — всегда у кровати
+	_place_player(spawn_bed)
+	# тут же можно вернуть «дневной» свет
+	_apply_outdoor(true)
+	
 	player.can_move = true
 	_update_ui()
+	_refresh_exit_lock()
+	_apply_outdoor(true)
 
 func _on_day_ended(_d, _ore):
 	player.can_move = false
 	_update_ui()
+
+
+func _refresh_exit_lock() -> void:
+	if not is_instance_valid(exit_trigger):
+		return
+	var should_lock := GameManager.came_from_cave
+	if should_lock:
+		if exit_trigger.is_in_group("exit"):
+			exit_trigger.remove_from_group("exit")
+	else:
+		if not exit_trigger.is_in_group("exit"):
+			exit_trigger.add_to_group("exit")
 
 func _update_ui():
 	var need_today := GameManager.get_required_today()

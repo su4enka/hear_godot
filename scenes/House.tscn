@@ -31,19 +31,12 @@ render_priority = 0
 shader = ExtResource("5_cmj1i")
 shader_parameter/outline_enabled = false
 shader_parameter/outline_color = Color(1, 0.85098, 0.2, 0.392157)
-shader_parameter/use_screen_space_width = true
-shader_parameter/outline_px = 2.0
 shader_parameter/width_base = 0.012
 shader_parameter/width_rim_gain = 0.0
 shader_parameter/width_rim_power = 1.0
-shader_parameter/camera_world_pos = Vector3(0, 0, 0)
-shader_parameter/camera_is_ortho = false
-shader_parameter/camera_fov_y_deg = 70.0
-shader_parameter/camera_ortho_size = 10.0
-shader_parameter/viewport_height_px = 720.0
-shader_parameter/rim_thresh_inflate = 0.72
+shader_parameter/rim_thresh_inflate = 0.309
 shader_parameter/rim_soft_inflate = 0.1
-shader_parameter/rim_thresh_visible = 0.72
+shader_parameter/rim_thresh_visible = 0.174
 shader_parameter/rim_soft_visible = 0.1
 shader_parameter/world_up = Vector3(0, 1, 0)
 shader_parameter/horiz_from = 0.55
@@ -69,18 +62,11 @@ render_priority = 0
 shader = ExtResource("5_cmj1i")
 shader_parameter/outline_enabled = false
 shader_parameter/outline_color = Color(1, 0.85098, 0.2, 0.25098)
-shader_parameter/use_screen_space_width = true
-shader_parameter/outline_px = -0.066
 shader_parameter/width_base = -0.001
 shader_parameter/width_rim_gain = 0.0
 shader_parameter/width_rim_power = 1.0
-shader_parameter/camera_world_pos = Vector3(0.633, 0.756, 0)
-shader_parameter/camera_is_ortho = false
-shader_parameter/camera_fov_y_deg = 70.0
-shader_parameter/camera_ortho_size = 10.0
-shader_parameter/viewport_height_px = 720.0
 shader_parameter/rim_thresh_inflate = 1.028
-shader_parameter/rim_soft_inflate = 0.1
+shader_parameter/rim_soft_inflate = 0.935
 shader_parameter/rim_thresh_visible = 0.72
 shader_parameter/rim_soft_visible = 0.1
 shader_parameter/world_up = Vector3(0, 0, 0)
@@ -130,27 +116,20 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_vc2ot")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bfmfj"]
-size = Vector3(0.117081, 3.47501, 1.50098)
+size = Vector3(0.0722122, 3.47501, 1.50098)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kjlmf"]
 render_priority = 0
 shader = ExtResource("5_cmj1i")
 shader_parameter/outline_enabled = false
 shader_parameter/outline_color = Color(1, 0.85098, 0.2, 0.0666667)
-shader_parameter/use_screen_space_width = false
-shader_parameter/outline_px = 2.0
 shader_parameter/width_base = 0.012
 shader_parameter/width_rim_gain = -0.014
 shader_parameter/width_rim_power = 1.0
-shader_parameter/camera_world_pos = Vector3(0, 0, 0)
-shader_parameter/camera_is_ortho = false
-shader_parameter/camera_fov_y_deg = 70.0
-shader_parameter/camera_ortho_size = 10.0
-shader_parameter/viewport_height_px = 720.0
 shader_parameter/rim_thresh_inflate = 0.72
 shader_parameter/rim_soft_inflate = 0.1
 shader_parameter/rim_thresh_visible = 0.72
-shader_parameter/rim_soft_visible = 0.1
+shader_parameter/rim_soft_visible = 0.783
 shader_parameter/world_up = Vector3(0, 1, 0)
 shader_parameter/horiz_from = 0.55
 shader_parameter/horiz_to = 0.9
@@ -210,6 +189,14 @@ shadow_enabled = true
 
 [node name="HouseEnv" parent="." instance=ExtResource("2_etd6b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.21803, 0)
+
+[node name="Spawns" type="Node3D" parent="."]
+
+[node name="SpawnDoor" type="Node3D" parent="Spawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.106511, 1.17924, 1.8433)
+
+[node name="SpawnBed" type="Node3D" parent="Spawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35961, 1.179, 7.61125)
 
 [node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.14636, 2.07373)
@@ -271,7 +258,7 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84239, 2.33759, 1.36419)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.307181, 0.498642, 0.250488)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.284747, 0.498642, 0.250488)
 shape = SubResource("BoxShape3D_bfmfj")
 
 [node name="Door" type="StaticBody3D" parent="ExitTrigger"]

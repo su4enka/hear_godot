@@ -497,5 +497,4 @@ func _kill_player():
 
 func _on_exit_triggered(body):
 	if body.is_in_group("player"):
-		GameManager.came_from_cave = true
-		get_tree().change_scene_to_file("res://scenes/House.tscn")
+		GameManager.go_home_from_cave()

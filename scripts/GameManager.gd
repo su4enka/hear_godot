@@ -16,6 +16,7 @@ var the_game_ended := false
 
 var opening_needs_confirm := true
 
+var just_returned_home := false
 var came_from_cave := false
 
 var early_used := false
@@ -210,3 +211,8 @@ func end_day():
 func end_game(kind:String):
 	the_game_ended = true
 	game_ended.emit(kind)
+
+func go_home_from_cave():
+	came_from_cave = true
+	just_returned_home = true
+	get_tree().change_scene_to_file("res://scenes/House.tscn")
