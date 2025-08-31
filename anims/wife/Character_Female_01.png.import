@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cxv3w3n2a6sve"
-path.s3tc="res://.godot/imported/Character_Female_01.png-da9407abe3d10e8dc117e6404f35ee20.s3tc.ctex"
+path.s3tc="res://.godot/imported/Character_Female_01.png-791f464df5212f7fc74cd1f74aaaa265.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/Trailer_Park/Textures/Character_Female_01.png"
-dest_files=["res://.godot/imported/Character_Female_01.png-da9407abe3d10e8dc117e6404f35ee20.s3tc.ctex"]
+source_file="res://anims/wife/Character_Female_01.png"
+dest_files=["res://.godot/imported/Character_Female_01.png-791f464df5212f7fc74cd1f74aaaa265.s3tc.ctex"]
 
 [params]
 
