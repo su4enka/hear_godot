@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=4 uid="uid://bjbxtkui12jjc"]
+
+[ext_resource type="Texture2D" uid="uid://c1qsjbys8c877" path="res://assets/Trailer_Park/Textures/TilesSmall_01.jpg" id="1_0by78"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o8cmr"]
+resource_name = "TilesSmall_01"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_0by78")
+emission_enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_hp62q"]
+_surfaces = [{
+"aabb": AABB(-0.000376982, -0.00695298, -0.000843803, 0.00137091, 0.013906, 0.0127239),
+"format": 34359742465,
+"index_count": 54,
+"index_data": PackedByteArray("AAABAAIAAgADAAAABAACAAEAAQAFAAQAAQAAAAYABwAFAAEAAQAIAAcABgAJAAEACAABAAkABgAKAAsACwAJAAYACQALAAwADAANAAkABwAIAA4ACQAOAAgADgAJAA0ADgAPAAcADQAPAA4A"),
+"name": "TilesSmall_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 16,
+"vertex_data": PackedByteArray("pKXFudvV4ztbdqI5pKXFudYBTblbdqI5pKXFuQAAAACuMl26pKXFudvV4zuuMl26pKXFudvV47uuMl26pKXFudvV47tbdqI5yEaCOtvV4ztbdqI5pKXFudvV47vppEI8pKXFudYBTbnppEI8yEaCOtYBTblbdqI5yEaCOtvV4zuuMl26yEaCOgAAAACuMl26yEaCOtvV47uuMl26yEaCOtvV47tbdqI5yEaCOtYBTbnppEI8yEaCOtvV47vppEI8")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_i3k07"]
+resource_name = "Wall"
+_surfaces = [{
+"aabb": AABB(-0.000376982, -0.00695298, -0.000843803, 0.00137091, 0.013906, 0.0127239),
+"attribute_data": PackedByteArray("olvCPy6Jyz6p//M+LonLPkNLAT8E0BA/olvCPwTQED+9IAK/BNAQP6v/8z4uics+vSACvy6Jyz67IAK/3Pakv6r/8z4sics+r//zPt72pL+9IAK/BNAQP70gAr8uics+qv/zPiyJyz5DSwE/BNAQP7sgAr/e9qS/rv/zPtz2pL+r//M+LonLPqJbwj8uics+olvCPwTQED+p//M+LonLPhkMGj/f0Ag/GAwaP4zmAb97Mk0/juYBv3syTT/g0Ag/GAwaP4QvwT8YDBo/dD4GP3syTT90PgY/ezJNP4QvwT9EGc0+ZH5jv0QZzT7CRE0/V9MZP8JETT9X0xk/ZH5jvw=="),
+"format": 34359742487,
+"index_count": 54,
+"index_data": PackedByteArray("AAABAAIAAgADAAAABAACAAUABQAGAAQABwAGAAgACAAJAAcACgALAAwADAANAAoACwAOAA8ADwAQAAsAEQASAA0ADQATABEAFAAVABYAFgAXABQAGAAZABoAGgAbABgAHAAdAB4AHgAfABwA"),
+"material": SubResource("StandardMaterial3D_o8cmr"),
+"name": "TilesSmall_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 32,
+"vertex_data": PackedByteArray("pKXFudvV4ztbdqI5pKXFudYBTblbdqI5pKXFuQAAAACuMl26pKXFudvV4zuuMl26pKXFudvV47uuMl26pKXFudYBTblbdqI5pKXFudvV47tbdqI5pKXFudvV47vppEI8pKXFudYBTblbdqI5pKXFudYBTbnppEI8yEaCOtvV47uuMl26yEaCOtvV47tbdqI5yEaCOtYBTblbdqI5yEaCOgAAAACuMl26yEaCOtvV47vppEI8yEaCOtYBTbnppEI8yEaCOtYBTblbdqI5yEaCOtvV4ztbdqI5yEaCOtvV4zuuMl26yEaCOtYBTblbdqI5pKXFudYBTblbdqI5pKXFudvV4ztbdqI5yEaCOtvV4ztbdqI5yEaCOtYBTblbdqI5pKXFudvV47vppEI8pKXFudYBTbnppEI8yEaCOtYBTbnppEI8yEaCOtvV47vppEI8pKXFudYBTbnppEI8pKXFudYBTblbdqI5yEaCOtYBTblbdqI5yEaCOtYBTbnppEI8AAD/f/9/AAAAAP9//38AAAAA/3//fwAAAAD/f/9/AAAAAP9//38AAAAA/3//fwAAAAD/f/9/AAAAAP9//38AAAAA/3//fwAAAAD/f/9/AAD///9//3///////3//f///////f/9///////9//3///////3//f/7/////f/9//v////9//3///////3//f///////f/9///////9//3////9//3/+//+//3//f////7//f/9//v//v/9//3/+//+//3//f////7//f/9/////v/9//3////+//3//f////7//f///////P/9///////8//3///////z//f///////Pw==")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_hp62q")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l07dw"]
+size = Vector3(0.00109863, 0.00610352, 0.0126953)
+
+[node name="Wall" type="StaticBody3D"]
+transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_i3k07")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000305176, -0.00378418, 0.00585938)
+shape = SubResource("BoxShape3D_l07dw")

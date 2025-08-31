@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 const OUTLINE_SHADER_PATH := "res://shaders/outline.gdshader"
-var last_outlined: MeshInstance3D = null
+var outlined_meshes: Array[MeshInstance3D] = []
 
 @export var speed := 5.0
 
@@ -69,9 +69,11 @@ func _ready():
 
 func _process(_delta: float) -> void:
 	_update_interact_hint()
-	
-	if last_outlined and last_outlined.material_overlay is ShaderMaterial:
-		last_outlined.material_overlay.set_shader_parameter("camera_world_pos", camera_3d.global_position)
+	# если шейдеру нужна позиция камеры — прокидываем её всем подсвеченным
+	for mi in outlined_meshes:
+		var sm := _get_outline_material(mi)
+		if sm:
+			sm.set_shader_parameter("camera_world_pos", camera_3d.global_position)
 
 
 func _get_interactable_from_hit(hit: Object) -> Node:
@@ -82,6 +84,7 @@ func _get_interactable_from_hit(hit: Object) -> Node:
 		if n.is_in_group("bed"): return n                    # кровать
 		if n.is_in_group("exit"): return n
 		if n.is_in_group("toilet"): return n
+		if n.is_in_group("shower"): return n
 		n = n.get_parent()
 	return null
 
@@ -91,7 +94,7 @@ func _update_interact_hint() -> void:
 
 	interact_ray.force_raycast_update()
 	var text := ""
-	var new_outline: MeshInstance3D = null
+	var new_outlined: Array[MeshInstance3D] = []
 
 	if interact_ray.is_colliding():
 		var hit = interact_ray.get_collider()
@@ -109,34 +112,28 @@ func _update_interact_hint() -> void:
 					text = "Press E to leave"
 				elif target.is_in_group("toilet"):
 					text = "Press E to pee"
+				elif target.is_in_group("shower"):
+					text = "Press E to shower"
 
 			# стало: меш ищем около самого target (это фильтрует дом и всё лишнее)
 			if target:
-				var mesh := _find_mesh_for_target(target)
-				if mesh:
-					new_outline = mesh
+				new_outlined = _collect_target_meshes(target)
 
 	# выключить у прошлого
-	if last_outlined and last_outlined != new_outline:
-		_set_outline(last_outlined, false)
+	for m in outlined_meshes:
+		if not new_outlined.has(m):
+			_set_outline(m, false)
 
 	# включить у нового
-	if new_outline:
-		_set_outline(new_outline, true)
+	for m in new_outlined:
+		if not outlined_meshes.has(m):
+			_set_outline(m, true)
 
-	last_outlined = new_outline
+	outlined_meshes = new_outlined
 
 	interact_hint.text = text
 	interact_hint.visible = text != ""
 
-func _find_mesh_ancestor(n: Node) -> MeshInstance3D:
-	# Поднимаемся по родителям до ближайшего меша
-	var cur := n
-	while cur:
-		if cur is MeshInstance3D:
-			return cur
-		cur = cur.get_parent()
-	return null
 
 func _ensure_overlay_unique(mi: MeshInstance3D) -> ShaderMaterial:
 	# Гарантируем уникальный ShaderMaterial в material_overlay
@@ -161,36 +158,36 @@ func _set_outline(mi: MeshInstance3D, on: bool) -> void:
 	if mi == null: return
 	var sm := _get_outline_material(mi)
 	if sm == null:
+		sm = _ensure_overlay_unique(mi)  # ← создаём overlay с нашим шейдером
+	if sm == null:
 		return
-	# здесь уже точно наш шейдер → можно безопасно ставить параметры
 	sm.set_shader_parameter("outline_enabled", on)
 	sm.set_shader_parameter("camera_world_pos", camera_3d.global_position)
 
-func _find_mesh_descendant(root: Node, max_depth: int = 8) -> MeshInstance3D:
+func _find_mesh_descendants_all(root: Node, max_depth: int = 8) -> Array[MeshInstance3D]:
+	var out: Array[MeshInstance3D] = []
 	var q: Array = [root]
 	var depth: Dictionary = {root: 0}
-	while q.size() > 0:
+	while not q.is_empty():
 		var n: Node = q.pop_front()
 		if n is MeshInstance3D and (n as MeshInstance3D).is_visible_in_tree():
-			return n
+			out.append(n)
 		var d := int(depth.get(n, 0))
-		if d >= max_depth:
-			continue
-		for c in n.get_children():
-			q.append(c)
-			depth[c] = d + 1
-	return null
+		if d < max_depth:
+			for c in n.get_children():
+				q.append(c)
+				depth[c] = d + 1
+	return out
 
-func _find_mesh_for_target(target: Node) -> MeshInstance3D:
-	# поднимаемся до 3 предков, на каждом ищем вниз
-	var cur := target
-	var hops := 0
-	while cur and hops < 3:
-		var m := _find_mesh_descendant(cur, 10)
-		if m: return m
-		cur = cur.get_parent()
-		hops += 1
-	return null
+func _collect_target_meshes(target: Node) -> Array[MeshInstance3D]:
+	# Ищем меши ТОЛЬКО в пределах интерактива, не поднимаемся к House.
+	var root := target
+	if root is Area3D and root.get_parent() != null:
+		root = root.get_parent()   # интерактивный узел (ShowerKnobs / Toilet / Bed / DoorRoot / Wife)
+	return _find_mesh_descendants_all(root, 8)
+
+
+
 
 func _shader_has_param(mat: ShaderMaterial, pname: String) -> bool:
 	# в Godot 4 get_shader_parameter() кидает ошибку, если параметра нет — проверим по списку uniforms
@@ -223,14 +220,18 @@ func _walk_next_pass(m: Material) -> Array[ShaderMaterial]:
 	return out
 
 func _get_outline_material(mi: MeshInstance3D) -> ShaderMaterial:
-	# 1) Overlay
-	if mi.material_overlay is ShaderMaterial:
-		var sm := mi.material_overlay as ShaderMaterial
-		if _is_outline_shader(sm):
-			return sm
-		for sm2 in _walk_next_pass(sm):
-			if _is_outline_shader(sm2):
-				return sm2
+	if mi.mesh:
+		var sc := mi.mesh.get_surface_count()
+		for i in range(sc):
+			var m := mi.get_surface_override_material(i)
+			if m == null:
+				m = mi.mesh.surface_get_material(i)
+			if m:
+				if m is ShaderMaterial and _is_outline_shader(m):
+					return m
+				for sm4 in _walk_next_pass(m):
+					if _is_outline_shader(sm4):
+						return sm4
 
 	# 2) material_override
 	if mi.material_override is ShaderMaterial:
@@ -256,23 +257,6 @@ func _get_outline_material(mi: MeshInstance3D) -> ShaderMaterial:
 						return sm4
 	return null
 
-func _find_mesh_nearby(hit: Node, target: Node) -> MeshInstance3D:
-	# 1) вверх по предкам от collider’а
-	var m := _find_mesh_ancestor(hit)
-	if m: return m
-	# 2) вниз по таргету (твоя логика интеракции)
-	if target:
-		m = _find_mesh_descendant(target)
-		if m: return m
-	# 3) вверх от collider’а, на каждом уровне пробуем спуститься вниз
-	var cur := hit
-	var hops := 0
-	while cur and hops < 6:
-		m = _find_mesh_descendant(cur)
-		if m: return m
-		cur = cur.get_parent()
-		hops += 1
-	return null
 
 func _input(event):
 	
@@ -323,6 +307,13 @@ func _try_interact():
 		var house := get_parent()
 		if house and house.has_method("request_exit"):
 			house.call("request_exit")
+		return
+
+# душ
+	if target.is_in_group("shower"):
+		var house := get_parent()
+		if house and house.has_method("request_shower"):
+			house.call("request_shower")
 		return
 
 # кровать

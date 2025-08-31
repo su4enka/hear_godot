@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=4 uid="uid://cek8d44g11nnw"]
+
+[ext_resource type="Texture2D" uid="uid://dxc2cehwuje2t" path="res://assets/Trailer_Park/Textures/Cereal_02.png" id="1_8b8bj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_58f3e"]
+resource_name = "Cereal_02"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_8b8bj")
+emission_enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_mwe1y"]
+_surfaces = [{
+"aabb": AABB(-0.00142812, -0.000438989, -0.00206544, 0.00285625, 0.000877977, 0.00413088),
+"format": 34359742465,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAgADAAAAAQAAAAQABAAAAAMABQACAAEAAwACAAUABAAGAAEAAQAGAAUAAwAHAAQABgAEAAcABQAHAAMABwAFAAYA"),
+"name": "Cereal_02",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("3C+7ug4o5jlSXAc73C+7ug4o5rlSXAc73C+7ug4o5rlSXAe73C+7ug4o5jlSXAe73C+7Og4o5jlSXAc73C+7Og4o5rlSXAe73C+7Og4o5rlSXAc73C+7Og4o5jlSXAe7")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_pei0r"]
+resource_name = "Cereal_02_001"
+_surfaces = [{
+"aabb": AABB(-0.00142812, -0.000438989, -0.00206544, 0.00285625, 0.000877977, 0.00413088),
+"attribute_data": PackedByteArray("XxbpPgDWhjtofrQ+ANaGO2h+tD44j/k+XxbpPjiP+T70FIA7rP/9Puw9sD6q//0+6j2wPoAUgDu1FIA7gBSAO9PN6T6u//0+kz60Pq7//T6SPrQ+gBWAO9LN6T6AFYA74JAEPNa5+T5+260+1rn5Pn7brT5AxQg84JAEPEDFCDxnf6c+svbJPmd/pz7I0bM+cOo+PsjRsz5w6j4+svbJPuTgnz6qvdI+5OCfPrb8/D6IiTM9tvz8PoiJMz2qvdI+"),
+"format": 34359742487,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAgADAAAABAAFAAYABgAHAAQACAAJAAoACgALAAgADAANAA4ADgAPAAwAEAARABIAEgATABAAFAAVABYAFgAXABQA"),
+"material": SubResource("StandardMaterial3D_58f3e"),
+"name": "Cereal_02",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("3C+7ug4o5jlSXAc73C+7ug4o5rlSXAc73C+7ug4o5rlSXAe73C+7ug4o5jlSXAe73C+7Og4o5jlSXAc73C+7ug4o5jlSXAc73C+7ug4o5jlSXAe73C+7Og4o5jlSXAe73C+7Og4o5rlSXAc73C+7Og4o5jlSXAc73C+7Og4o5jlSXAe73C+7Og4o5rlSXAe73C+7ug4o5rlSXAc73C+7Og4o5rlSXAc73C+7Og4o5rlSXAe73C+7ug4o5rlSXAe73C+7Og4o5rlSXAe73C+7Og4o5jlSXAe73C+7ug4o5jlSXAe73C+7ug4o5rlSXAe73C+7ug4o5rlSXAc73C+7ug4o5jlSXAc73C+7Og4o5jlSXAc73C+7Og4o5rlSXAc7AAD/f/9/AAAAAP9//38AAAAA/3//fwAAAAD/f/9/AAD/f///AAD/P/9///8AAP8//3///wAA/z//f///AAD/P////3//fwCA////f/9/AID///9//38AgP///3//fwCA/38AAP///z//fwAA////P/9/AAD///8//38AAP///z//////////P/////////8//////////z//////////P/9//38AAP+//3//fwAA/7//f/9/AAD/v/9//38AAP+/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_mwe1y")
+
+[node name="Cereal_02_001" type="StaticBody3D"]
+transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_pei0r")
+skeleton = NodePath("")

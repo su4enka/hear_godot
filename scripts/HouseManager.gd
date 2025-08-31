@@ -17,12 +17,17 @@ extends Node3D
 @onready var spawn_door: Node3D = $Spawns/SpawnDoor
 var _spawn_done := false
 
+@onready var shower_knobs: StaticBody3D = $ShowerKnobs
+@onready var toilet_area: Area3D = $Toilet/Area3D
+@onready var shower_area: Area3D = $ShowerKnobs/Area3D
 @onready var bed_area = $Bed/Area3D
-@onready var exit_trigger = $ExitTrigger
+@onready var exit_trigger = $Door/ExitTrigger
 @onready var day_label = $CanvasLayer/Control/DayCounter
 @onready var ore_label = $CanvasLayer/Control/OreCounter
 @onready var leave_dialog: ConfirmationDialog = $CanvasLayer/LeaveDialog
 @onready var leave_dialog2: ConfirmationDialog = $CanvasLayer/LeaveDialog2
+
+
 
 @onready var wife_area: Area3D = $Wife/Area3D
 @onready var subtitle: Label = $CanvasLayer/Subtitles
@@ -39,7 +44,7 @@ var _suppress_cancel_leave2 := false
 var _suppress_cancel_leave1 := false
 
 var _pee_busy := false
-
+var _shower_busy := false
 
 
 func _ready():
@@ -66,6 +71,10 @@ func _ready():
 		bed_area.add_to_group("bed")
 	if not exit_trigger.is_in_group("exit"):
 		exit_trigger.add_to_group("exit")
+	if not shower_area.is_in_group("shower"):
+		shower_area.add_to_group("shower")
+	if not toilet_area.is_in_group("toilet"):
+		toilet_area.add_to_group("toilet")
 	
 		# Подключаемся к сигналам от автолоада
 	GameManager.day_intro.connect(_on_day_intro)
@@ -352,3 +361,16 @@ func request_pee() -> void:
 		p.emitting = false
 
 	_pee_busy = false
+	
+func request_shower() -> void:
+	if _shower_busy: return
+	_shower_busy = true
+
+	var p: GPUParticles3D = shower_knobs.get_node_or_null("ShowerParticles")
+	if p:
+		p.emitting = true
+	await get_tree().create_timer(3.0).timeout
+	if p:
+		p.emitting = false
+
+	_shower_busy = false

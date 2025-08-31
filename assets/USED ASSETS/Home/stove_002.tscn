@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=4 uid="uid://2yexkv71eme3"]
+
+[ext_resource type="Texture2D" uid="uid://cfc7jvaeufaxd" path="res://assets/Trailer_Park/Textures/Stove.png" id="1_57vew"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l6krn"]
+resource_name = "Stove"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_57vew")
+emission_enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_cmm7b"]
+_surfaces = [{
+"aabb": AABB(-0.00339044, -0.00339044, -0.00725532, 0.00745876, 0.00678089, 0.0132619),
+"format": 34359742465,
+"index_count": 96,
+"index_data": PackedByteArray("AAABAAIAAgABAAMAAwABAAAAAAAEAAMAAwAEAAUAAAAFAAQABQAGAAMAAAAHAAUABgAFAAcACAADAAYABwAIAAYACAACAAMAAAAJAAcAAgAJAAAACgAIAAcABwALAAoACwAHAAkACAAKAAwADAACAAgACgALAA0ADQAMAAoACQANAAsADgAMAA0ADwAJAAIAEAACAAwAAgAQAA8ADAAOABAACQAPABEAEQANAAkAEQAPABAADQARAA4AEAAOABEA"),
+"name": "Stove",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 18,
+"vertex_data": PackedByteArray("PcBMuzYyXrtrIpM7PcBMuzYyXjtrIpM7NjJeOzYyXjtrIpM7NjJeuzYyXjtvaYo7NjJeuzYyXrtvaYo7NjJeuzYyXrsEvu27NjJeuzYyXjsEvu27NjJeOzYyXrsEvu27NjJeOzYyXjsEvu27NjJeOzYyXrtrIpM7e0+FOzYyXjsEvu27e0+FOzYyXrsEvu27e0+FOzYyXjtrIpM7e0+FOzYyXrtrIpM7e0+FOzYyXjuN0sQ7NjJeOzYyXruN0sQ7NjJeOzYyXjuN0sQ7e0+FOzYyXruN0sQ7")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_27ce5"]
+resource_name = "Stove_002"
+_surfaces = [{
+"aabb": AABB(-0.00339044, -0.00339044, -0.00725532, 0.00745876, 0.00678089, 0.0132619),
+"attribute_data": PackedByteArray("WUunPnRTDj5/SiQ/dFMOPn9KJD9+HuI+WkunPn4e4j5R7NI9XbNIP1Hs0j1kKlQ/7kSbPmQqVD/uRJs+XbNIP+VaLj9H1Xs/t/9+P0bVez+2/34/op/mPuRaLj+kn+Y+aCSAO95+0j42SqM+3n7SPjZKoz7g1MQ9ViSAO+DUxD02SqM+fp7iPmgkgDt+nuI+igERPaSf5j7ZabM+RtV7P9dpsz6in+Y+nAERPbj/fj/3FK0+t/9+P1JaLD+3/34//2q3Prj/fj/9arc+pJ/mPlFaLD+in+Y+6iSAO7j/fj+cARE9uP9+P4oBET2kn+Y+XySAO6Sf5j5ogbQ8qLjtPgBrVD2ouO0+AGtUPaooez9ogbQ8qih7Py3QXD52omY/6E9IPnaiZj/oT0g+iV0zPy3QXD6JXTM/6E9IPl2zSD/oT0g+ZCpUPy3QXD5kKlQ/LdBcPl2zSD8t0Fw+XbNIPy3QXD5kKlQ/6E9IPmQqVD/oT0g+XbNIPwaxOD8BAAA/NGEqP/7//z40YSo/AACAPgexOD8EAIA+5VouP0fVez/lWi4/uP9+P7f/fj+3/34/t/9+P0bVez/UT60+qih7PwBrVD2ouO0++k6zPqi47T4Aa1Q9qih7P/pOsz4YKXg/"),
+"format": 34359742487,
+"index_count": 96,
+"index_data": PackedByteArray("AAABAAIAAgADAAAABAAFAAYABgAHAAQACAAJAAoACgALAAgADAANAA4ADgAPAAwAEAANAAwADAARABAAEgATABQAEgAVABMAFQAWABMAFwAYABkAGQAaABcAGwAcAB0AHQAeABsAHwAgACEAIQAiAB8AIwAkACUAJQAmACMAJwAoACkAKQAqACcAKwAsAC0ALQAuACsALwAwADEAMQAyAC8AMwA0ADUANQA2ADMANwA4ADkANwA6ADgANwA5ADsA"),
+"material": SubResource("StandardMaterial3D_l6krn"),
+"name": "Stove",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 60,
+"vertex_data": PackedByteArray("PcBMuzYyXrtrIpM7PcBMuzYyXjtrIpM7NjJeOzYyXjtrIpM7NjJeOzYyXrtrIpM7NjJeOzYyXruN0sQ7NjJeOzYyXrtrIpM7NjJeOzYyXjtrIpM7NjJeOzYyXjuN0sQ7NjJeuzYyXjtvaYo7NjJeuzYyXrtvaYo7NjJeuzYyXrsEvu27NjJeuzYyXjsEvu27NjJeOzYyXrsEvu27NjJeOzYyXjsEvu27NjJeuzYyXjsEvu27NjJeuzYyXrsEvu27e0+FOzYyXjsEvu27e0+FOzYyXrsEvu27NjJeOzYyXjsEvu27NjJeuzYyXjtvaYo7NjJeuzYyXjsEvu27NjJeOzYyXjtrIpM7PcBMuzYyXjtrIpM7e0+FOzYyXrtrIpM7e0+FOzYyXjtrIpM7e0+FOzYyXjsEvu27e0+FOzYyXrsEvu27e0+FOzYyXjtrIpM7NjJeOzYyXjtrIpM7NjJeOzYyXjsEvu27e0+FOzYyXjsEvu27e0+FOzYyXrsEvu27NjJeOzYyXrsEvu27NjJeOzYyXrtrIpM7e0+FOzYyXrtrIpM7e0+FOzYyXruN0sQ7NjJeOzYyXruN0sQ7NjJeOzYyXjuN0sQ7e0+FOzYyXjuN0sQ7NjJeOzYyXjuN0sQ7NjJeOzYyXjtrIpM7e0+FOzYyXjtrIpM7e0+FOzYyXjuN0sQ7e0+FOzYyXruN0sQ7e0+FOzYyXrtrIpM7NjJeOzYyXrtrIpM7NjJeOzYyXruN0sQ7e0+FOzYyXjuN0sQ7e0+FOzYyXjtrIpM7e0+FOzYyXrtrIpM7e0+FOzYyXruN0sQ7NjJeuzYyXjtvaYo7PcBMuzYyXjtrIpM7PcBMuzYyXrtrIpM7NjJeuzYyXrtvaYo7PcBMuzYyXrtrIpM7NjJeOzYyXrsEvu27NjJeuzYyXrsEvu27NjJeOzYyXrtrIpM7NjJeuzYyXrtvaYo7/3//f/9/////f/9//3////9//3//f////3//f/9///8AAP9//38AAAAA/3//fwAAAAD/f/9/AAAAAP9//38AAAAA/3//f/5/AAD/f/9//n8AAP9//3/+fwAA/3//f/5///////9/AAD//////38AAP//////fwAA//////9/AAD//////38AAP//////fwAA/3///wAA/z//f///AAD/P/9///8AAP8//3///wAA/z//f///AAD/P////3//fwCA////f/9/AID///9//38AgP///3//fwCA/3///wAA/z//f///AAD/P/9///8AAP8//3///wAA/z//fwAAAAD/v/9/AAAAAP+//38AAAAA/7//fwAAAAD/v/9//3////+//3//f////7//f/9/////v/9//3////+//3///////z//f///////P/9///////8//3///////z//fwAA////v/9/AAD///+//38AAP///7//fwAA////v////3//f/+/////f/9//7////9//3//v////3//f/+//z//f/9//n//P/9//3/+f/8//3//f/5//z//f/9//n//fwAAAAD/v/9/AAAAAP+//38AAAAA/7//fwAAAAD/v/9/AAAAAP+/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_cmm7b")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_do3tl"]
+size = Vector3(0.00585938, 0.00610352, 0.0131836)
+
+[node name="Stove_002" type="StaticBody3D"]
+transform = Transform3D(0, 100, 2.98023e-06, 2.98023e-06, 0, 100, 100, 2.98023e-06, 0, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_27ce5")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, -1.7523e-20, -1.42937e-21, 1, -1.55165e-35, 0, -1.7523e-20, 1, 1.15547e-23, 3.46945e-18, -0.000732422)
+shape = SubResource("BoxShape3D_do3tl")

@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=4 uid="uid://d0gbakdtfwjw6"]
+
+[ext_resource type="Texture2D" uid="uid://c71mmpmdf646r" path="res://assets/Trailer_Park/Textures/bathroom_drain.png" id="1_hn2ty"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_05wti"]
+resource_name = "bathroom_drain"
+transparency = 4
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_hn2ty")
+emission_enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_cn3x0"]
+_surfaces = [{
+"aabb": AABB(-0.000793439, -0.000793439, 0, 0.00158688, 0.00158688, 1e-05),
+"format": 34359742465,
+"index_count": 6,
+"index_data": PackedByteArray("AAABAAIAAgADAAAA"),
+"name": "bathroom_drain",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("w/5POsP+TzoAAAAAw/5POsP+T7oAAAAAw/5PusP+T7oAAAAAw/5PusP+TzoAAAAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_f27vc"]
+resource_name = "bathroom_drain"
+_surfaces = [{
+"aabb": AABB(-0.000793439, -0.000793439, 0, 0.00158688, 0.00158688, 1e-05),
+"attribute_data": PackedByteArray("AACAPwAAAAAAAIA/AACAPwAAAAAAAIA/AAAAAAAAAAA="),
+"format": 34359742487,
+"index_count": 6,
+"index_data": PackedByteArray("AAABAAIAAgADAAAA"),
+"material": SubResource("StandardMaterial3D_05wti"),
+"name": "bathroom_drain",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("w/5POsP+TzoAAAAAw/5POsP+T7oAAAAAw/5PusP+T7oAAAAAw/5PusP+TzoAAAAA/3//f////7//f/9/////v/9//3////+//3//f////78=")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_cn3x0")
+
+[node name="bathroom_drain" type="StaticBody3D"]
+transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_f27vc")
+skeleton = NodePath("")

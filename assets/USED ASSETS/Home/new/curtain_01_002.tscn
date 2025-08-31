@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=4 uid="uid://bubceu65eg63y"]
+
+[ext_resource type="Texture2D" uid="uid://1u1dqf4x7cfy" path="res://assets/Trailer_Park/Textures/Curtain_01.png" id="1_qk1ic"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3tops"]
+resource_name = "Curtain_01"
+transparency = 4
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_qk1ic")
+emission_enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_mx5pu"]
+_surfaces = [{
+"aabb": AABB(-0.0109067, -0.0107748, -0.000699403, 0.0215497, 0.0215497, 0.00127992),
+"format": 34359742465,
+"index_count": 108,
+"index_data": PackedByteArray("CgALAAUABQALAAoACgADAAUABQADAAoAAwAFAAEAAQAFAAMAAwAEAAEAAQAEAAMABAABAAwADAABAAQABAANAAwADAANAAQADQAMAA4ADgAMAA0ADQAIAA4ADgAIAA0ACAAOAAkACQAOAAgACAAPAAkACQAPAAgADwAJABAAEAAJAA8ADwARABAAEAARAA8AEQAQABIAEgAQABEAEQATABIAEgATABEAEwASAAIAAgASABMAEwAAAAIAAgAAABMAAAACAAYABgACAAAAAAAHAAYABgAHAAAA"),
+"lods": [0.0018675, PackedByteArray("AAACAAYABgACAAAABgAHAAAAAAAHAAYACAAAAAIAAgAAAAgAAgAJAAgACAAJAAIACQABAAgACAABAAkAAQAIAAQABAAIAAEAAwAEAAEAAQAEAAMAAwAFAAEAAQAFAAMA"), 0.00293978, PackedByteArray("BAABAAIAAgABAAQAAgAAAAQABAAAAAIAAwAEAAEAAQAEAAMAAwAFAAEAAQAFAAMA"), 0.00612459, PackedByteArray("AAABAAIAAgABAAAAAwAAAAEAAQAAAAMA")],
+"name": "Curtain_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 20,
+"vertex_data": PackedByteArray("F6P7u/qIMDzdLRg6unzYO/qIMLzdLRg6F6P7u/qIMLzdLRg6Lk8NPPqIMDwhWDe6unzYO/qIMDzdLRg6Lk8NPPqIMLwhWDe69rEyvPqIMLwhWDe69rEyvPqIMDwhWDe67HIoO/qIMDzdLRg6QClDOfqIMLwhWDe6/18uPPqIMDwhWDe6/18uPPqIMLwhWDe6GFuWO/qIMLwhWDe6F1uWO/qIMDwhWDe67nIoO/qIMLzdLRg6FylDOfqIMDwhWDe6xA0Qu/qIMLzdLRg6yA0Qu/qIMDzdLRg6/NShu/qIMLwhWDe6/tShu/qIMDwhWDe6")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_fpk2v"]
+resource_name = "Curtain_01_002"
+_surfaces = [{
+"aabb": AABB(-0.0109067, -0.0107748, -0.000699403, 0.0215497, 0.0215497, 0.00127992),
+"attribute_data": PackedByteArray("UFsZPgAAAADcDFA/AACAP09bGT4AAIA/bgZoPwAAAABPWxk+AACAP9wMUD8AAIA/UFsZPgAAAABuBmg/AAAAANwMUD8AAAAAbgZoPwAAgD/cDFA/AAAAAG4GaD8AAIA/AAAAAAAAgD8AAAAAAAAAALkZID8AAAAA+cYDPwAAgD8AAAAAAAAAAAAAAAAAAIA/uRkgPwAAAAD5xgM/AACAPwAAgD8AAAAAAACAPwAAgD9KEzg/AACAP0oTOD8AAAAAuRkgPwAAgD/5xgM/AAAAAHPozj4AAIA/c+jOPgAAAAANy40+AACAPw7LjT4AAAAAAACAPwAAAAAAAIA/AACAP0oTOD8AAIA/ShM4PwAAAAC5GSA/AACAP/nGAz8AAAAAc+jOPgAAgD9z6M4+AAAAAA3LjT4AAIA/DsuNPgAAAAA="),
+"format": 34359742487,
+"index_count": 108,
+"index_data": PackedByteArray("FAAVAAkACQADABQAAwAJAAEAAQAIAAMACAABABYAFgAXAAgAFwAWABgAGAAOABcADgAYAA8ADwAZAA4AGQAPABoAGgAbABkAGwAaABwAHAAdABsAHQAcAAIAAgAAAB0AAAACAAwADAANAAAAHgAHAAsACwAfAB4ABQALAAcABwAKAAUAIAAFAAoACgAhACAAIgAgACEAIQASACIAEwAiABIAEgAjABMAJAATACMAIwAlACQAJgAkACUAJQAnACYABAAmACcAJwAGAAQAEQAEAAYABgAQABEA"),
+"lods": [0.0018675, PackedByteArray("AAACAAwADAANAAAAAgAAAA4ADgAPAAIADgABAA8AAQAOAAgAAQAIAAMAAwAJAAEABgAQABEAEQAEAAYAEgAGAAQABAATABIAEwAFABIACgASAAUABwAKAAUABQALAAcA"), 0.00293978, PackedByteArray("CAABAAIAAgAAAAgAAQAIAAMAAwAJAAEACgAGAAQABAAFAAoABwAKAAUABQALAAcA"), 0.00612459, PackedByteArray("AAABAAIAAQAAAAMABAAFAAYABwAGAAUA")],
+"material": SubResource("StandardMaterial3D_3tops"),
+"name": "Curtain_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 40,
+"vertex_data": PackedByteArray("F6P7u/qIMDzdLRg6unzYO/qIMLzdLRg6F6P7u/qIMLzdLRg6Lk8NPPqIMDwhWDe6F6P7u/qIMLzdLRg6unzYO/qIMLzdLRg6F6P7u/qIMDzdLRg6Lk8NPPqIMDwhWDe6unzYO/qIMDzdLRg6Lk8NPPqIMLwhWDe6unzYO/qIMDzdLRg6Lk8NPPqIMLwhWDe69rEyvPqIMLwhWDe69rEyvPqIMDwhWDe67HIoO/qIMDzdLRg6QClDOfqIMLwhWDe69rEyvPqIMDwhWDe69rEyvPqIMLwhWDe67HIoO/qIMDzdLRg6QClDOfqIMLwhWDe6/18uPPqIMDwhWDe6/18uPPqIMLwhWDe6GFuWO/qIMLwhWDe6F1uWO/qIMDwhWDe67nIoO/qIMLzdLRg6FylDOfqIMDwhWDe6xA0Qu/qIMLzdLRg6yA0Qu/qIMDzdLRg6/NShu/qIMLwhWDe6/tShu/qIMDwhWDe6/18uPPqIMDwhWDe6/18uPPqIMLwhWDe6GFuWO/qIMLwhWDe6F1uWO/qIMDwhWDe67nIoO/qIMLzdLRg6FylDOfqIMDwhWDe6xA0Qu/qIMLzdLRg6yA0Qu/qIMDzdLRg6/NShu/qIMLwhWDe6/tShu/qIMDwhWDe6sIP/f///18H/f/9/////v7CD/3///9fBzZz/f///Zs4AAE78//8nPv////////8/AABO/P//Jz4AADHj//+YMf9//3////+/zZz/f///Zs7/////////PwAAMeP//5gxplv/f6bb/7+mW/9/ptv/v3qE/3///8G9/3//f////7///6bbptv/P///ptum2/8/AAB6BP//PUIAAAAA////P/9//3////+//3//f////7//f/9/////v/9//3////+/eoT/f///wb3/f/9/////v3iD/3///7vBeIP/f///Qr7/f/9/////v/9//3////+//////////z//////////PwAAAAD///8/AAAAAP///z8AAHoE//89QgAAAAD///8/AAB5A///Qz4AAHkD//+8Qf////////8/AAD//////z8=")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_mx5pu")
+
+[node name="Curtain_01_002" type="StaticBody3D"]
+transform = Transform3D(-100, 4.37114e-06, 1.50996e-05, 4.37114e-06, 100, -4.37114e-06, -1.50996e-05, -4.37114e-06, -100, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_fpk2v")
+skeleton = NodePath("")

@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=4 uid="uid://jgtke4aju15d"]
+
+[ext_resource type="Texture2D" uid="uid://b5ls4rgtorfqu" path="res://assets/Trailer_Park/Textures/MetalPlatesBare_01.jpg" id="1_2p851"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nr3rm"]
+resource_name = "MetalPlatesBare_01"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_2p851")
+emission_enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_vk7hh"]
+_surfaces = [{
+"aabb": AABB(-0.00104118, -0.00767538, -0.00600761, 0.00208237, 0.0138009, 0.0120234),
+"format": 34359742465,
+"index_count": 120,
+"index_data": PackedByteArray("AAABAAIAAwABAAAAAgAEAAAABQACAAEAAAAEAAYABwAEAAIABgAEAAcAAgAIAAcACAACAAUAAQAJAAUACQABAAMABgAFAAkABQAKAAgACgAFAAYAAwAIAAoACwAHAAgACAADAAsAAAALAAMADAAHAAsABwAMAAYABgAMAAoACgANAAMADQAKAAwAAwANAAkADAAOAA0ACwAOAAwACQANAA4ACwAAAA8ABgAPAAAADwAOAAsACQAPAAYADgAPAAkAEAARABIAEgARABMAEgAUABAAEwAVABIAEAAUABYAFQATABcAFgAXABAAFwAWABUA"),
+"name": "MetalPlatesBare_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("VXiIuiHctTtP/7G7VXiIuiHctTsaRLI7VXiIOiHctTsaRLI7VXiIuk+4yDtKIMU7VXiIOiHctTtP/7G7VXiIOpKl6LsaRLI7VXiIOpKl6LtP/7G7VXiIOk+4yDuA28S7VXiIOk+4yDtKIMU7VXiIupKl6LsaRLI7VXiIOsGB+7tKIMU7VXiIuk+4yDuA28S7VXiIOsGB+7uA28S7VXiIusGB+7tKIMU7VXiIusGB+7uA28S7VXiIupKl6LtP/7G7VXiIOpKl6Lu01Gc5VXiIupKl6Lu01Gc5VXiIuiHctTu01Gc5VXiIupKl6LvImIS5VXiIOiHctTu01Gc5VXiIuiHctTvImIS5VXiIOiHctTvImIS5VXiIOpKl6LvImIS5")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_em6xq"]
+resource_name = "Frame_Windows_05"
+_surfaces = [{
+"aabb": AABB(-0.00104118, -0.00767538, -0.00600761, 0.00208237, 0.0138009, 0.0120234),
+"attribute_data": PackedByteArray("quz9Pm08Oz+q7P0+JoeJPjnlBT8mh4k+OeUFP208Oz+q7P0+JoeJPqrs/T5tPDs/OeUFP208Oz855QU/JoeJPjPN/D4PCSs/k8TvPg8JKz+TxO8+COKpPjPN/D4I4qk+M838Pg8JKz8zzfw+COKpPpPE7z4I4qk+k8TvPg8JKz+q7P0+mmtAPznlBT+aa0A/OeUFP5hRfj6q7P0+mFF+Pqrs/T6YUX4+OeUFP5hRfj455QU/mmtAP6rs/T6aa0A/M838PovoLz8zzfw+ECOgPpPE7z4QI6A+k8TvPovoLz8zzfw+i+gvP5PE7z6L6C8/k8TvPhAjoD4zzfw+ECOgPhI3+T7Fiy8/Ejf5PoRpnz6YV/Q+fCipPpdX9D5LrCo/xd8DP5hRfj4wSAE/JoeJPjBIAT9tPDs/xd8DP5prQD/2OQE/mFF+Po3RAz8mh4k+jdEDP208Oz/2OQE/mmtAP7Na8z7Fiy8/tFrzPoRpnz4wOvg+fCipPi46+D5LrCo/s1rzPsWLLz8uOvg+S6wqPzA6+D58KKk+tFrzPoRpnz72OQE/mmtAP43RAz9tPDs/jdEDPyaHiT72OQE/mFF+PhI3+T7Fiy8/l1f0PkusKj+YV/Q+fCipPhI3+T6EaZ8+xd8DP5prQD8wSAE/bTw7PzBIAT8mh4k+xd8DP5hRfj4zzfw+DwkrP5PE7z4PCSs/k8TvPgjiqT4zzfw+COKpPjPN/D4PCSs/M838PgjiqT6TxO8+COKpPpPE7z4PCSs/Czn2Pg8JKz8LOfY+COKpPgs59j4I4qk+Czn2Pg8JKz/WoAE/COKpPtagAT8PCSs/1qABPw8JKz/WoAE/COKpPg=="),
+"format": 34359742487,
+"index_count": 120,
+"index_data": PackedByteArray("AAABAAIAAgADAAAABAAFAAYABgAHAAQACAAJAAoACgALAAgADAANAA4ADgAPAAwAEAARABIAEgATABAAFAAVABYAFgAXABQAGAAZABoAGgAbABgAHAAdAB4AHgAfABwAIAAhACIAIgAjACAAJAAlACYAJgAnACQAKAApACoAKgArACgALAAtAC4ALgAvACwAMAAxADIAMgAzADAANAA1ADYANgA3ADQAOAA5ADoAOgA7ADgAPAA9AD4APgA/ADwAQABBAEIAQgBDAEAARABFAEYARgBHAEQASABJAEoASgBLAEgATABNAE4ATgBPAEwA"),
+"material": SubResource("StandardMaterial3D_nr3rm"),
+"name": "MetalPlatesBare_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 80,
+"vertex_data": PackedByteArray("VXiIuiHctTtP/7G7VXiIuiHctTsaRLI7VXiIOiHctTsaRLI7VXiIOiHctTtP/7G7VXiIupKl6LsaRLI7VXiIupKl6LtP/7G7VXiIOpKl6LtP/7G7VXiIOpKl6LsaRLI7VXiIOpKl6LtP/7G7VXiIupKl6LtP/7G7VXiIuiHctTtP/7G7VXiIOiHctTtP/7G7VXiIOpKl6LsaRLI7VXiIOiHctTsaRLI7VXiIuiHctTsaRLI7VXiIupKl6LsaRLI7VXiIuk+4yDuA28S7VXiIOk+4yDuA28S7VXiIOk+4yDtKIMU7VXiIuk+4yDtKIMU7VXiIusGB+7tKIMU7VXiIOsGB+7tKIMU7VXiIOsGB+7uA28S7VXiIusGB+7uA28S7VXiIOsGB+7uA28S7VXiIOk+4yDuA28S7VXiIuk+4yDuA28S7VXiIusGB+7uA28S7VXiIOsGB+7tKIMU7VXiIusGB+7tKIMU7VXiIuk+4yDtKIMU7VXiIOk+4yDtKIMU7VXiIuk+4yDtKIMU7VXiIusGB+7tKIMU7VXiIupKl6LsaRLI7VXiIuiHctTsaRLI7VXiIuk+4yDtKIMU7VXiIuiHctTsaRLI7VXiIuiHctTtP/7G7VXiIuk+4yDuA28S7VXiIOsGB+7tKIMU7VXiIOpKl6LsaRLI7VXiIOpKl6LtP/7G7VXiIOsGB+7uA28S7VXiIOk+4yDuA28S7VXiIOsGB+7uA28S7VXiIOpKl6LtP/7G7VXiIOiHctTtP/7G7VXiIuk+4yDuA28S7VXiIuiHctTtP/7G7VXiIupKl6LtP/7G7VXiIusGB+7uA28S7VXiIusGB+7uA28S7VXiIupKl6LtP/7G7VXiIupKl6LsaRLI7VXiIusGB+7tKIMU7VXiIOk+4yDtKIMU7VXiIOiHctTsaRLI7VXiIOpKl6LsaRLI7VXiIOsGB+7tKIMU7VXiIOk+4yDuA28S7VXiIOiHctTtP/7G7VXiIOiHctTsaRLI7VXiIOk+4yDtKIMU7VXiIOpKl6Lu01Gc5VXiIupKl6Lu01Gc5VXiIuiHctTu01Gc5VXiIOiHctTu01Gc5VXiIOpKl6LvImIS5VXiIOiHctTvImIS5VXiIuiHctTvImIS5VXiIupKl6LvImIS5VXiIupKl6LvImIS5VXiIuiHctTvImIS5VXiIuiHctTu01Gc5VXiIupKl6Lu01Gc5VXiIOiHctTvImIS5VXiIOpKl6LvImIS5VXiIOpKl6Lu01Gc5VXiIOiHctTu01Gc5/38AAP///7//fwAA////v/9/AAD///+//38AAP///7//f///////P/9///////8//3///////z//f///////P/9//3////+//3//f////7//f/9/////v/9//3////+//////////z//////////P/////////8//////////z//f///////P/9///////8//3///////z//f///////P/9/AAD///+//38AAP///7//fwAA////v/9/AAD///+//////////z//////////P/////////8//////////z//f/9/////v/9//3////+//3//f////7//f/9/////vwAA/3//f3ZLAAD/f/9/fjQAAP9//3/cNAAA/3//f4xMAAD/f/9/cggAAP9//391CQAA/3/rkAAAAAD/f5mRAAD///9/5JD//////3/pkv//////f/9/iPf///9//38y9////3//f3XL////f/9/frT///9//3/ctP///3//f4zMAAD/f/9/iTQAAP9//39yMwAA/3//fyJLAAD/f/9/gEsAAP9//39yCAAA/3//f3UJAAD/f+uQAAAAAP9/mZEAAP///3//f4i0////f/9/crP///9//38iy////3//f4DL////f+SQ//////9/6ZL//////3//f4j3////f/9/Mvf/f/9/////v/9//3////+//3//f////7//f/9/////v/////////8//////////z//////////P/////////8/AAD/f////78AAP9/////vwAA/3////+/AAD/f////7////9/////v////3////+/////f////7////9/////vw==")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_vk7hh")
+
+[node name="Frame_Windows_05" type="StaticBody3D"]
+transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_em6xq")
+skeleton = NodePath("")
