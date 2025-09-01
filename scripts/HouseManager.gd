@@ -59,14 +59,8 @@ var _shower_busy := false
 
 func _ready():
 	if is_instance_valid(wife_root):
-		wife_ctrl = wife_root.get_node_or_null("WifeController") as WifeController
-		if wife_ctrl == null:
-			# вдруг скрипт висит прямо на корне жены
-			wife_ctrl = wife_root as WifeController
-		if wife_ctrl == null:
-			# крайний случай — ищем глубоко по имени
-			wife_ctrl = wife_root.find_child("WifeController", true, false) as WifeController
-	print("[House] wife_ctrl=", wife_ctrl)
+		wife_ctrl = _find_wife_controller(wife_root)
+	print("[House] wife_ctrl is WifeController:", wife_ctrl is WifeController)
 
 # Выберем точку в зависимости от фазы
 	var phase := WifeSpawnPoint.Phase.AFTER_CAVE if GameManager.came_from_cave else WifeSpawnPoint.Phase.MORNING
@@ -128,6 +122,17 @@ func _ready():
 		GameManager.just_returned_home = false  # «съели» маркер
 	else:
 		_on_day_intro("Day %d" % GameManager.current_day)
+		
+func _find_wife_controller(root: Node) -> WifeController:
+	if root == null:
+		return null
+	if root is WifeController:
+		return root
+	for child in root.get_children():
+		var found := _find_wife_controller(child)
+		if found:
+			return found
+	return null
 
 func _apply_outdoor(is_day: bool) -> void:
 	if world_env and world_env.environment and world_env.environment.sky:
