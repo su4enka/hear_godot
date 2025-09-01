@@ -1,5 +1,7 @@
 extends Node3D
 
+
+
 @onready var world_env: WorldEnvironment = $WorldEnvironment
 @onready var sun: DirectionalLight3D = $DirectionalLight3D
 
@@ -48,8 +50,8 @@ var _shower_busy := false
 
 
 func _ready():
-	
-	
+
+
 	# СПАВН: если пришли из пещеры — у двери, иначе — у кровати
 	if GameManager.came_from_cave:
 		_place_player(spawn_door)
