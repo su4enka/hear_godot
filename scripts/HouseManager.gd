@@ -1,9 +1,15 @@
 extends Node3D
 
 
+@export_node_path("Node3D") var wife_root_path
+@export_node_path("Node") var spawn_container_path
 
 @onready var world_env: WorldEnvironment = $WorldEnvironment
 @onready var sun: DirectionalLight3D = $DirectionalLight3D
+
+@onready var wife_root := get_node(wife_root_path) as Node3D
+@onready var wife_ctrl := wife_root.get_node_or_null("WifeController") as WifeController
+@onready var spawn_container := get_node(spawn_container_path)
 
 @export var day_sky_horizon  := Color(0.66, 0.67, 0.69)
 @export var day_ground_horizon := Color(0.66, 0.67, 0.69)
@@ -50,6 +56,19 @@ var _shower_busy := false
 
 
 func _ready():
+	if wife_root:
+		wife_ctrl = wife_root.get_node_or_null("WifeController") as WifeController
+		if wife_ctrl == null:
+			# вдруг висит прямо на корне жены
+			wife_ctrl = wife_root as WifeController
+
+# Выберем точку в зависимости от фазы
+	var phase := WifeSpawnPoint.Phase.AFTER_CAVE if GameManager.came_from_cave else WifeSpawnPoint.Phase.MORNING
+	_place_wife_for_phase(phase)
+
+# При старте нового дня — снова рандомим точку для утра
+	GameManager.day_started.connect(func(_d):
+		_place_wife_for_phase(WifeSpawnPoint.Phase.MORNING))
 
 
 	# СПАВН: если пришли из пещеры — у двери, иначе — у кровати
@@ -118,6 +137,36 @@ func _apply_outdoor(is_day: bool) -> void:
 	if sun:
 		sun.light_energy = day_sun_energy if is_day else night_sun_energy
 
+func _pick_weighted(points: Array[WifeSpawnPoint]) -> WifeSpawnPoint:
+	var sum := 0.0
+	for p in points: sum += p.weight
+	var r = randf() * max(sum, 0.0001)
+	for p in points:
+		r -= p.weight
+		if r <= 0.0: return p
+	return points.back()
+
+func _place_wife_for_phase(phase: int) -> void:
+	if not is_instance_valid(spawn_container) or not is_instance_valid(wife_root): return
+
+	var candidates: Array[WifeSpawnPoint] = []
+	for c in spawn_container.get_children():
+		if c is WifeSpawnPoint:
+			var sp := c as WifeSpawnPoint
+			if sp.phase == phase or sp.phase == WifeSpawnPoint.Phase.ANY:
+				candidates.append(sp)
+
+	if candidates.is_empty(): return
+
+	var point := _pick_weighted(candidates)
+	wife_root.global_transform = point.global_transform
+	if wife_ctrl:
+		wife_ctrl.play_idle(point.idle)
+	# сохраним флаг — можно ли крутить голову на этой позе
+	wife_root.set_meta("wife_look_enabled", point.look_at_on_interact)
+
+
+
 func _place_player(marker: Node3D) -> void:
 	if not marker or not player: return
 	# переносим позицию и ориентацию игрока 1-в-1 как у маркера
@@ -126,6 +175,9 @@ func _place_player(marker: Node3D) -> void:
 	player.call_deferred("reset_physics_interpolation") # опционально, если дёргается кадр
 
 func request_wife_talk() -> void:
+	var player := get_tree().get_first_node_in_group("player") as Node3D
+	if wife_ctrl and player and bool(wife_root.get_meta("wife_look_enabled", true)):
+		wife_ctrl.look_at_node(player, 2.0)
 	if _subtitle_task_running:
 		_advance_requested = true
 		return

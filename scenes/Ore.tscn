@@ -1,9 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://vquixpqa6drg"]
+[gd_scene load_steps=7 format=3 uid="uid://vquixpqa6drg"]
 
 [ext_resource type="Script" uid="uid://c08orf7scmc7b" path="res://scripts/Ore.gd" id="1_neldg"]
+[ext_resource type="Shader" uid="uid://bk11acimq0uvb" path="res://shaders/outline.gdshader" id="2_0jgvj"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_neldg"]
 radius = 1.30752
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nxmyp"]
+render_priority = 0
+shader = ExtResource("2_0jgvj")
+shader_parameter/outline_enabled = true
+shader_parameter/color = Color(1, 0, 0, 1)
+shader_parameter/size = 1.05
 
 [sub_resource type="BoxMesh" id="BoxMesh_neldg"]
 
@@ -17,6 +25,7 @@ script = ExtResource("1_neldg")
 shape = SubResource("SphereShape3D_neldg")
 
 [node name="Visual" type="MeshInstance3D" parent="."]
+material_overlay = SubResource("ShaderMaterial_nxmyp")
 mesh = SubResource("BoxMesh_neldg")
 
 [node name="HitSfx" type="AudioStreamPlayer3D" parent="."]

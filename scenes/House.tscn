@@ -1,15 +1,17 @@
-[gd_scene load_steps=71 format=4 uid="uid://buccgk580xshg"]
+[gd_scene load_steps=73 format=4 uid="uid://buccgk580xshg"]
 
 [ext_resource type="Script" uid="uid://5k4pjkcr7ybf" path="res://scripts/HouseManager.gd" id="1_8twys"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="1_bfmfj"]
 [ext_resource type="PackedScene" uid="uid://c2sabghymoyxk" path="res://scenes/Environments/House_Env.tscn" id="2_etd6b"]
 [ext_resource type="PackedScene" uid="uid://du8cp7tgtl2ah" path="res://assets/USED ASSETS/Cave/farol.tscn" id="3_ispqn"]
+[ext_resource type="Script" uid="uid://bmf7fepto04ho" path="res://scripts/WifeSpawnPoint.gd" id="3_jjxvr"]
 [ext_resource type="PackedScene" uid="uid://d0ei16srs4mwd" path="res://scenes/PauseMenu.tscn" id="3_r2usd"]
 [ext_resource type="Shader" uid="uid://bk11acimq0uvb" path="res://shaders/outline.gdshader" id="5_cmj1i"]
 [ext_resource type="Material" uid="uid://dblifkbdlbjfw" path="res://shaders/psx_shader.tres" id="5_lr155"]
 [ext_resource type="Texture2D" uid="uid://pglltrgxg2h7" path="res://anims/wife/Character_05.png" id="6_jilip"]
 [ext_resource type="Texture2D" uid="uid://chq7uq37636qt" path="res://assets/Trailer_Park/Textures/Toilet.png" id="6_kjlmf"]
 [ext_resource type="Texture2D" uid="uid://dxmx4qwnlkeg7" path="res://assets/Trailer_Park/Textures/Watering_can.png" id="6_l6do8"]
+[ext_resource type="Script" uid="uid://b2ass07weugxy" path="res://scripts/WifeController.gd" id="6_myv26"]
 [ext_resource type="Texture2D" uid="uid://p2vu86bd7upd" path="res://assets/Trailer_Park/Textures/Bed_01.png" id="6_nwrc1"]
 [ext_resource type="Animation" uid="uid://btorq26rfo1sd" path="res://anims/wife/breakdance_footwork_to_idle.res" id="7_247n2"]
 [ext_resource type="Texture2D" uid="uid://bjf8de2llj6y3" path="res://assets/Trailer_Park/Textures/Door.jpg" id="7_ea8vi"]
@@ -652,6 +654,8 @@ size = Vector3(0.177721, 3.47501, 1.50098)
 
 [node name="House" type="Node3D"]
 script = ExtResource("1_8twys")
+wife_root_path = NodePath("Wife")
+spawn_container_path = NodePath("WifeSpawns")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ispqn")
@@ -662,6 +666,23 @@ shadow_enabled = true
 
 [node name="HouseEnv" parent="." instance=ExtResource("2_etd6b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.21803, 0)
+
+[node name="WifeSpawns" type="Node3D" parent="."]
+
+[node name="Marker3D" type="Marker3D" parent="WifeSpawns"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3.67406, 1.86959, -5.18339)
+script = ExtResource("3_jjxvr")
+idle = &"sitting_idle_(1)"
+
+[node name="Marker3D2" type="Marker3D" parent="WifeSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.66372, 1.61382, 4.3597)
+script = ExtResource("3_jjxvr")
+idle = &"talking_on_phone"
+
+[node name="Marker3D3" type="Marker3D" parent="WifeSpawns"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3.51117, 2.2192, -8.63482)
+script = ExtResource("3_jjxvr")
+idle = &"sitting_idle_(1)"
 
 [node name="Spawns" type="Node3D" parent="."]
 
@@ -702,7 +723,12 @@ process_material = SubResource("ParticleProcessMaterial_kjlmf")
 draw_pass_1 = SubResource("BoxMesh_l6do8")
 
 [node name="Wife" type="StaticBody3D" parent="."]
-transform = Transform3D(-6.55671e-08, 0, -1.5, 0, 1.5, 0, 1.5, 0, -6.55671e-08, 3.85019, 2.65292, -5.5836)
+transform = Transform3D(-6.55671e-08, 0, -1.5, 0, 1.5, 0, 1.5, 0, -6.55671e-08, 2.22835, 2.65292, -5.5836)
+script = ExtResource("6_myv26")
+skeleton_path = NodePath("Character_05/Skeleton")
+anim_player_path = NodePath("Character_05/AnimationPlayer")
+head_bone = "Head"
+neck_bone = "Neck"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Wife"]
 visible = false
@@ -965,7 +991,6 @@ skin = SubResource("Skin_003vc")
 libraries = {
 &"": SubResource("AnimationLibrary_lk5xs")
 }
-autoplay = "sitting_idle_(1)"
 
 [node name="ShowerKnobs" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.664544, 0.298186, 0.786792)
