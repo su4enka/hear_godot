@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=4 uid="uid://buccgk580xshg"]
+[gd_scene load_steps=75 format=4 uid="uid://buccgk580xshg"]
 
 [ext_resource type="Script" uid="uid://5k4pjkcr7ybf" path="res://scripts/HouseManager.gd" id="1_8twys"]
 [ext_resource type="Script" uid="uid://c73xrfhtr418u" path="res://scripts/HousePlayer.gd" id="1_bfmfj"]
@@ -22,6 +22,7 @@
 [ext_resource type="Animation" uid="uid://d14y4x03uek8g" path="res://anims/wife/sad_idle_(1).res" id="12_wwk8k"]
 [ext_resource type="Animation" uid="uid://d4bisug7dxl45" path="res://anims/wife/sitting_idle_(1).res" id="13_p0pow"]
 [ext_resource type="Animation" uid="uid://biidtrjjtnckb" path="res://anims/wife/talking_on_phone.res" id="14_03ee5"]
+[ext_resource type="Script" uid="uid://cjk7r2b88ga4d" path="res://scripts/WifeLookArea.gd" id="17_nequ0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8twys"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -370,6 +371,9 @@ _data = {
 &"talking_on_phone": ExtResource("14_03ee5")
 }
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_myv26"]
+radius = 1.63441
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l6do8"]
 direction = Vector3(0, -1, 0)
 spread = 20.0
@@ -654,8 +658,15 @@ size = Vector3(0.177721, 3.47501, 1.50098)
 
 [node name="House" type="Node3D"]
 script = ExtResource("1_8twys")
+wife_spawn_scale = null
 wife_root_path = NodePath("Wife")
 spawn_container_path = NodePath("WifeSpawns")
+day_sky_horizon = null
+day_ground_horizon = null
+night_sky_horizon = null
+night_ground_horizon = null
+day_sun_energy = null
+night_sun_energy = null
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ispqn")
@@ -730,24 +741,9 @@ skeleton_path = NodePath("Character_05/Skeleton")
 anim_player_path = NodePath("Character_05/AnimationPlayer")
 head_bone = "Head"
 neck_bone = "Neck"
-look_duration = null
-look_strength = null
-look_stiffness = null
-max_turn_speed_deg = 900.0
 max_yaw_deg = 95.0
 max_pitch_deg = 65.0
-neck_share = null
-override_weight = null
 return_duration = 0.9
-lock_snap_deg = null
-deadzone_deg = 5.0
-lock_on_reach = null
-breakout_deg = 22.0
-auto_track_enabled = null
-auto_fov_deg = null
-auto_dist_min = null
-auto_dist_max = null
-debug_print = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Wife"]
 visible = false
@@ -1010,6 +1006,13 @@ skin = SubResource("Skin_003vc")
 libraries = {
 &"": SubResource("AnimationLibrary_lk5xs")
 }
+
+[node name="LookArea" type="Area3D" parent="Wife"]
+script = ExtResource("17_nequ0")
+wife_root_path = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wife/LookArea"]
+shape = SubResource("SphereShape3D_myv26")
 
 [node name="ShowerKnobs" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.664544, 0.298186, 0.786792)

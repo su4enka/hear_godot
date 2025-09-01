@@ -1,6 +1,5 @@
 extends Node3D
 
-var _dialog_open := false
 
 @export var wife_spawn_scale := Vector3(1.5, 1.5, 1.5)
 @export_node_path("Node3D") var wife_root_path
@@ -248,21 +247,6 @@ func _show_wife_line() -> void:
 	# длительность самой реплики (без фейдов)
 	var show_dur := _subtitle_time_for(line)
 
-	# цель взгляда — КАМЕРА
-	var cam: Camera3D = null
-	if is_instance_valid(camera_3d):
-		cam = camera_3d
-	else:
-		var pl := get_tree().get_first_node_in_group("player") as Node3D
-		if is_instance_valid(pl):
-			cam = pl.get_node_or_null("Camera3D") as Camera3D
-
-	if is_instance_valid(wife_ctrl) and is_instance_valid(cam) and bool(wife_root.get_meta("wife_look_enabled", true)):
-		if not _dialog_open:
-			_dialog_open = true
-			wife_ctrl.begin_dialogue(cam)
-		# продлеваем держание взгляда на время этой реплики (+короткий хвост)
-		wife_ctrl.pulse_line(show_dur + 0.27)
 
 	_subtitle_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
 	_subtitle_tween.tween_property(subtitle, "modulate:a", 1.0, 0.12)
@@ -287,10 +271,6 @@ func _show_wife_line() -> void:
 	await _subtitle_tween.finished
 	if is_instance_valid(subtitle):
 		subtitle.visible = false
-		# НЕ заканчиваем диалог, если пользователь уже запросил следующую реплику
-		if _dialog_open and is_instance_valid(wife_ctrl) and not _advance_requested:
-			wife_ctrl.end_dialogue()
-			_dialog_open = false
 
 	_subtitle_task_running = false
 	if _advance_requested and is_inside_tree():
