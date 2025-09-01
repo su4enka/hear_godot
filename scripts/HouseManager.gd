@@ -1,6 +1,8 @@
 extends Node3D
 
+var _dialog_open := false
 
+@export var wife_spawn_scale := Vector3(1.5, 1.5, 1.5)
 @export_node_path("Node3D") var wife_root_path
 @export_node_path("Node") var spawn_container_path
 
@@ -17,6 +19,7 @@ extends Node3D
 @export var night_ground_horizon := Color(0.02, 0.03, 0.05)
 @export var day_sun_energy := 1.0
 @export var night_sun_energy := 0.08
+
 
 @onready var player = $Player
 @onready var camera_3d: Camera3D = $Player/Camera3D
@@ -56,11 +59,15 @@ var _shower_busy := false
 
 
 func _ready():
-	if wife_root:
+	if is_instance_valid(wife_root):
 		wife_ctrl = wife_root.get_node_or_null("WifeController") as WifeController
 		if wife_ctrl == null:
-			# вдруг висит прямо на корне жены
+			# вдруг скрипт висит прямо на корне жены
 			wife_ctrl = wife_root as WifeController
+		if wife_ctrl == null:
+			# крайний случай — ищем глубоко по имени
+			wife_ctrl = wife_root.find_child("WifeController", true, false) as WifeController
+	print("[House] wife_ctrl=", wife_ctrl)
 
 # Выберем точку в зависимости от фазы
 	var phase := WifeSpawnPoint.Phase.AFTER_CAVE if GameManager.came_from_cave else WifeSpawnPoint.Phase.MORNING
@@ -147,6 +154,7 @@ func _pick_weighted(points: Array[WifeSpawnPoint]) -> WifeSpawnPoint:
 	return points.back()
 
 func _place_wife_for_phase(phase: int) -> void:
+
 	if not is_instance_valid(spawn_container) or not is_instance_valid(wife_root): return
 
 	var candidates: Array[WifeSpawnPoint] = []
@@ -160,6 +168,7 @@ func _place_wife_for_phase(phase: int) -> void:
 
 	var point := _pick_weighted(candidates)
 	wife_root.global_transform = point.global_transform
+	wife_root.scale = wife_spawn_scale
 	if wife_ctrl:
 		wife_ctrl.play_idle(point.idle)
 	# сохраним флаг — можно ли крутить голову на этой позе
@@ -176,8 +185,6 @@ func _place_player(marker: Node3D) -> void:
 
 func request_wife_talk() -> void:
 	var player := get_tree().get_first_node_in_group("player") as Node3D
-	if wife_ctrl and player and bool(wife_root.get_meta("wife_look_enabled", true)):
-		wife_ctrl.look_at_node(player, 2.0)
 	if _subtitle_task_running:
 		_advance_requested = true
 		return
@@ -238,6 +245,25 @@ func _show_wife_line() -> void:
 	subtitle.modulate.a = 0.0
 	subtitle.visible = true
 
+	# длительность самой реплики (без фейдов)
+	var show_dur := _subtitle_time_for(line)
+
+	# цель взгляда — КАМЕРА
+	var cam: Camera3D = null
+	if is_instance_valid(camera_3d):
+		cam = camera_3d
+	else:
+		var pl := get_tree().get_first_node_in_group("player") as Node3D
+		if is_instance_valid(pl):
+			cam = pl.get_node_or_null("Camera3D") as Camera3D
+
+	if is_instance_valid(wife_ctrl) and is_instance_valid(cam) and bool(wife_root.get_meta("wife_look_enabled", true)):
+		if not _dialog_open:
+			_dialog_open = true
+			wife_ctrl.begin_dialogue(cam)
+		# продлеваем держание взгляда на время этой реплики (+короткий хвост)
+		wife_ctrl.pulse_line(show_dur + 0.27)
+
 	_subtitle_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
 	_subtitle_tween.tween_property(subtitle, "modulate:a", 1.0, 0.12)
 	await _subtitle_tween.finished
@@ -246,11 +272,9 @@ func _show_wife_line() -> void:
 	await _arm_skip()
 	if not is_inside_tree(): return
 
-	var dur := _subtitle_time_for(line)
-	var tree := get_tree()
 	var t := 0.0
-	while t < dur and not _advance_requested:
-		await tree.process_frame
+	while t < show_dur and not _advance_requested:
+		await get_tree().process_frame
 		if not is_inside_tree(): return
 		t += get_process_delta_time()
 		if _skip_armed and (Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("interact")):
@@ -263,10 +287,15 @@ func _show_wife_line() -> void:
 	await _subtitle_tween.finished
 	if is_instance_valid(subtitle):
 		subtitle.visible = false
+		# НЕ заканчиваем диалог, если пользователь уже запросил следующую реплику
+		if _dialog_open and is_instance_valid(wife_ctrl) and not _advance_requested:
+			wife_ctrl.end_dialogue()
+			_dialog_open = false
 
 	_subtitle_task_running = false
 	if _advance_requested and is_inside_tree():
 		_show_wife_line()
+
 
 func _wait_for_skip() -> void:
 	while true:
