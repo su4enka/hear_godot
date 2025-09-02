@@ -63,13 +63,13 @@ radius = 0.287513
 height = 1.50468
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_8twys"]
-radius = 0.450364
+radius = 0.519597
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_71mv0"]
 render_priority = 0
 shader = ExtResource("5_cmj1i")
 shader_parameter/outline_enabled = false
-shader_parameter/color = Color(0.815686, 0.745098, 0.368627, 1)
+shader_parameter/color = Color(0.815686, 0.745098, 0.368627, 0)
 shader_parameter/size = 1.01
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukoth"]
@@ -522,7 +522,7 @@ _data = {
 }
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_myv26"]
-radius = 2.34276
+radius = 0.9314
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l6do8"]
 direction = Vector3(0, -1, 0)
@@ -880,22 +880,6 @@ draw_pass_1 = SubResource("BoxMesh_l6do8")
 [node name="Wife" type="StaticBody3D" parent="."]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 2.22835, 2.65292, -5.5836)
 script = ExtResource("6_myv26")
-skeleton_path = NodePath("Character_05/Skeleton")
-anim_player_path = NodePath("Character_05/AnimationPlayer")
-deadzone_soft_width_deg = 4.0
-center_settle_damping = 16.0
-look_stiffness = 5.0
-max_turn_speed_deg = 100.0
-max_pitch_deg = 5.0
-head_pitch_scale = 0.1
-max_head_pitch_deg = 2.0
-max_yaw_right_deg = 60.0
-max_yaw_left_deg = 60.0
-return_duration = 1.3
-aim_smooth_time = 0.7
-deadzone_deg = 3.0
-invert_yaw_sign = true
-debug_print = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Wife"]
 visible = false
