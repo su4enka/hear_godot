@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://by0vtq80ul6u6"
-path="res://.godot/imported/Idle (3).fbx-ac9ca6ef00bb6cf53e160e50943714d8.scn"
+path="res://.godot/imported/standing Idle.fbx-bb4a27d2744eb6d12216ab371bed4b4f.scn"
 
 [deps]
 
-source_file="res://anims/wife/Idle (3).fbx"
-dest_files=["res://.godot/imported/Idle (3).fbx-ac9ca6ef00bb6cf53e160e50943714d8.scn"]
+source_file="res://anims/wife/standing Idle.fbx"
+dest_files=["res://.godot/imported/standing Idle.fbx-bb4a27d2744eb6d12216ab371bed4b4f.scn"]
 
 [params]
 
@@ -37,7 +37,7 @@ _subresources={
 "mixamo_com": {
 "save_to_file/enabled": true,
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "res://anims/wife/idle_(3).res",
+"save_to_file/path": "res://anims/wife/standing_idle.res",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,

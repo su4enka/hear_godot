@@ -1,24 +1,12 @@
-[gd_scene load_steps=11 format=4 uid="uid://vquixpqa6drg"]
+[gd_scene load_steps=5 format=4 uid="uid://cl3tsvekb3tc4"]
 
-[ext_resource type="Script" uid="uid://c08orf7scmc7b" path="res://scripts/Ore.gd" id="1_neldg"]
-[ext_resource type="Shader" uid="uid://bk11acimq0uvb" path="res://shaders/outline.gdshader" id="2_0jgvj"]
-[ext_resource type="Texture2D" uid="uid://cp35wkcf8lvdj" path="res://assets/Cave/Minas/Textures/Rocks_01.png" id="4_r5plr"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_neldg"]
-radius = 1.30752
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3kdy0"]
-render_priority = 0
-shader = ExtResource("2_0jgvj")
-shader_parameter/outline_enabled = true
-shader_parameter/color = Color(0.815686, 0.745098, 0.368627, 1)
-shader_parameter/size = 1.05
+[ext_resource type="Texture2D" uid="uid://cp35wkcf8lvdj" path="res://assets/Cave/Minas/Textures/Rocks_01.png" id="1_rwbux"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rwbux"]
 resource_name = "Rocks_01"
 vertex_color_use_as_albedo = true
 albedo_color = Color(1, 0.890196, 0.368627, 1)
-albedo_texture = ExtResource("4_r5plr")
+albedo_texture = ExtResource("1_rwbux")
 metallic = 0.35
 metallic_specular = 0.76
 emission_enabled = true
@@ -59,37 +47,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_vkh6u")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxmyp"]
-albedo_color = Color(0.673759, 0.639934, 3.85046e-07, 1)
-metallic = 0.29
-metallic_specular = 0.67
+[node name="Rock_04" type="StaticBody3D"]
+transform = Transform3D(59.2431, 0, 0, 0, -7.06232e-06, 59.2431, 0, -59.2431, -7.06232e-06, 0, 0, 0)
 
-[sub_resource type="BoxMesh" id="BoxMesh_0jgvj"]
-size = Vector3(0.2, 0.2, 0.2)
-
-[node name="Ore" type="Area3D" groups=["ore"]]
-script = ExtResource("1_neldg")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_neldg")
-
-[node name="Visual" type="MeshInstance3D" parent="."]
-transform = Transform3D(100, 0, 0, 0, -4.37114e-06, 100, 0, -100, -4.37114e-06, 0, 0, 0)
-material_overlay = SubResource("ShaderMaterial_3kdy0")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_833wy")
 skeleton = NodePath("")
-
-[node name="HitSfx" type="AudioStreamPlayer3D" parent="."]
-
-[node name="HitDust" type="CPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.281767, -0.0182143)
-material_override = SubResource("StandardMaterial3D_nxmyp")
-emitting = false
-lifetime = 0.32
-mesh = SubResource("BoxMesh_0jgvj")
-emission_shape = 1
-emission_sphere_radius = 0.4
-spread = 180.0
-initial_velocity_min = 4.4
-initial_velocity_max = 6.5
-scale_amount_min = 0.2

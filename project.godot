@@ -25,6 +25,7 @@ GameManager="*res://scripts/GameManager.gd"
 SceneFlow="*res://scripts/SceneFlow.gd"
 Rumble="*res://scripts/Rumble.gd"
 Settings="*res://scripts/Settings.gd"
+Preloader="*res://scripts/Preloader.gd"
 
 [display]
 
@@ -48,6 +49,7 @@ bed=""
 exit=""
 toilet=""
 shower=""
+lamps=""
 
 [input]
 

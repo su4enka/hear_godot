@@ -119,6 +119,9 @@ func _ready():
 	# если Menu уже вызвало GameManager.start_new_day() ДО смены сцены,
 	# сигнал мог уйти раньше — покажем вручную текущий день.
 	if GameManager.just_returned_home:
+		var lm := get_node_or_null("HouseLights") # путь до узла с HouseLights.gd
+		if lm:
+			lm.lights_on_arrival()
 		GameManager.just_returned_home = false  # «съели» маркер
 	else:
 		_on_day_intro("Day %d" % GameManager.current_day)
@@ -318,6 +321,8 @@ func _on_day_intro(text:String):
 
 func request_sleep() -> void:
 	GameManager.end_day()
+	var lm := get_node_or_null("HouseLights")
+	lm.lights_off()
 
 func request_exit() -> void:
 	_cancel_subtitle_task()
@@ -393,8 +398,6 @@ func _on_day_started(_d):
 	
 		# новый день после сна/кнопки Play — всегда у кровати
 	_place_player(spawn_bed)
-	# тут же можно вернуть «дневной» свет
-	_apply_outdoor(true)
 	
 	player.can_move = true
 	_update_ui()

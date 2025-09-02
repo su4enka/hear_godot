@@ -341,13 +341,27 @@ _data = {
 [node name="Character_05" instance=ExtResource("1_40usy")]
 
 [node name="Skeleton" parent="." index="0"]
+bones/0/position = Vector3(0.00206311, 1.10434, -0.0449698)
 bones/2/rotation = Quaternion(-0.0017372, 0.00195088, -0.00309823, 0.999992)
 bones/3/rotation = Quaternion(-0.00173997, 0.00186467, -0.00265334, 0.999993)
 bones/4/rotation = Quaternion(-0.00201392, -0.0129415, 0.00456798, 0.999904)
 bones/5/rotation = Quaternion(-0.122883, -0.0522386, -0.0404688, 0.990219)
+bones/8/rotation = Quaternion(0, 1, -5.96046e-08, 0)
+bones/9/rotation = Quaternion(1.05367e-08, -0.707107, 1.05367e-08, 0.707107)
+bones/10/rotation = Quaternion(-1.27832e-09, 0.707107, -4.34252e-08, 0.707107)
+bones/12/rotation = Quaternion(-2.98023e-08, -2.98023e-08, -2.98023e-08, 1)
+bones/13/rotation = Quaternion(-2.98023e-08, -2.98023e-08, -2.98023e-08, 1)
 bones/14/rotation = Quaternion(0.059131, -1.92752e-07, -0.00605949, 0.998232)
+bones/17/rotation = Quaternion(1.05367e-08, 0.707107, -1.05367e-08, 0.707107)
+bones/18/rotation = Quaternion(5.58794e-09, -0.707107, -5.58794e-09, 0.707107)
+bones/20/rotation = Quaternion(0, -5.96046e-08, 4.47035e-08, 1)
+bones/21/rotation = Quaternion(0, -5.96046e-08, 4.47035e-08, 1)
 bones/22/rotation = Quaternion(0.0800008, -7.45058e-08, 0.00651714, 0.996773)
+bones/24/rotation = Quaternion(9.31323e-10, 1, -1.86265e-09, 0)
+bones/25/rotation = Quaternion(1.02898e-09, 0.707107, -0.707107, -2.88113e-10)
 bones/26/rotation = Quaternion(-6.59151e-08, 1, 0.000899762, 3.69738e-09)
+bones/29/rotation = Quaternion(9.31323e-10, 1, 0, 2.91038e-11)
+bones/30/rotation = Quaternion(1.12158e-09, 0.707107, -0.707107, -8.5405e-10)
 bones/31/rotation = Quaternion(-7.21593e-08, 0.999999, 0.00167227, -3.86802e-09)
 
 [node name="AnimationPlayer" parent="." index="1"]

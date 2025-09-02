@@ -27,7 +27,11 @@ extends CanvasLayer
 const PS_KEY := "player/mouse_sensitivity"
 const DEFAULT_SENS := 0.002
 
+var game_opened = false
+
 func _ready():
+	Preloader.warmup_sync(true)
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	settings.visible = false
 	btn_play.pressed.connect(_on_play)

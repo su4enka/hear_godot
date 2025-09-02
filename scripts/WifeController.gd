@@ -10,6 +10,12 @@ class_name WifeController
 @export var neck_bone := "mixamorig_Neck"
 
 # --- Параметры наведения ---
+@export var yaw_to_pitch_comp_deg_per_rad := 6.0  # ~6° ап на 1 рад yaw
+@export var pitch_bias_deg := 3.0  # постоянная прибавка вверх
+
+@export var pitch_gain := 1.15          # усиливает общий pitch (вверх/вниз)
+@export var neck_share_pitch := 0.35    # доля pitch в шею (остальное — в голову)
+
 @export var deadzone_soft_width_deg := 3.0     # ширина «перехода» за dead-zone
 @export var center_settle_damping  := 12.0     # как быстро «садиться» к нулю в центре
 
@@ -72,6 +78,8 @@ func _ready() -> void:
 
 	_capture_rest_pose()
 
+
+
 # -------- public --------
 func set_target(node: Node3D) -> void:
 	_target = node
@@ -82,11 +90,15 @@ func set_target(node: Node3D) -> void:
 	_aim_pitch = 0.0
 	if debug_print: print("[WifeController] TRACK start")
 
+
+
 func clear_target() -> void:
 	_target = null
 	_state = LookState.RETURN
 	_return_t = 0.0
 	if debug_print: print("[WifeController] RETURN start")
+
+
 
 func play_idle(name: StringName) -> void:
 	if _ap and _ap.has_animation(String(name)):
@@ -95,6 +107,8 @@ func play_idle(name: StringName) -> void:
 		if _ap.current_animation != String(name):
 			_ap.play(String(name))
 		_capture_rest_pose()
+
+
 
 func _process(delta: float) -> void:
 	if _state == LookState.TRACK:
@@ -121,6 +135,8 @@ func _process(delta: float) -> void:
 		_:
 			_sk.clear_bones_global_pose_override()
 
+
+
 # -------- helpers --------
 func _soft_deadzone(v: float, dz: float, width: float) -> float:
 	# 0 в пределах dz, плавный выход на полную чувствительность в течение width
@@ -133,6 +149,8 @@ func _soft_deadzone(v: float, dz: float, width: float) -> float:
 	t = t * t * (3.0 - 2.0 * t) # smoothstep
 	return sign(v) * (dz + (s - dz) * t)
 
+
+
 func _find_bone_fallback(primary: String, alts: Array[String]) -> int:
 	if not is_instance_valid(_sk): return -1
 	if primary != "":
@@ -143,8 +161,12 @@ func _find_bone_fallback(primary: String, alts: Array[String]) -> int:
 		if j != -1: return j
 	return -1
 
+
+
 static func _rot(b: Basis) -> Basis:
 	return b.orthonormalized()
+
+
 
 func _capture_rest_pose() -> void:
 	if not is_instance_valid(_sk): return
@@ -175,6 +197,7 @@ func _capture_rest_pose() -> void:
 		if np_idx >= 0: np_g = _sk.get_bone_global_pose(np_idx)
 		_rest_neck_local = np_g.affine_inverse() * neck_g
 
+
 static func _signed_yaw(rest_fwd: Vector3, to_dir: Vector3, parent_up_vec: Vector3) -> float:
 	var U := parent_up_vec.normalized()
 	var r_proj := (rest_fwd - U * rest_fwd.dot(U)).normalized()
@@ -183,11 +206,13 @@ static func _signed_yaw(rest_fwd: Vector3, to_dir: Vector3, parent_up_vec: Vecto
 	var c = clamp(r_proj.dot(t_proj), -1.0, 1.0)
 	return atan2(s, c)
 
+
 static func _pitch_from_up(dir: Vector3, parent_up_vec: Vector3) -> float:
 	var U := parent_up_vec.normalized()
 	var y = clamp(U.dot(dir), -1.0, 1.0)
 	var xz := sqrt(max(1e-6, 1.0 - y * y))
 	return atan2(y, xz)
+
 
 # -------- core --------
 func _apply_look(target_world: Vector3, delta: float) -> void:
@@ -227,8 +252,9 @@ func _apply_look(target_world: Vector3, delta: float) -> void:
 	var pitch_world := wrapf(to_pitch - rest_pitch, -PI, PI)
 
 	var yaw_total := yaw_world * _yaw_sign
-	var pitch_total := pitch_world
-
+	var pitch_total := pitch_world + deg_to_rad(pitch_bias_deg)  # чуть приподняли взгляд
+	pitch_total += deg_to_rad(yaw_to_pitch_comp_deg_per_rad) * abs(yaw_total)
+	
 	# deadzone и лимиты
 	var dz := deg_to_rad(deadzone_deg)
 	if absf(yaw_total) < dz: yaw_total = 0.0
@@ -253,9 +279,10 @@ func _apply_look(target_world: Vector3, delta: float) -> void:
 	
 	# раздаём углы
 	var yaw_neck   := _aim_yaw   * neck_share
-	var pitch_neck := _aim_pitch * neck_share
 	var yaw_head   := _aim_yaw   * (1.0 - neck_share)
-	var pitch_head := _aim_pitch * (1.0 - neck_share) * head_pitch_scale
+
+	var pitch_neck := _aim_pitch * neck_share_pitch
+	var pitch_head := _aim_pitch * (1.0 - neck_share_pitch) * head_pitch_scale
 
 	# ограничение скорости + экспоненциальное схватывание
 	var max_step := deg_to_rad(max_turn_speed_deg) * delta

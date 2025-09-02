@@ -1,0 +1,84 @@
+[gd_scene load_steps=7 format=4 uid="uid://6k2rbel3r4eh"]
+
+[ext_resource type="Texture2D" uid="uid://dxfmg8eygrdji" path="res://assets/Trailer_Park/Textures/spotlight.png" id="2_fvkhw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d06ix"]
+resource_name = "spotlight"
+cull_mode = 2
+albedo_texture = ExtResource("2_fvkhw")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yydjj"]
+resource_name = "Material.001"
+cull_mode = 2
+albedo_color = Color(0.906332, 0.906332, 0.906332, 1)
+roughness = 0.5
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ymymj"]
+_surfaces = [{
+"aabb": AABB(-0.120818, -0.0264567, -0.126535, 0.241636, 0.129584, 0.229809),
+"format": 34896613377,
+"index_count": 108,
+"index_data": PackedByteArray("AAABAAIAAwAAAAIAAwAEAAAAAAAEAAEAAwACAAUABAADAAYABgADAAUABAAGAAcABAAIAAEABAAHAAgABwAGAAkABgAFAAkABwAJAAgAAQAKAAIAAgALAAUAAgAKAAsABQAMAAkABQALAAwACQANAAgACQAMAA0ACAAOAAEAAQAOAAoACAANAA4ACgAPAAsADQAQAA4ADgARAAoACgARAA8ADgAQABEACwAPABIAEQASAA8ACwASAAwAEwARABAADQATABAAEQATABIADAATAA0ADAASABMA"),
+"name": "spotlight",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 20,
+"vertex_data": PackedByteArray("/38AAAAAAAD//7YwyGEAAP9/tjAAAAAAAAAAAMhhAAD//wAAyGEAAAAAtjDIYQAA5DAAAP//AAAazwAA//8AABrPtjD//wAA5DC2MP//AAD/f0e481cAAPNXR7iLdgAAP2dHuAuoAAC/mEe4C6gAAAuoR7iLdgAA81f//4t2AAALqP//i3YAAP9////zVwAAP2f//wuoAAC/mP//C6gAAA==")
+}, {
+"aabb": AABB(-0.0605686, 0.103128, -0.0692344, 0.121137, 0.123982, 0.115208),
+"format": 34896613377,
+"index_count": 69,
+"index_data": PackedByteArray("CQABAAoACgABAAQACwAEAAEACQALAAEAAAAJAAoAAAAKAAIAAwAJAAAAAgAKAAwACgAEAAwAAgAMAAUAAwANAAkADQALAAkABwANAAMABQAOAAcABwAOAA0ABQAMAA4ADQAGAAsADgAGAA0ACAALAAYADgAIAAYADAAIAA4ACwAIAAQADAAEAAgA"),
+"lods": [0.0359963, PackedByteArray("AAABAAIAAwABAAAAAgABAAQAAgAEAAUAAwAGAAEABwAGAAMAAQAIAAQABQAEAAgACAABAAYABQAIAAcABwAIAAYA")],
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 15,
+"vertex_data": PackedByteArray("/38AADBKAAA5Pf//PHAAADBKAABLcwAAzrUAAEtzAAC7Vv//xcIAAL1eAADOtQAAxcL//zxwAABBoQAAzrUAAEOp///FwgAA/3+NggAAAAAAAI2CyGEAAP9///85PQAA5DCNgv//AAD//42CyGEAABrPjYL//wAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_i35pg"]
+resource_name = "spotlight_fixed_spotlight_026"
+_surfaces = [{
+"aabb": AABB(-0.120818, -0.0264567, -0.126535, 0.241636, 0.129584, 0.229809),
+"attribute_data": PackedByteArray("pgJVYs4PyaLOD1VipgLJoqYC4CHOD+AhPJSR/WOhy7FjoZH9PJTLsVmCuf2Bjw2ugY+5/VmCDa7B7vAYZchnJQzXPRHB7t4xDNeSOR+my7FGs5H9RrPLsR+mkf0Bw18kK5v5np/bJHBVc18ktlokcA3df1Fr8FQ9Dd1UPWvwf1EN3alla/CpZf58DeXfUsGw/nxhlSo7DanfUq7JODHDfDgxrP2DLDe9Kjti0WQCN71Bjj8MjHadH4x2PwxBjp0fFJQ/DMmrnR/Jqz8MFJSdH60Ci+QLFnj9rQJ4/QsWi+Q="),
+"format": 34896613399,
+"index_count": 108,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAAAAIABAACAAUABgAHAAgABgAJAAcACgALAAwACgANAAsADgAPABAADwAOABEADwARABIAEwAUABUAEwAWABQAFwAYABkAGAAXABoAGAAaABsAHAAdAB4AHAAfAB0AIAAfABwAIAAhAB8AIgAjACQAJAAjACUAIgAmACMAJAAlACcAKAAmACIAJwAlACkAKAAqACYAJwApACsAKwAqACgAKwApACoALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUA"),
+"material": SubResource("StandardMaterial3D_d06ix"),
+"name": "spotlight",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 56,
+"vertex_data": PackedByteArray("/38AAAAAAAD//7YwyGHLGP9/tjAAAL4K//8AAMhh7SIAAAAAyGHtIgAAtjDIYYUs//8AAMhhEd0az7Yw//8Dyv//tjDIYTPnGs8AAP//5MMazwAA///kw+QwtjD//3rAGs+2MP//A8rkMAAA///kw7+Y//8LqFTV/3////NXVNULqP//i3ZU1T9n//8LqFTV81f//4t2VNXkMAAA//8aPAAAtjDIYYUs5DC2MP//hD8AAAAAyGHtIgAAAADIYe0i//8AAMhh7SL/fwAAAADtIuQwAAD//+0iGs8AAP//7SL/f0e481edDvNX//+Ldu0i81dHuIt2Gy//f///81cAAAuoR7iLdvoTC6j//4t27SLkMLYw//8utL+YR7gLqB7VGs+2MP//S9cLqEe4i3bw9j9nR7gLqAm5//+2MMhh2vkAALYwyGEQzP9/R7jzV2Hx81dHuIt20sz/f7YwAABA9b+YR7gLqDvrC6j//4t2//8LqEe4i3Yh97+Y//8LqP//81dHuIt2NzM/Z///C6hlZj9nR7gLqJhX81f//4t2MzM/Z0e4C6gMwL+Y//8LqOTDv5hHuAuodM0/Z///C6jkw/+//7//MXAld7p3uvEu8S4N0Q3RwdRAxvEu8S6QJ7cI/zFwJTUZNRk1GTUZi/YX1ZAntwjJ5snmqqqqqqqqqqqqqqmqqqqqqqmqqqrJ5snmwdRAxov2F9UN0Q3R410NUeNdDVHjXQ1R410NUeNdDVGduJ24DdEN0Z/VSsH/v/+/OjOeIvEu8S4ThV60Eqi9iS6ms4PMuu6WU4y1siC+zZF9mnPcnbiduHKgMdN3une65p6JkiHK/3+guiGXY5//f8qgGtP/f///+qD3tv9////G/O3MNRk1GWwt3QLJ5snm")
+}, {
+"aabb": AABB(-0.0605686, 0.103128, -0.0692344, 0.121137, 0.123982, 0.115208),
+"attribute_data": PackedByteArray("vlePS0sjP3eWXdJX5VFMP8gU0Fjq6QuO6ulVbLv9m4er3TB9e2pSKFconhd7aloYVyhvKzKsUahX7jyVMqxZmFfuDanKueL4id7CvuXJof2Myt64SzkUWjRHP3cKHAhoYyvpPMBIJhTASCI67s2Jhu7NhqyJ3ozgObhB1bv9xXI="),
+"format": 34896613399,
+"index_count": 69,
+"index_data": PackedByteArray("FQABABYAFQAXAAEAAAAVABYAAAAWAAIAAwAVAAAAAwAYABUAGAAXABUAGAAEABcACQAZAAsACQAaABkAGgAKABkAGgAMAAoADQAbAA8ADQAcABsAHAAOABsAHAAQAA4AEQAdABMAEQAeAB0AHgASAB0AHgAUABIABQAfAAcAHwAFAAgAHwAIAAYA"),
+"lods": [0.0359963, PackedByteArray("AAABAAIAAwABAAAAAwAEAAEABQAGAAcABgAFAAgACQAKAAsACQAMAAoADQAOAA8ADQAQAA4AEQASABMAEQAUABIA")],
+"material": SubResource("StandardMaterial3D_yydjj"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 32,
+"vertex_data": PackedByteArray("/38AADBK0Qo5Pf//PHAVDDBKAABLcxA0zrUAAEtzNBTFwv//PHDwM0Op///FwmevOT3//zxwoN7Fwv//PHCXybtW///FwhTBQaEAAM61OdvFwv//PHBey861AABLcxboQ6n//8XC3LUwSgAAS3PoF7tW///FwiJKvV4AAM61xSQ5Pf//PHCgNL1eAADOtXiiQ6n//8XCgapBoQAAzrXfp7tW///FwkSu/3+NggAAkAAAAI2CyGG5Kv9///85Pb8R//+Ngshh3yj//42CyGFJ3RrPjYL//8rE5DCNgv//NDsAAI2CyGG1IhrPjYL//yud5DCNgv//upz/f///OT1K4B9DwdMeZru2c1CU0UmjL00gvj4qz9KnMqbxgEUmwnw3avUQOWWKzVkJze9fzp8PSQ3JLH4PyS/gK/7xts3ZmfXv3/SyfztYzEjV1k3MHnw5Fe8RstpN3c7RV3e7GsIeJoen2UXzrcVQ75dPZk7mDujF0ArSu0aGEIGyjvZp3jpP")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_ymymj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ymymj"]
+albedo_color = Color(0, 0, 0, 1)
+emission_enabled = true
+emission = Color(0.27353, 0.24423, 0.0335108, 1)
+emission_energy_multiplier = 2.0
+
+[node name="spotlight_fixed" type="Node3D"]
+
+[node name="spotlight_025" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("ArrayMesh_i35pg")
+skeleton = NodePath("")
+surface_material_override/1 = SubResource("StandardMaterial3D_ymymj")

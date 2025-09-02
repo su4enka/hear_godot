@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cmq75x8hhfouj"
-path="res://.godot/imported/Breakdance Footwork To Idle.fbx-1ba7814d41c342093cfab28bbd00def2.scn"
+uid="uid://vj1nutoqsyyr"
+path="res://.godot/imported/Laying Idle.fbx-6139af01964a345b99827b2c0c0ac33f.scn"
 
 [deps]
 
-source_file="res://anims/wife/Breakdance Footwork To Idle.fbx"
-dest_files=["res://.godot/imported/Breakdance Footwork To Idle.fbx-1ba7814d41c342093cfab28bbd00def2.scn"]
+source_file="res://anims/wife/Laying Idle.fbx"
+dest_files=["res://.godot/imported/Laying Idle.fbx-6139af01964a345b99827b2c0c0ac33f.scn"]
 
 [params]
 
@@ -37,7 +37,7 @@ _subresources={
 "mixamo_com": {
 "save_to_file/enabled": true,
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "res://anims/wife/breakdance_footwork_to_idle.res",
+"save_to_file/path": "res://anims/wife/laying_idle.res",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,

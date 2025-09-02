@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 const OUTLINE_SHADER_PATH := "res://shaders/outline.gdshader"
-var outlined_meshes: Array[MeshInstance3D] = []
+var outlined_meshes: Array = []
 
 @export var speed := 5.0
 
@@ -69,8 +69,12 @@ func _ready():
 
 func _process(_delta: float) -> void:
 	_update_interact_hint()
-	# если шейдеру нужна позиция камеры — прокидываем её всем подсвеченным
-	for mi in outlined_meshes:
+	# обновляем шейдер только у живых мешей
+	for i in range(outlined_meshes.size() - 1, -1, -1):
+		var mi = outlined_meshes[i]
+		if not is_instance_valid(mi):
+			outlined_meshes.remove_at(i)
+			continue
 		var sm := _get_outline_material(mi)
 		if sm:
 			sm.set_shader_parameter("camera_world_pos", camera_3d.global_position)
@@ -121,15 +125,20 @@ func _update_interact_hint() -> void:
 
 	# выключить у прошлого
 	for m in outlined_meshes:
-		if not new_outlined.has(m):
+		if is_instance_valid(m) and not new_outlined.has(m):
 			_set_outline(m, false)
 
 	# включить у нового
 	for m in new_outlined:
-		if not outlined_meshes.has(m):
+		if is_instance_valid(m) and not outlined_meshes.has(m):
 			_set_outline(m, true)
 
-	outlined_meshes = new_outlined
+	# храним только живые
+	var filtered: Array = []
+	for m in new_outlined:
+		if is_instance_valid(m):
+			filtered.append(m)
+	outlined_meshes = filtered
 
 	interact_hint.text = text
 	interact_hint.visible = text != ""
@@ -154,13 +163,19 @@ func _ensure_overlay_unique(mi: MeshInstance3D) -> ShaderMaterial:
 			mi.material_overlay = mat
 	return mat as ShaderMaterial
 
-func _set_outline(mi: MeshInstance3D, on: bool) -> void:
-	if mi == null: return
-	var sm := _get_outline_material(mi)
-	if sm == null:
-		sm = _ensure_overlay_unique(mi)  # ← создаём overlay с нашим шейдером
-	if sm == null:
+func _set_outline(mi, on: bool) -> void:
+	if not is_instance_valid(mi):
 		return
+	var mesh := mi as MeshInstance3D
+	if mesh == null:
+		return
+
+	var sm := _get_outline_material(mesh)
+	if sm == null:
+		sm = _ensure_overlay_unique(mesh)
+		if sm == null:
+			return
+
 	sm.set_shader_parameter("outline_enabled", on)
 	sm.set_shader_parameter("camera_world_pos", camera_3d.global_position)
 
@@ -325,9 +340,16 @@ func _try_interact():
 
 		# Руда
 	if target.has_method("try_mine"):
-		# безопасный вызов (если руда удалится внутри try_mine)
-		target.call_deferred("try_mine")
+		_clear_all_outlines()               # ← СНАЧАЛА убрать контур у текущей цели
+		target.call_deferred("try_mine")    # потом копать (руда может удалиться)
 		return
+
+func _clear_all_outlines() -> void:
+	for i in range(outlined_meshes.size() - 1, -1, -1):
+		var m = outlined_meshes[i]
+		if is_instance_valid(m):
+			_set_outline(m, false)
+		outlined_meshes.remove_at(i)
 
 func _physics_process(delta):
 	if not can_move:
