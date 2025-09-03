@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://bgnnwxvr6ei7c"]
+[gd_scene load_steps=11 format=4 uid="uid://bgnnwxvr6ei7c"]
 
 [ext_resource type="Texture2D" uid="uid://cuba5km7altgf" path="res://assets/Trailer_Park/Textures/Wood.jpg" id="1_xy43w"]
 [ext_resource type="Texture2D" uid="uid://cwdq5i06hj3tl" path="res://assets/Trailer_Park/Textures/Fence.png" id="2_nk0ow"]
@@ -72,9 +72,37 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_i676e")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_pewjh"]
+size = Vector3(0.00130859, 0.0266714, 0.014)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d0lso"]
+size = Vector3(0.00130859, 0.022209, 0.014)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_01f3b"]
+size = Vector3(0.00130859, 0.00963965, 0.014)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vkqd1"]
+size = Vector3(0.00130859, 0.0165701, 0.019207)
+
 [node name="railing" type="StaticBody3D"]
 transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_qwp71")
 skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00553711, 0.00307593, 1.11022e-16)
+shape = SubResource("BoxShape3D_pewjh")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, -1.19209e-07, 1, -4.37114e-08, -1.19209e-07, 1.19209e-07, -1.19209e-07, 1, 0.00488778, 0.0170531, 1.32123e-09)
+shape = SubResource("BoxShape3D_d0lso")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, -1.19209e-07, 1, -4.37114e-08, -1.19209e-07, 1.19209e-07, -1.19209e-07, 1, -0.00139689, -0.0104816, -2.71033e-09)
+shape = SubResource("BoxShape3D_01f3b")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, -5.68363e-16, 9.09495e-15, -1.0842e-21, 1, 7.10543e-15, 9.09495e-15, 2.84217e-14, 1, 0.00301299, -0.0179963, -0.00260352)
+shape = SubResource("BoxShape3D_vkqd1")

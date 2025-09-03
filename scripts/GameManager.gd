@@ -214,4 +214,5 @@ func end_game(kind:String):
 
 func go_home_from_cave():
 	came_from_cave = true
+	#get_tree().change_scene_to_file("res://scenes/TrailerPark.tscn")
 	get_tree().change_scene_to_file("res://scenes/TrailerPark.tscn")

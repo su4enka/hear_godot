@@ -1,5 +1,6 @@
-[gd_scene load_steps=73 format=4 uid="uid://bkifa6yotv4jc"]
+[gd_scene load_steps=83 format=4 uid="uid://bkifa6yotv4jc"]
 
+[ext_resource type="Script" uid="uid://bluddt4tmx3d2" path="res://scripts/TrailerParkManager.gd" id="1_8ys44"]
 [ext_resource type="PackedScene" uid="uid://f6rswq8q70br" path="res://scenes/Environments/TrailerPark_Env.tscn" id="1_56bxc"]
 [ext_resource type="Shader" uid="uid://bk11acimq0uvb" path="res://shaders/outline.gdshader" id="2_cq72w"]
 [ext_resource type="Texture2D" uid="uid://djfm62nq6bklv" path="res://assets/Outside_TrailerPark/Textures/Bus.png" id="2_danmk"]
@@ -13,6 +14,9 @@
 [ext_resource type="PackedScene" uid="uid://d0ei16srs4mwd" path="res://scenes/PauseMenu.tscn" id="7_tif2x"]
 [ext_resource type="Texture2D" uid="uid://bjqx6scm7obtg" path="res://anims/neighbor/Character_09.png" id="10_wh28l"]
 [ext_resource type="Animation" uid="uid://ch5vpw85lpdsr" path="res://anims/wife/standing_idle.res" id="11_8ys44"]
+[ext_resource type="Script" uid="uid://b2ass07weugxy" path="res://scripts/WifeController.gd" id="11_xxnv3"]
+[ext_resource type="Script" uid="uid://cjk7r2b88ga4d" path="res://scripts/WifeLookArea.gd" id="14_1d1xp"]
+[ext_resource type="Animation" uid="uid://cf8v8quas1ieq" path="res://anims/wife/sitting_idle.res" id="14_mm8o7"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ub2lo"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -25,6 +29,13 @@ sky_material = SubResource("ProceduralSkyMaterial_ub2lo")
 background_mode = 2
 sky = SubResource("Sky_r2usd")
 tonemap_mode = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mm8o7"]
+render_priority = 0
+shader = ExtResource("2_cq72w")
+shader_parameter/outline_enabled = false
+shader_parameter/color = Color(0.815686, 0.745098, 0.368627, 0.560784)
+shader_parameter/size = 1.05
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ijgmq"]
 resource_name = "Bus"
@@ -67,6 +78,13 @@ shadow_mesh = SubResource("ArrayMesh_d08gt")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xxnv3"]
 albedo_texture = ExtResource("2_danmk")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4h6kt"]
+render_priority = 0
+shader = ExtResource("2_cq72w")
+shader_parameter/outline_enabled = false
+shader_parameter/color = Color(0.815686, 0.745098, 0.368627, 0.560784)
+shader_parameter/size = 1.01
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cu42s"]
 resource_name = "Seating"
@@ -199,6 +217,13 @@ albedo_texture = ExtResource("4_wh28l")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h0425"]
 albedo_texture = ExtResource("5_8ys44")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h0425"]
+render_priority = 0
+shader = ExtResource("2_cq72w")
+shader_parameter/outline_enabled = false
+shader_parameter/color = Color(0.815686, 0.745098, 0.368627, 0.560784)
+shader_parameter/size = 1.05
+
 [sub_resource type="ArrayMesh" id="ArrayMesh_yo8yg"]
 _surfaces = [{
 "aabb": AABB(-0.00455035, -0.00455035, -0.00176979, 0.0091007, 0.0091007, 0.00353959),
@@ -236,6 +261,13 @@ shadow_mesh = SubResource("ArrayMesh_yo8yg")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_poa18"]
 albedo_texture = ExtResource("2_danmk")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_poa18"]
+render_priority = 0
+shader = ExtResource("2_cq72w")
+shader_parameter/outline_enabled = false
+shader_parameter/color = Color(0.815686, 0.745098, 0.368627, 0.560784)
+shader_parameter/size = 1.05
+
 [sub_resource type="ArrayMesh" id="ArrayMesh_fd7ae"]
 _surfaces = [{
 "aabb": AABB(-0.00455035, -0.00455035, -0.00176979, 0.0091007, 0.0091007, 0.00353959),
@@ -272,6 +304,13 @@ shadow_mesh = SubResource("ArrayMesh_fd7ae")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ap25"]
 albedo_texture = ExtResource("2_danmk")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6ap25"]
+render_priority = 0
+shader = ExtResource("2_cq72w")
+shader_parameter/outline_enabled = false
+shader_parameter/color = Color(0.815686, 0.745098, 0.368627, 0.560784)
+shader_parameter/size = 1.05
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_d8y0r"]
 _surfaces = [{
@@ -567,8 +606,8 @@ albedo_texture = ExtResource("4_wh28l")
 [sub_resource type="BoxShape3D" id="BoxShape3D_ij836"]
 size = Vector3(10.6097, 2.48145, 2.82996)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_danmk"]
-radius = 3.81833
+[sub_resource type="BoxShape3D" id="BoxShape3D_mm8o7"]
+size = Vector3(12.0116, 4.55164, 4.42348)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mkn0m"]
 render_priority = 0
@@ -619,7 +658,7 @@ shadow_mesh = SubResource("ArrayMesh_ex30h")
 size = Vector3(0.277222, 3.51123, 1.54004)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v1b3l"]
-size = Vector3(0.177721, 3.47501, 1.50098)
+size = Vector3(0.819333, 3.47501, 1.50098)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_efbud"]
 
@@ -1071,10 +1110,15 @@ tracks/22/keys = PackedFloat32Array(0, 1, 0.0126213, -0.0885094, 0.0811339, 0.99
 _data = {
 &"RESET": SubResource("Animation_xxnv3"),
 &"mixamo_com": SubResource("Animation_1d1xp"),
+&"sitting_idle": ExtResource("14_mm8o7"),
 &"standing_idle": ExtResource("11_8ys44")
 }
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_1d1xp"]
+radius = 4.25434
+
 [node name="TrailerPark" type="Node3D"]
+script = ExtResource("1_8ys44")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_uhbb8")
@@ -1091,19 +1135,21 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.50662, -0.33549, 2.52629)
 
 [node name="SpawnBus" type="Node3D" parent="Spawns"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.5002, -0.134091, -36.1501)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -22.5002, -0.134091, -36.1501)
 
 [node name="Bus" type="StaticBody3D" parent="."]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -25.3561, -1.83336, -31.5357)
 
 [node name="Tire_01" type="MeshInstance3D" parent="Bus"]
 transform = Transform3D(106.274, 0, 0, 0, 106.274, -4.6454e-06, 0, 4.6454e-06, 106.274, 2.10583, 0.831745, -1.15848)
+material_overlay = SubResource("ShaderMaterial_mm8o7")
 mesh = SubResource("ArrayMesh_gtef1")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_xxnv3")
 
 [node name="Bus" type="MeshInstance3D" parent="Bus"]
 transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, -1.2601, 2.15227, 0.288825)
+material_overlay = SubResource("ShaderMaterial_4h6kt")
 mesh = SubResource("ArrayMesh_xuqwh")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_1d1xp")
@@ -1113,24 +1159,28 @@ surface_material_override/3 = SubResource("StandardMaterial3D_h0425")
 
 [node name="Tire_03" type="MeshInstance3D" parent="Bus"]
 transform = Transform3D(106.274, 0, 0, 0, 106.274, -4.6454e-06, 0, 4.6454e-06, 106.274, 2.10583, 0.831745, 1.58302)
+material_overlay = SubResource("ShaderMaterial_h0425")
 mesh = SubResource("ArrayMesh_mvkr7")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_poa18")
 
 [node name="Tire" type="MeshInstance3D" parent="Bus"]
 transform = Transform3D(106.274, 0, 0, 0, 106.274, -4.6454e-06, 0, 4.6454e-06, 106.274, -3.93076, 0.831745, -1.15848)
+material_overlay = SubResource("ShaderMaterial_poa18")
 mesh = SubResource("ArrayMesh_hhm8m")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_6ap25")
 
 [node name="Tire_02" type="MeshInstance3D" parent="Bus"]
 transform = Transform3D(106.274, 0, 0, 0, 106.274, -4.6454e-06, 0, 4.6454e-06, 106.274, -3.93076, 0.831745, 1.58302)
+material_overlay = SubResource("ShaderMaterial_6ap25")
 mesh = SubResource("ArrayMesh_rja1i")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_1o21w")
 
 [node name="Cube_038" type="MeshInstance3D" parent="Bus"]
 transform = Transform3D(102.446, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, -5.91446, 1.96664, -1.34708)
+material_overlay = SubResource("ShaderMaterial_mm8o7")
 mesh = SubResource("ArrayMesh_51twh")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_xtos0")
@@ -1138,6 +1188,7 @@ surface_material_override/1 = SubResource("StandardMaterial3D_8cimd")
 
 [node name="Cube_039" type="MeshInstance3D" parent="Bus"]
 transform = Transform3D(-102.446, 0, 0, 0, 1.19209e-05, 100, 0, -100, 1.19209e-05, -4.65266, 1.96664, -1.34708)
+material_overlay = SubResource("ShaderMaterial_mm8o7")
 mesh = SubResource("ArrayMesh_nvby5")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_jdwel")
@@ -1163,11 +1214,11 @@ surface_material_override/1 = SubResource("StandardMaterial3D_h1ewr")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.39529, 1.59912, 0.180359)
 shape = SubResource("BoxShape3D_ij836")
 
-[node name="Area3D" type="Area3D" parent="Bus" groups=["bus"]]
+[node name="ExitTrigger" type="Area3D" parent="Bus" groups=["bus"]]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Bus/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.13174, 0, -0.830566)
-shape = SubResource("SphereShape3D_danmk")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bus/ExitTrigger"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4943, 1.77582, 0.342863)
+shape = SubResource("BoxShape3D_mm8o7")
 
 [node name="Door" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.857296, 1.09393, 1.36419)
@@ -1185,7 +1236,7 @@ shape = SubResource("BoxShape3D_dmvyb")
 [node name="ExitTrigger" type="Area3D" parent="Door" groups=["house_door"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Door/ExitTrigger"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.282801, 0.498642, 0.250488)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0380048, 0.498642, 0.250488)
 shape = SubResource("BoxShape3D_v1b3l")
 
 [node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
@@ -1211,7 +1262,23 @@ collide_with_areas = true
 transform = Transform3D(100, 0, 0, 0, -4.37114e-06, 100, 0, -100, -4.37114e-06, -0.345, -0.35, -0.375)
 
 [node name="Character_09" type="Node3D" parent="."]
-transform = Transform3D(-6.55671e-08, 0, 1.5, 0, 1.5, 0, -1.5, 0, -6.55671e-08, -19.6338, -1.20475, 1.86408)
+transform = Transform3D(1.5, 0, 5.96047e-08, 4.05507e-09, 1.49652, -0.102049, -5.94666e-08, 0.102049, 1.49652, -14.87, -1.14677, -37.3523)
+script = ExtResource("11_xxnv3")
+skeleton_path = NodePath("Skeleton")
+anim_player_path = NodePath("AnimationPlayer")
+deadzone_soft_width_deg = 4.0
+center_settle_damping = 16.0
+look_stiffness = 5.0
+max_turn_speed_deg = 100.0
+max_pitch_deg = 5.0
+head_pitch_scale = 0.3
+max_head_pitch_deg = 10.0
+max_yaw_right_deg = 60.0
+max_yaw_left_deg = 60.0
+return_duration = 5.0
+aim_smooth_time = 0.7
+deadzone_deg = 3.0
+invert_yaw_sign = true
 
 [node name="Skeleton" type="Skeleton3D" parent="Character_09"]
 unique_name_in_owner = true
@@ -1235,28 +1302,28 @@ bones/2/parent = 1
 bones/2/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.113808, -0.00516117)
 bones/2/enabled = true
 bones/2/position = Vector3(0, 0.113808, -0.00516117)
-bones/2/rotation = Quaternion(0.075785, -0.00729915, 0.00922723, 0.997055)
+bones/2/rotation = Quaternion(-0.0017431, 0.00185621, -0.0031053, 0.999992)
 bones/2/scale = Vector3(1, 1, 1)
 bones/3/name = "UpperChest"
 bones/3/parent = 2
 bones/3/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33681e-19, 0.130066, -0.00589847)
 bones/3/enabled = true
 bones/3/position = Vector3(-4.33681e-19, 0.130066, -0.00589847)
-bones/3/rotation = Quaternion(0.0760676, -0.00754994, 0.00917128, 0.997032)
+bones/3/rotation = Quaternion(-0.00174581, 0.00216421, -0.00262952, 0.999993)
 bones/3/scale = Vector3(1, 1, 1)
 bones/4/name = "Neck"
 bones/4/parent = 3
 bones/4/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33681e-19, 0.146325, -0.00663578)
 bones/4/enabled = true
 bones/4/position = Vector3(-4.33681e-19, 0.146325, -0.00663578)
-bones/4/rotation = Quaternion(0, 0, 0, 1)
+bones/4/rotation = Quaternion(0.0282971, -0.000682827, -0.0484007, 0.998427)
 bones/4/scale = Vector3(1, 1, 1)
 bones/5/name = "Head"
 bones/5/parent = 4
 bones/5/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0804689, 0.0216597)
 bones/5/enabled = true
 bones/5/position = Vector3(0, 0.0804689, 0.0216597)
-bones/5/rotation = Quaternion(0, 0, 0, 1)
+bones/5/rotation = Quaternion(-0.197332, -0.00945037, 0.00785534, 0.98026)
 bones/5/scale = Vector3(1, 1, 1)
 bones/6/name = "mixamorig_HeadTop_End"
 bones/6/parent = 5
@@ -1319,7 +1386,7 @@ bones/14/parent = 13
 bones/14/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.031038, 0.0325506, 0.0294852)
 bones/14/enabled = true
 bones/14/position = Vector3(-0.031038, 0.0325506, 0.0294852)
-bones/14/rotation = Quaternion(0.13527, -2.08616e-07, -0.0163247, 0.990674)
+bones/14/rotation = Quaternion(0.0841307, -8.9407e-08, -0.00862143, 0.996418)
 bones/14/scale = Vector3(1, 1, 1)
 bones/15/name = "RightShoulder"
 bones/15/parent = 3
@@ -1375,7 +1442,7 @@ bones/22/parent = 21
 bones/22/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0180541, 0.0330326, 0.0332263)
 bones/22/enabled = true
 bones/22/position = Vector3(0.0180541, 0.0330326, 0.0332263)
-bones/22/rotation = Quaternion(0.132604, -1.3411e-07, 0.0161602, 0.991037)
+bones/22/rotation = Quaternion(0.0800008, -7.45058e-08, 0.00651714, 0.996773)
 bones/22/scale = Vector3(1, 1, 1)
 bones/23/name = "LeftUpperLeg"
 bones/23/parent = 0
@@ -1403,7 +1470,7 @@ bones/26/parent = 25
 bones/26/rest = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0.0120919, 0.175822, -0.0922192)
 bones/26/enabled = true
 bones/26/position = Vector3(0.0120919, 0.175822, -0.0922192)
-bones/26/rotation = Quaternion(-3.66845e-08, 0.99993, 0.0118655, 2.56436e-08)
+bones/26/rotation = Quaternion(-6.59151e-08, 1, 0.000899762, 3.69738e-09)
 bones/26/scale = Vector3(1, 1, 1)
 bones/27/name = "mixamorig_LeftToe_End"
 bones/27/parent = 26
@@ -1438,7 +1505,7 @@ bones/31/parent = 30
 bones/31/rest = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -0.012092, 0.177799, -0.0922188)
 bones/31/enabled = true
 bones/31/position = Vector3(-0.012092, 0.177799, -0.0922188)
-bones/31/rotation = Quaternion(-4.3723e-08, 0.999985, 0.00541195, 2.95661e-08)
+bones/31/rotation = Quaternion(-7.21593e-08, 0.999999, 0.00167227, -3.86802e-09)
 bones/31/scale = Vector3(1, 1, 1)
 bones/32/name = "mixamorig_RightToe_End"
 bones/32/parent = 31
@@ -1456,7 +1523,14 @@ skin = SubResource("Skin_64w7i")
 libraries = {
 &"": SubResource("AnimationLibrary_mm8o7")
 }
-autoplay = "standing_idle"
+autoplay = "sitting_idle"
+
+[node name="LookArea" type="Area3D" parent="Character_09"]
+script = ExtResource("14_1d1xp")
+wife_root_path = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character_09/LookArea"]
+shape = SubResource("SphereShape3D_1d1xp")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 physics_interpolation_mode = 2
@@ -1522,6 +1596,7 @@ text = "Subtitles"
 layer = 100
 
 [node name="DayIntro" type="Control" parent="OverlayLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -1529,6 +1604,7 @@ offset_bottom = 40.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Fade" type="ColorRect" parent="OverlayLayer/DayIntro"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1542,6 +1618,7 @@ color = Color(0, 0, 0, 0)
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="OverlayLayer/DayIntro"]
+visible = false
 layout_mode = 0
 offset_left = 610.0
 offset_top = 345.0

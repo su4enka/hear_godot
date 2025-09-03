@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://cgjiuykvkvyon"]
+[gd_scene load_steps=31 format=4 uid="uid://cgjiuykvkvyon"]
 
 [ext_resource type="Texture2D" uid="uid://yla8jx3pxvan" path="res://assets/Trailer_Park/Textures/PlasterWhite.jpg" id="1_tf4kl"]
 [ext_resource type="Texture2D" uid="uid://cp7wagmwbauo3" path="res://assets/Trailer_Park/Textures/Carpet.jpg" id="2_cfcad"]
@@ -275,6 +275,12 @@ size = Vector3(0.00216675, 0.14241, 0.0323486)
 [sub_resource type="BoxShape3D" id="BoxShape3D_d5tsg"]
 size = Vector3(0.00216675, 0.14241, 0.0360413)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_35u0u"]
+size = Vector3(0.00826645, 0.02779, 0.0224152)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r1v6p"]
+size = Vector3(0.00826645, 0.0198764, 0.0121842)
+
 [node name="Home" type="StaticBody3D"]
 transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 0, 0, 0)
 
@@ -321,3 +327,11 @@ shape = SubResource("BoxShape3D_cow5r")
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="."]
 transform = Transform3D(0, -1.19209e-07, 1, 1.19209e-07, 1, 1.19209e-07, -1, 1.19209e-07, 1.42108e-14, 0.0126615, -0.00570682, -0.00559127)
 shape = SubResource("BoxShape3D_d5tsg")
+
+[node name="CollisionShape3D11" type="CollisionShape3D" parent="."]
+transform = Transform3D(0, -1.19209e-07, 1, 1.19209e-07, 1, 1.19209e-07, -1, 1.19209e-07, 1.42108e-14, -0.0168248, -0.0152493, -0.00909507)
+shape = SubResource("BoxShape3D_35u0u")
+
+[node name="CollisionShape3D12" type="CollisionShape3D" parent="."]
+transform = Transform3D(-3.01904e-15, -1.19209e-07, 1, 0.44501, 0.895525, 1.06755e-07, -0.895525, 0.44501, 5.30493e-08, -0.0117093, -0.0374606, -0.0130161)
+shape = SubResource("BoxShape3D_r1v6p")

@@ -349,6 +349,7 @@ func request_exit() -> void:
 
 	# раньше тут было: GameManager.came_from_cave = true и переход в Cave
 	# теперь выходим наружу — в трейлер-парк
+	#get_tree().change_scene_to_file("res://scenes/TrailerPark.tscn")
 	get_tree().change_scene_to_file("res://scenes/TrailerPark.tscn")
 
 

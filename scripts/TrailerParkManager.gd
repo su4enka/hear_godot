@@ -25,11 +25,10 @@ class_name TrailerParkManager
 @export var night_sun_energy := 0.08
 
 func _ready() -> void:
-	# чтобы игрок мог "видеть" оба триггера как exit — и мы решим, что именно
-	if not bus_trigger.is_in_group("exit"):
-		bus_trigger.add_to_group("exit")
-	if not door_trigger.is_in_group("exit"):
-		door_trigger.add_to_group("exit")
+	
+	# пометить корни (нужно для правильного текста хинта)
+	$Bus/ExitTrigger.add_to_group("bus")
+	$Door/ExitTrigger.add_to_group("house_door")
 
 	# Спавн: если пришли из пещеры — возле автобуса, иначе — у двери дома
 	if GameManager.came_from_cave:
@@ -72,7 +71,7 @@ func _show_hint(text: String, secs := 2.0) -> void:
 
 # Важно: Player зовёт request_exit() на корневом узле сцены, когда видит группу "exit".
 # Мы сами определим, это автобус или дверь.
-func request_exit() -> void:
+func request_exit_outside() -> void:
 	var ray: RayCast3D = player.get_node_or_null("Camera3D/InteractRay")
 	if not ray:
 		return

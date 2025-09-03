@@ -43,6 +43,17 @@ var can_move := true
 
 func _ready():
 	
+	if interact_hint:
+		interact_hint.visible = false
+		interact_hint.text = ""
+	else:
+		# фоллбэк: найдём лейбл по имени в сцене (на всякий случай)
+		var any_hint := get_tree().current_scene.find_child("InteractHint", true, false)
+		if any_hint and any_hint is Label:
+			interact_hint = any_hint
+			interact_hint.visible = false
+			interact_hint.text = ""
+
 	if interact_ray:
 		interact_ray.collide_with_areas = true
 		interact_ray.collide_with_bodies = true
@@ -89,11 +100,13 @@ func _get_interactable_from_hit(hit: Object) -> Node:
 		if n.is_in_group("exit"): return n
 		if n.is_in_group("toilet"): return n
 		if n.is_in_group("shower"): return n
+		if n.is_in_group("bus"): return n
+		if n.is_in_group("house_door"): return n
 		n = n.get_parent()
 	return null
 
 func _update_interact_hint() -> void:
-	if not interact_hint or not interact_ray:
+	if not interact_ray:
 		return
 
 	interact_ray.force_raycast_update()
@@ -105,6 +118,7 @@ func _update_interact_hint() -> void:
 		if hit:
 			var target := _get_interactable_from_hit(hit)
 
+			# ---- выбираем текст ----
 			if target:
 				if target.has_method("try_mine"):
 					text = "Press E to dig"
@@ -113,35 +127,34 @@ func _update_interact_hint() -> void:
 				elif target.is_in_group("bed"):
 					text = "Press E to sleep"
 				elif target.is_in_group("exit"):
-					text = "Press E to leave"
+					text = "Press E to leave" 
 				elif target.is_in_group("toilet"):
 					text = "Press E to pee"
 				elif target.is_in_group("shower"):
 					text = "Press E to shower"
+				elif target.is_in_group("bus"):
+					text = "Press E to leave"
+				elif target.is_in_group("house_door"):
+					text = "Press E to enter"
 
-			# стало: меш ищем около самого target (это фильтрует дом и всё лишнее)
+			# меши для outline берём строго из области интерактива
 			if target:
 				new_outlined = _collect_target_meshes(target)
 
-	# выключить у прошлого
+	# выключаем подсветку у старых
 	for m in outlined_meshes:
-		if is_instance_valid(m) and not new_outlined.has(m):
+		if not new_outlined.has(m):
 			_set_outline(m, false)
-
-	# включить у нового
+	# включаем у новых
 	for m in new_outlined:
-		if is_instance_valid(m) and not outlined_meshes.has(m):
+		if not outlined_meshes.has(m):
 			_set_outline(m, true)
+	outlined_meshes = new_outlined
 
-	# храним только живые
-	var filtered: Array = []
-	for m in new_outlined:
-		if is_instance_valid(m):
-			filtered.append(m)
-	outlined_meshes = filtered
-
-	interact_hint.text = text
-	interact_hint.visible = text != ""
+	# лейбл обновляем, только если он есть
+	if interact_hint:
+		interact_hint.text = text
+		interact_hint.visible = text != ""
 
 
 func _ensure_overlay_unique(mi: MeshInstance3D) -> ShaderMaterial:
@@ -321,6 +334,7 @@ func _try_interact():
 	if target.is_in_group("exit"):
 		var house := get_parent()
 		if house and house.has_method("request_exit"):
+			_clear_all_outlines() 
 			house.call("request_exit")
 		return
 
@@ -343,6 +357,22 @@ func _try_interact():
 		_clear_all_outlines()               # ← СНАЧАЛА убрать контур у текущей цели
 		target.call_deferred("try_mine")    # потом копать (руда может удалиться)
 		return
+	
+	# Дверь или автобус из улицы
+	if target.is_in_group("bus"):
+		var house := get_parent()
+		if house and house.has_method("request_exit_outside"):
+			_clear_all_outlines()               # ← СНАЧАЛА убрать контур у текущей цели
+			house.call_deferred("request_exit_outside")    # потом копать (руда может удалиться)
+			return
+
+	if target.is_in_group("house_door"):
+		var house := get_parent()
+		if house and house.has_method("request_exit_outside"):
+			_clear_all_outlines()               # ← СНАЧАЛА убрать контур у текущей цели
+			house.call_deferred("request_exit_outside")    # потом копать (руда может удалиться)
+			return
+
 
 func _clear_all_outlines() -> void:
 	for i in range(outlined_meshes.size() - 1, -1, -1):
