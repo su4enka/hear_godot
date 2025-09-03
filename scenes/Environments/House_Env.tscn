@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://c2sabghymoyxk"]
+[gd_scene load_steps=28 format=3 uid="uid://c2sabghymoyxk"]
 
 [ext_resource type="PackedScene" uid="uid://cgjiuykvkvyon" path="res://assets/USED ASSETS/Home/home.tscn" id="1_63w2v"]
 [ext_resource type="PackedScene" uid="uid://dk4cjnofo7vl1" path="res://assets/USED ASSETS/Home/cupboard_002.tscn" id="3_5uf8x"]
@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://b4mis1yyykjnf" path="res://assets/USED ASSETS/Home/dishes_01_001.tscn" id="25_hh8jy"]
 [ext_resource type="PackedScene" uid="uid://ciajtl8dr8b1m" path="res://assets/USED ASSETS/Home/trees_02_128.tscn" id="26_qs7a0"]
 [ext_resource type="PackedScene" uid="uid://pp8vtd02eqvy" path="res://assets/USED ASSETS/Home/washbasin_001.tscn" id="27_21q62"]
+[ext_resource type="PackedScene" uid="uid://b06mjriru4uac" path="res://assets/USED ASSETS/Home/background_002.tscn" id="27_eew7v"]
 
 [node name="HouseEnv" type="Node3D"]
 
@@ -33,13 +34,13 @@
 transform = Transform3D(150, 0, 0, 0, -6.55671e-06, 150, 0, -150, -6.55671e-06, 0, 0.618389, 0)
 
 [node name="Home2" parent="." instance=ExtResource("1_63w2v")]
-transform = Transform3D(-6.55671e-06, 150, 6.55671e-06, 1.69393e-20, -6.55671e-06, 150, 150, 6.55671e-06, 2.86603e-13, 7.78001, 0.618389, 35.8012)
+transform = Transform3D(-6.55671e-06, 150, 6.55671e-06, 1.69393e-20, -6.55671e-06, 150, 150, 6.55671e-06, 2.86603e-13, 5.36111, 0.618389, 35.3024)
 
 [node name="Home3" parent="." instance=ExtResource("1_63w2v")]
-transform = Transform3D(-6.55671e-06, 150, 6.55671e-06, 1.69393e-20, -6.55671e-06, 150, 150, 6.55671e-06, 2.86603e-13, -35.22, 0.618389, 35.8012)
+transform = Transform3D(-6.55671e-06, 150, 6.55671e-06, 1.69393e-20, -6.55671e-06, 150, 150, 6.55671e-06, 2.86603e-13, -29.9884, 0.618389, 35.8012)
 
 [node name="Home4" parent="." instance=ExtResource("1_63w2v")]
-transform = Transform3D(-150, -1.31134e-05, -5.73206e-13, 4.02334e-20, -6.55671e-06, 150, -1.31134e-05, 150, 6.55671e-06, -35.22, 0.618389, 1.80119)
+transform = Transform3D(-150, -1.31134e-05, -5.73206e-13, 4.02334e-20, -6.55671e-06, 150, -1.31134e-05, 150, 6.55671e-06, -24.861, 0.618389, 5.3409)
 
 [node name="Terrain" parent="." instance=ExtResource("3_x6f05")]
 transform = Transform3D(-4.37114e-06, 100, 1.19209e-05, 0, -1.19209e-05, 100, 100, 4.37114e-06, 5.21079e-13, -7.95714, 0, 0)
@@ -93,7 +94,7 @@ transform = Transform3D(1.13247e-05, 150, 6.55671e-06, 4.65882e-20, -6.55671e-06
 transform = Transform3D(-106.066, 106.066, 4.63629e-06, 0, -6.55671e-06, 150, 106.066, 106.066, 4.63629e-06, 3.37698, 1.14657, 1.61189)
 
 [node name="Trees_03_002" parent="." instance=ExtResource("18_65apw")]
-transform = Transform3D(46.6905, -142.548, -6.23098e-06, 0, -6.55671e-06, 150, -142.548, -46.6905, -2.04091e-06, -22.1528, -1.14679, -12.3309)
+transform = Transform3D(72.7758, -131.163, -5.7333e-06, 1.26608e-13, -6.55671e-06, 150, -131.163, -72.7758, -3.18114e-06, -20.4547, -1.14679, -11.4857)
 
 [node name="Trees_03_003" parent="." instance=ExtResource("18_65apw")]
 transform = Transform3D(46.6905, -142.548, -6.23098e-06, 0, -6.55671e-06, 150, -142.548, -46.6905, -2.04091e-06, -22.1528, -1.14679, 19.3153)
@@ -132,7 +133,19 @@ transform = Transform3D(150, 0, 0, 0, -6.55671e-06, 150, 0, -150, -6.55671e-06, 
 transform = Transform3D(87.6618, -121.455, -8.0005, 6.59687, -5.10413, 149.768, -121.54, -87.8781, 2.35859, 21.3794, -1.16812, 0)
 
 [node name="Trees_02_129" parent="." instance=ExtResource("26_qs7a0")]
-transform = Transform3D(-149.497, -10.5731, 6.22462, 6.59687, -5.10413, 149.768, -10.3449, 149.54, 5.55202, -24.3335, -1.16812, -10.5132)
+transform = Transform3D(-144.852, -38.6293, 5.06385, 6.59687, -5.10413, 149.768, -38.3971, 144.851, 6.62784, -22.9395, -1.16812, -10.1126)
 
 [node name="washbasin_001" parent="." instance=ExtResource("27_21q62")]
 transform = Transform3D(150, 0, 0, 0, 150, -6.55671e-06, 0, 6.55671e-06, 150, 4.3002, 2.13464, 4.27311)
+
+[node name="Background_003" parent="." instance=ExtResource("27_eew7v")]
+transform = Transform3D(-4.37114e-06, -100, -1.19209e-05, 0, -1.19209e-05, 100, -100, 4.37114e-06, 5.21079e-13, -25.2877, 6.59612, 57.5291)
+
+[node name="Background_004" parent="." instance=ExtResource("27_eew7v")]
+transform = Transform3D(-4.37114e-06, 100, 1.19209e-05, 0, -1.19209e-05, 100, 100, 4.37114e-06, 5.21079e-13, 7.83469, 6.59612, -53.5825)
+
+[node name="Background_005" parent="." instance=ExtResource("27_eew7v")]
+transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, -83.7743, 3.65331, 46.6329)
+
+[node name="Background_006" parent="." instance=ExtResource("27_eew7v")]
+transform = Transform3D(-100, -8.74228e-06, -1.04216e-12, 0, -1.19209e-05, 100, -8.74228e-06, 100, 1.19209e-05, 64.5493, 4.78558, 77.0976)

@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=4 uid="uid://b06mjriru4uac"]
+
+[ext_resource type="Texture2D" uid="uid://bhgfjfa6ui3je" path="res://assets/Trailer_Park/Textures/Background_01.png" id="1_maa8m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mi51t"]
+resource_name = "Background_01"
+transparency = 4
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_maa8m")
+emission_enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_1yddl"]
+_surfaces = [{
+"aabb": AABB(-3.1646e-08, -0.972369, -0.0500211, 1e-05, 1.6089, 0.151772),
+"format": 34359742465,
+"index_count": 6,
+"index_data": PackedByteArray("AAABAAIAAgADAAAA"),
+"name": "Background_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("GOsHs53zIj+8YtA9GOsHs53zIj/34ky9UxUbMy/teL/34ky9UxUbMy/teL+8YtA9")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_nvg64"]
+resource_name = "Background_002"
+_surfaces = [{
+"aabb": AABB(-3.1646e-08, -0.972369, -0.0500211, 1e-05, 1.6089, 0.151772),
+"attribute_data": PackedByteArray("SLMmQIBR0ztFsyZA6ZR/P0HIKcDnlH8/PcgpwABR0zs="),
+"format": 34359742487,
+"index_count": 6,
+"index_data": PackedByteArray("AAABAAIAAgADAAAA"),
+"material": SubResource("StandardMaterial3D_mi51t"),
+"name": "Background_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("GOsHs53zIj+8YtA9GOsHs53zIj/34ky9UxUbMy/teL/34ky9UxUbMy/teL+8YtA9////f/9///////9//3///////3//f///////f/9///8=")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_1yddl")
+
+[node name="Background_002" type="StaticBody3D"]
+transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_nvg64")
+skeleton = NodePath("")

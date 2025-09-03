@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://f6rswq8q70br"]
+
+[ext_resource type="PackedScene" uid="uid://c2sabghymoyxk" path="res://scenes/Environments/House_Env.tscn" id="1_2erg3"]
+[ext_resource type="PackedScene" uid="uid://b7r5plq7a3eup" path="res://assets/USED ASSETS/TrailerPark/bus_stop_01.tscn" id="2_xu1rv"]
+[ext_resource type="PackedScene" uid="uid://06yqr4qqnodp" path="res://assets/USED ASSETS/TrailerPark/bus_stop_sign_01.tscn" id="3_6b1x4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2erg3"]
+size = Vector3(1, 1, 121.839)
+
+[node name="TrailerPark_Env" type="Node3D"]
+
+[node name="WorldCollisionWalls" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldCollisionWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.7531, 0, 0.0534325)
+shape = SubResource("BoxShape3D_2erg3")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="WorldCollisionWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.2469, 0, 0.0534325)
+shape = SubResource("BoxShape3D_2erg3")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="WorldCollisionWalls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 11.2469, 0, -45.9466)
+shape = SubResource("BoxShape3D_2erg3")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="WorldCollisionWalls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 11.2469, 0, 48.0534)
+shape = SubResource("BoxShape3D_2erg3")
+
+[node name="HouseEnv" parent="." instance=ExtResource("1_2erg3")]
+
+[node name="Bus_stop_01" parent="." instance=ExtResource("2_xu1rv")]
+transform = Transform3D(150, 0, 0, 0, -6.55671e-06, 150, 0, -150, -6.55671e-06, -15.2714, 1.9747, -37.2141)
+
+[node name="Bus_stop_sign_01" parent="." instance=ExtResource("3_6b1x4")]
+transform = Transform3D(150, 0, 0, 0, -6.55671e-06, 150, 0, -150, -6.55671e-06, -10.6755, -0.978276, -35.8141)
