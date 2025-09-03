@@ -50,6 +50,8 @@ exit=""
 toilet=""
 shower=""
 lamps=""
+bus=""
+house_door=""
 
 [input]
 

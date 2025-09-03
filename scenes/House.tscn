@@ -27,12 +27,12 @@
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
 ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
 
-[sub_resource type="Sky" id="Sky_r2usd"]
+[sub_resource type="Sky" id="Sky_myv26"]
 sky_material = SubResource("ProceduralSkyMaterial_8twys")
 
 [sub_resource type="Environment" id="Environment_ispqn"]
 background_mode = 2
-sky = SubResource("Sky_r2usd")
+sky = SubResource("Sky_myv26")
 tonemap_mode = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d06ix"]
@@ -120,12 +120,12 @@ initial_velocity_max = 5.0
 scale_min = 0.02
 scale_max = 0.05
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l6do8"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uh6ed"]
 blend_mode = 1
 albedo_color = Color(1, 0.996078, 0.588235, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_l6do8"]
-material = SubResource("StandardMaterial3D_l6do8")
+material = SubResource("StandardMaterial3D_uh6ed")
 size = Vector3(0.6, 0.6, 0.6)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nwrc1"]
@@ -850,7 +850,7 @@ vertex_color_use_as_albedo = true
 albedo_texture = ExtResource("7_ea8vi")
 emission_enabled = true
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_ex30h"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_wwk8k"]
 _surfaces = [{
 "aabb": AABB(-0.000272857, -0.0087365, -0.0114203, 0.000545714, 0.00874046, 0.0228406),
 "format": 34359742465,
@@ -880,7 +880,7 @@ _surfaces = [{
 "vertex_data": PackedByteArray("QQ6PuYcjD7wfHDs8QQ6PuZoZhTYfHDs8QQ6PuZoZhTYfHDu8QQ6PuYcjD7wfHDu8QA6POYcjD7wfHDs8QQ6PuYcjD7wfHDs8QQ6PuYcjD7wfHDu8QA6POYcjD7wfHDu8QA6POZoZhTYfHDs8QA6POYcjD7wfHDs8QA6POYcjD7wfHDu8QA6POZoZhTYfHDu8QQ6PuZoZhTYfHDs8QA6POZoZhTYfHDs8QA6POZoZhTYfHDu8QQ6PuZoZhTYfHDu8QA6POZoZhTYfHDu8QA6POYcjD7wfHDu8QQ6PuYcjD7wfHDu8QQ6PuZoZhTYfHDu8QQ6PuZoZhTYfHDs8QQ6PuYcjD7wfHDs8QA6POYcjD7wfHDs8QA6POZoZhTYfHDs8////f/9//n////9//3/+f////3//f/5/////f/9//n//f///////P/9///////8//3///////z//f///////PwAA/3//fwCAAAD/f/9/AIAAAP9//38AgAAA/3//fwCA/38AAP///7//fwAA////v/9/AAD///+//38AAP///7//f/9/////P/9//3////8//3//f////z//f/9/////P/////////+//////////7//////////v/////////+/")
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_ex30h")
+shadow_mesh = SubResource("ArrayMesh_wwk8k")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ea8vi"]
 size = Vector3(0.277222, 3.51123, 1.54004)
@@ -1448,29 +1448,34 @@ cancel_button_text = "Continue"
 material = ExtResource("5_lr155")
 offset_right = 1283.0
 offset_bottom = 723.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
 
 [node name="DayCounter" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 0
 offset_left = 280.0
 offset_right = 320.0
 offset_bottom = 23.0
+metadata/_edit_use_anchors_ = true
 
 [node name="OreCounter" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+metadata/_edit_use_anchors_ = true
 
 [node name="HintLabel" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 0
 offset_top = 59.0
 offset_right = 40.0
 offset_bottom = 82.0
+metadata/_edit_use_anchors_ = true
 
 [node name="InteractHint" type="Label" parent="CanvasLayer/Control"]
 visible = false
@@ -1486,6 +1491,7 @@ anchors_preset = 0
 offset_left = 1162.0
 offset_right = 1202.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Subtitles" type="Label" parent="CanvasLayer"]
 visible = false
@@ -1503,6 +1509,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Fade" type="ColorRect" parent="OverlayLayer/DayIntro"]
 layout_mode = 1
@@ -1515,6 +1522,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
+metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="OverlayLayer/DayIntro"]
 layout_mode = 0
@@ -1523,5 +1531,6 @@ offset_top = 345.0
 offset_right = 684.0
 offset_bottom = 368.0
 text = "Narrative"
+metadata/_edit_use_anchors_ = true
 
 [node name="PauseMenu" parent="." instance=ExtResource("3_r2usd")]

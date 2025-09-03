@@ -326,9 +326,8 @@ func request_sleep() -> void:
 
 func request_exit() -> void:
 	_cancel_subtitle_task()
-	
-	# Показывать диалог только РОВНО в день 7, только если не использован,
-	# и только если игрок ещё НЕ выходил в пещеру в этот день.
+
+	# диалог дня 7 — без изменений
 	if GameManager.current_day == 7 \
 		and not GameManager.early_used \
 		and not GameManager.came_from_cave:
@@ -338,7 +337,7 @@ func request_exit() -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		return
 
-	# Уже были в пещере сегодня — не выпускаем
+	# если уже были в пещере сегодня — не выпускаем из дома
 	if GameManager.came_from_cave:
 		var lbl := hint_label if hint_label else subtitle
 		if lbl:
@@ -348,9 +347,9 @@ func request_exit() -> void:
 			lbl.visible = false
 		return
 
-	# ← вот это добавили
-	GameManager.came_from_cave = true
-	get_tree().change_scene_to_packed(preload("res://scenes/Cave.tscn"))
+	# раньше тут было: GameManager.came_from_cave = true и переход в Cave
+	# теперь выходим наружу — в трейлер-парк
+	get_tree().change_scene_to_file("res://scenes/TrailerPark.tscn")
 
 
 
