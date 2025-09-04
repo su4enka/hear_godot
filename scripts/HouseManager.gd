@@ -57,6 +57,8 @@ var _pee_busy := false
 var _shower_busy := false
 
 
+
+
 func _ready():
 	if is_instance_valid(wife_root):
 		wife_ctrl = _find_wife_controller(wife_root)
@@ -72,11 +74,12 @@ func _ready():
 
 
 	# СПАВН: если пришли из пещеры — у двери, иначе — у кровати
-	if GameManager.came_from_cave:
+	if GameManager.came_from_cave or GameManager.came_from_street:
 		_place_player(spawn_door)
+		GameManager.came_from_street = false
 	else:
 		_place_player(spawn_bed)
-
+	
 	# чтобы следующий заход в дом считался «обычным»
 	_spawn_done = true
 	GameManager.day_started.connect(_on_day_started)
@@ -99,7 +102,16 @@ func _ready():
 	
 		# Подключаемся к сигналам от автолоада
 	GameManager.day_intro.connect(_on_day_intro)
+	if day_intro_label:
+		day_intro_label.visible = false
+	# Показать баннер ТОЛЬКО на самом первом старте игры
+# (не при входе с улицы/из пещеры)
+	if GameManager.intro_queued and not GameManager.came_from_cave and not GameManager.came_from_street:
+		GameManager.intro_queued = false
+		await get_tree().process_frame
+		_on_day_intro("Day %d" % GameManager.current_day)
 	GameManager.day_ended.connect(_on_day_ended)
+	
 
 	# ТРИГГЕРЫ
 	leave_dialog.confirmed.connect(_on_leave_dialog_confirmed)
@@ -109,8 +121,6 @@ func _ready():
 	leave_dialog2.close_requested.connect(_on_leave_dialog2_close)
 	
 	# Безопасная инициализация интро-оверлея — на случай если сигнал пролетел до подключения
-	if day_intro_label:
-		day_intro_label.visible = false
 
 	_update_ui()
 	
@@ -123,8 +133,6 @@ func _ready():
 		if lm:
 			lm.lights_on_arrival()
 		GameManager.just_returned_home = false  # «съели» маркер
-	else:
-		_on_day_intro("Day %d" % GameManager.current_day)
 		
 func _find_wife_controller(root: Node) -> WifeController:
 	if root == null:

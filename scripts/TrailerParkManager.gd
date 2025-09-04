@@ -104,5 +104,6 @@ func request_exit_outside() -> void:
 		# Если возвращаемся после пещеры — попросим Дом включить «приехали домой»
 		if GameManager.came_from_cave:
 			GameManager.just_returned_home = true
+		GameManager.came_from_street = true
 		get_tree().change_scene_to_file("res://scenes/House.tscn")
 		return

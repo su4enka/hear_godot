@@ -18,6 +18,9 @@ var opening_needs_confirm := true
 
 var just_returned_home := false
 var came_from_cave := false
+var came_from_street := false
+var intro_queued := false         # <— НОВОЕ: интро запланировано к показу
+
 
 var early_used := false
 
@@ -159,10 +162,12 @@ func start_new_day():
 	if the_game_ended:
 		return
 	came_from_cave = false 
+	intro_queued = true
 	ore_collected_today = 0
 	deafness_level = float(current_day - 1) / float(total_days - 1)
 	_emit_day_intro()
 	day_started.emit(current_day)
+	day_intro.emit("Day %d" % current_day)
 
 func reset_state() -> void:
 	current_day = 1
@@ -214,5 +219,6 @@ func end_game(kind:String):
 
 func go_home_from_cave():
 	came_from_cave = true
+	just_returned_home = true
 	#get_tree().change_scene_to_file("res://scenes/TrailerPark.tscn")
 	get_tree().change_scene_to_file("res://scenes/TrailerPark.tscn")
